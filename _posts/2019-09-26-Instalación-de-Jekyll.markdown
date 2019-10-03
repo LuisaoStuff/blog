@@ -1,6 +1,6 @@
 ---
 title:  "Instalación y configuración de Jekyll"
-description: Pequeña guía desde 0
+excerpt: "Pequeña guía desde 0"
 date:   2019-09-25 15:04:23
 categories: [jekyll]
 tags: [jekyll]
@@ -94,3 +94,6 @@ tags: [ejemplo, tutorial]
 Esta cabecera define los **datos principales**, como el título de la entrada, la fecha y la categoría. Todo esto es **necesario para** jekyll a la hora de **organizar** el contenido **de forma automática**. Por ejemplo, también indicaremos en el nombre del fichero alguno de estos parámetros, siguiendo este formato: **YYYY-MM-DD-nombre-del-post.markdown**.
 <a href="https://imgur.com/cDSsl0c"><img src="https://imgur.com/cDSsl0c.png" title="source: imgur.com" /></a>
 
+### Enlaces de interés:
+
+* [markdown.es](https://markdown.es/) 

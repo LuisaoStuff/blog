@@ -1,5 +1,6 @@
 ---
 title:  "Como instalar una plantilla Jekyll"
+excerpt: "Personaliza tu página!"
 date:   2019-09-27 10:57:23
 categories: [jekyll]
 tags: [jekyll]
@@ -12,4 +13,4 @@ Lo descomprimimos y empezamos con la instalación de las _gemas_. Accedemos al d
 En la distribución de **debian** suele dar problemas el paquete **nokogiri** al intentar instalarlo con el gestor *bundle*. La solución más habitual a este problema de dependencias, es seguir los siguientes pasos que puedes ver en esta [página](https://nokogiri.org/tutorials/installing_nokogiri.html).
 
 Ya solo nos quedaría inicializar jekyll y acceder a la página web para ver el resultado.
-
+<a href="https://imgur.com/1QBA4EB"><img src="https://imgur.com/1QBA4EB.png" title="source: imgur.com" /></a>
