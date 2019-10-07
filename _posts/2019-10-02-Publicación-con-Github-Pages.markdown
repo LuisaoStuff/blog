@@ -32,7 +32,7 @@ A partir de aquí, cada vez que queramos modificar la página, deberíamos gener
 
 ## Integración continua
 
-Estoy probando la integración contínua con bash y hooks!
+Estoy probando la integración contínua con bash y hooks
 
 
 
