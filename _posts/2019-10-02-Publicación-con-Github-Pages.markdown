@@ -36,6 +36,7 @@ Como hemos visto, tenemos la página en dos repositorios github, uno con el ento
 En nuestro caso utilizaremos el fichero **pre-push** que se ejecuta antes del *git push*.
 ```
 echo "actualizando repositorio local"
+bundle exec jekyll build --incremental
 cp -r /home/luis/Escritorio/github/pagina-jekyll/_site/* /home/luis/Escritorio/github/LuisaoStuff.github.io/
 cd /home/luis/Escritorio/github/LuisaoStuff.github.io/
 git add *
@@ -44,4 +45,4 @@ git push
 echo "repositorio desplegado en producción"
 exit 0
 ```
-Con esto, cada vez que hayamos cambiado algun post, lo hayamos comprobado generando el entorno local y vayamos a subirlo al repositorio git de desarrollo, se subirá automáticamente al repositorio de producción. Es decir, copia el directorio *_site* generado, después se situa en el directorio del repositorio y sube los cambios al repositorio de producción.
+Con esto, cada vez que hayamos cambiado algun post, solo tenemos que hacer un `git commit -am` y un `git push` para desplegarlo en producción.
