@@ -28,8 +28,20 @@ $ git commit -m “first commit”
 $ git remote add origin git@github.com:LuisaoStuff/luisaostuff.github.io-prueba.git
 $ git push -u origin master
 ```
-A partir de aquí, cada vez que queramos modificar la página, deberíamos generarla en local para que se actualicen los ficheros html y después añadirlos y subirlos con `git push`.
+A partir de aquí, cada vez que queramos modificar la página, deberíamos generarla en local para que se actualicen los ficheros html y después añadirlos y subirlos con `git push`. Además indicaremos en el repositorio del entorno desarrollo que no se suban los ficheros **.html** ubicados en el directorio **_site**. Esto lo indicamos en el fichero **.gitignore**
 
 ## Integración continua
 
-Estoy probando la integración contínua con bash y hook
+Como hemos visto, tenemos la página en dos repositorios github, uno con el entorno de desarrollo, donde tenemos los ficheros de configuración y el otro con los ficheros **.html** que componen la página. A continuación vamos a automatizar el proceso de despliegue en producción a través de *Git Hooks*. ¿En qué consisten? Son unos **script** que se comportan como *triggers*, ya que se ejecutan en determinados momentos, como por ejemplo en la ejecución de un **commit** o antes de un **push**. Estos *script* se encuentran dentro del repositorio, concretamente en **.git/hooks/**.
+En nuestro caso utilizaremos el fichero **pre-push** que se ejecuta antes del *git push*.
+```
+echo "actualizando repositorio local"
+cp -r /home/luis/Escritorio/github/pagina-jekyll/_site/* /home/luis/Escritorio/github/LuisaoStuff.github.io/
+cd /home/luis/Escritorio/github/LuisaoStuff.github.io/
+git add *
+git commit -m "Autodeploy"
+git push
+echo "repositorio desplegado en producción"
+exit 0
+```
+Con esto, cada vez que hayamos cambiado algun post, lo hayamos comprobado generando el entorno local y vayamos a subirlo al repositorio git de desarrollo, se subirá automáticamente al repositorio de producción. Es decir, copia el directorio *_site* generado, después se situa en el directorio del repositorio y sube los cambios al repositorio de producción.
