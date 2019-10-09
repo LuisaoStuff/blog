@@ -45,5 +45,3 @@ echo "repositorio desplegado en producción"
 exit 0
 ```
 Con esto, cada vez que hayamos cambiado algun post, lo hayamos comprobado generando el entorno local y vayamos a subirlo al repositorio git de desarrollo, se subirá automáticamente al repositorio de producción. Es decir, copia el directorio *_site* generado, después se situa en el directorio del repositorio y sube los cambios al repositorio de producción.
-
-Estoy probando hooks
