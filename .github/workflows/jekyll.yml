@@ -22,4 +22,4 @@ jobs:
         jekyll/builder:latest \
         bundle update listen
         jekyll build --future --full-index
-        jekyll/builder:latest /bin/bash -c "chmod 777 srv/jekyll && jekyll build --future --full-index"
+        jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future --full-index"
