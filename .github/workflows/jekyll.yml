@@ -21,5 +21,4 @@ jobs:
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest \
         bundle update listen
-        jekyll build --future --full-index
         jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future --full-index"
