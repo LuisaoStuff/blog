@@ -39,6 +39,7 @@ jekyll-site/
 
 ## Lanzar el entorno web
 
+
 Para generar la web en el entorno de desarrollo, entramos en el directorio `/jekyll-site` y ejecutamos: `$ bundle exec jekyll serve` .De esta manera podremos tener una previsualización de la web accediendo a _localhost:4000_ desde el navegador.
 
 ## Modificando _config.yml
