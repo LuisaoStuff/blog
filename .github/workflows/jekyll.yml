@@ -20,5 +20,5 @@ jobs:
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         jekyll/builder:latest \
-        bundle update listen
-        jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future --full-index"
+        bundle update listen /bin/bash -c "chmod 777 /srv/jekyll"
+        jekyll/builder:latest /bin/bash "jekyll build --future --full-index"
