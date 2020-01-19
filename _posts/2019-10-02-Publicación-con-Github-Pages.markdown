@@ -1,11 +1,11 @@
 ---
-title:  "Publicación con Github-Pages PRUEBA"
+title:  "Publicación con Github-Pages"
 excerpt: "Crea un repositorio y conviértelo en tu página"
 date:   2019-10-02 10:57:23
 categories: [jekyll, github]
 tags: [jekyll, github]
 ---
-<a href="https://imgur.com/DIYxa6F"><img src="https://imgur.com/DIYxa6F.png" title="source: imgur.com" /></a>
+<a href="images/git-logo.png"><img src="images/git-logo.png" /></a>
 **Github** es una plataforma de desarrollo de software colaborativo y de control de versiones. Aunque existen algunas versiones paralelas como **Gitlab**, que también se basan en el paquete *git*, esta vez nos centraremos en **Github**.
 Lo primero que debemos tener es una cuenta en dicha página, además de contar con el paquete *git* instalado en nuestra máquina. Para instalar este paquete solo tenemos que ejecutar `$ apt install git`. Una vez hecho esto, accedemos a nuestra cuenta en github y creamos un nuevo repositorio.
 <a href="https://imgur.com/dYfEZq8"><img src="https://imgur.com/dYfEZq8.png" title="source: imgur.com" /></a>
