@@ -33,8 +33,6 @@ deploy:
   provider: pages
   skip_cleanup: true
   local_dir: _site
-  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+#  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   on:
-    repo: LuisaoStuff/luisvazquezalejo.github.io
-    on:
-      branch: gh-pages # ← new!
+    branch: gh-pages # ← new!
