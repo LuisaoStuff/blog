@@ -13,6 +13,7 @@ script: ./script/cibuild
 branches:
   only:
   - master     # test the master branch
+  - gh-pages
 
 env:
   global:
@@ -34,8 +35,8 @@ deploy:
   skip_cleanup: true
   local_dir: _site
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
-#  on:
- #   repo: LuisaoStuff/luisvazquezalejo.github.io
   on:
-    branch: gh-pages
+    repo: LuisaoStuff/luisvazquezalejo.github.io
+    on:
+      branch: gh-pages
 
