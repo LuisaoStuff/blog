@@ -37,5 +37,5 @@ deploy:
 #  on:
  #   repo: LuisaoStuff/luisvazquezalejo.github.io
   on:
-    branch: master
+    branch: gh-pages
 
