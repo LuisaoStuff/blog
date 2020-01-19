@@ -23,7 +23,7 @@ addons:
     packages:
     - libcurl4-openssl-dev
 
-#sudo: false # route your build to the container-based infrastructure for a faster build
+root: false # route your build to the container-based infrastructure for a faster build
 
 cache: bundler # caching bundler gem packages will speed up build
 
@@ -34,7 +34,7 @@ notifications:
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: public
+#  local_dir: public
 #  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   on:
     repo: LuisaoStuff/luisvazquezalejo.github.io
