@@ -13,7 +13,7 @@ Hoy en día existen diversos _servicios_ que nos proporcionan este tipo de integ
 
 Para registrarnos tan solo tendremos que tener una cuenta en **github**, cuenta a la que se nos pedirá una serie de permisos para poder ejecutar los correspondientes _triggers_ (o _webhooks_ como los llama **github**).
 
-<a href="/images/sign-up-travis.ong"><img src="/images/sign-up-travis.ong" /></a>
+<a href="/images/sign-up-travis.png"><img src="/images/sign-up-travis.png" /></a>
 
 
 ## Preparación del repositorio
