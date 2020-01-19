@@ -39,4 +39,4 @@ deploy:
     repo: LuisaoStuff/blog
     on:
       branch: gh-pages
-  github_url: blog.luisvazquezalejo.es
+  fqdn: blog.luisvazquezalejo.es
