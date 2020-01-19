@@ -44,7 +44,7 @@ Para generar la web en el entorno de desarrollo, entramos en el directorio `/jek
 
 ## Modificando _config.yml
 
-Este fichero contiene por defecto solo algunos parámetros, pero podemos añadir cuantos nosotros queramos. Si instalamos una plantilla (como explico [aquí](/2019/Como-usar-una-plantilla-Jekyll/)) podremos observar que hay multiples parámetros adicionales. En principio, estos son los parámetros básicos:
+Este fichero contiene por defecto solo algunos parámetros, pero podemos añadir cuantos nosotros queramos. Si instalamos una plantilla (como explico [aquí](/2019/Como-instalar-una-plantilla-Jekyll/)) podremos observar que hay multiples parámetros adicionales. En principio, estos son los parámetros básicos:
 ```
 # Site settings
 title: Your awesome title

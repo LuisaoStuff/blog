@@ -6,7 +6,7 @@ categories: [jekyll]
 tags: [jekyll]
 ---
 
-Lo primero que debemos hacer es buscar una plantilla que nos guste. Para esto hay diversas páginas, por ejemplo [Jekyll Themes](http://jekyllthemes.org/). Una vez hemos encontrado algo que encaje con nuestra idea, descargamos el **zip** que nos ofrezca.
+Lo primero que debemos hacer es buscar una plantilla que nos guste. Para esto hay diversas páginas, por ejemplo [Jekyll Themes](https://jekyllthemes.io/). Una vez hemos encontrado algo que encaje con nuestra idea, descargamos el **zip** que nos ofrezca.
 
 <a href="/images/download-theme.png"><img src="/images/download-theme.png" /></a>
 Lo descomprimimos y empezamos con la instalación de las _gemas_. Accedemos al directorio, en nuestro caso **./jekyll_uno** y ejecutamos `$ bundle install`.
