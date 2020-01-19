@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-#set -e # halt script on error
-
-bundle exec jekyll build --incremental
-bundle exec htmlproofer --empty-alt-ignore --enforce-https --url-ignore /#blog ./_site
