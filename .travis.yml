@@ -25,6 +25,7 @@ addons:
     - libcurl4-openssl-dev
 
 cache: bundler # caching bundler gem packages will speed up build
+#cache: jekyll
 
 # Optional: disable email notifications about the outcome of your builds
 notifications:
@@ -36,7 +37,7 @@ deploy:
   local_dir: _site
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   on:
-    repo: LuisaoStuff/blog
+    repo: LuisaoStuff/prueba-will
     on:
       branch: gh-pages
   fqdn: blog.luisvazquezalejo.es
