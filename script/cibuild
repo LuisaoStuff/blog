@@ -2,4 +2,4 @@
 #set -e # halt script on error
 
 bundle exec jekyll build --incremental
-bundle exec htmlproofer ./_site
+bundle exec htmlproofer --empty-alt-ignore --enforce-https --url-ignore /#blog ./_site
