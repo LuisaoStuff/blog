@@ -77,7 +77,7 @@ theme: minima
 plugins:
   - jekyll-feed
 ```
-<a href="https://imgur.com/eC0V6Sq"><img src="https://imgur.com/eC0V6Sq.png" title="source: imgur.com" /></a>
+<a href="/images/local-deploy.png"><img src="/images/local-deploy.png" /></a>
 
 ## Creando la primera página
 
@@ -93,7 +93,7 @@ tags: [ejemplo, tutorial]
 ---
 ```
 Esta cabecera define los **datos principales**, como el título de la entrada, la fecha y la categoría. Todo esto es **necesario para** jekyll a la hora de **organizar** el contenido **de forma automática**. Por ejemplo, también indicaremos en el nombre del fichero alguno de estos parámetros, siguiendo este formato: **YYYY-MM-DD-nombre-del-post.markdown**.
-<a href="https://imgur.com/cDSsl0c"><img src="https://imgur.com/cDSsl0c.png" title="source: imgur.com" /></a>
+<a href="/images/first-page.png"><img src="/images/first-page.png" /></a>
 
 ### Enlaces de interés:
 
