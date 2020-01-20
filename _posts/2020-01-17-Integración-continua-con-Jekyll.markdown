@@ -79,4 +79,28 @@ bundle exec htmlproofer --empty-alt-ignore --enforce-https ./_site
 
 ## Configuración Travis-CI
 
-Una vez nos hemos registrado, tendremos que dirigirnos al apartado de nuestro perfil, donde veremos un listado de nuestros repositorios. En esta ocasión vamos a activar solo el repositorio donde tenemos los ficheros **jekyll**.
+Una vez nos hemos registrado, tendremos que dirigirnos al apartado de nuestro perfil, donde veremos un listado de nuestros repositorios. Como hemos indicado antes, vamos a trabajar sobre el repositorio **blog**, por lo tanto lo activamos.
+
+<a href="/images/activate-repository.png"><img src="/images/activate-repository.png" /></a>
+
+Vamos a necesitar un **access token**, por lo que nos dirigimos a nuestra cuenta de *github* y seguimos estos pasos. Accedemos a *settings*
+
+<a href="/images/settings.png"><img src="/images/settings.png" /></a>
+
+*Developer settings*
+
+<a href="/images/developer-settings.png"><img src="/images/developer-settings.png" /></a>
+
+*Personal access token*
+
+<a href="/images/Personal-access-token.png"><img src="/images/Personal-access-token.png" /></a>
+
+Marcamos las siguientes *opciones*
+
+<a href="/images/token-options.png"><img src="/images/token-options.png" /></a>
+
+Copiamos el código generado y lo introducimos en Travis.
+
+<a href="/images/token-code.png"><img src="/images/token-code.png" /></a>
+
+<a href="/images/travis-token.png"><img src="/images/travis-token.png" /></a>
