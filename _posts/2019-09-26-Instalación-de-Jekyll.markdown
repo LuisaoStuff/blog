@@ -9,14 +9,14 @@ tags: [jekyll]
 ## Instalar Jekyll
 
 Para instalar *jekyll* en Debian primero debemos comprobar que tenemos instalado *Ruby*, pues es el lenguaje que utiliza. Una vez hecho esto (y tras haber *actualizado* el sistema) ejecutamos el siguiente comando:
-```
+{% highlight bash %}
 $ gem install jekyll bundler
-```
+{% edndhighlight %}
 
 ## Crear nueva página
 
 Es bastante sencillo, tan solo hay que ejecutar `$ jekyll new jekyll-site` y automáticamente se generará los correspondientes ficheros de configuración y los directorios donde almacenaremos los *markdown* que darán contenido a nuestra página.Esta es la estructura generada:
-```
+{% highlight bash %}
 $ tree jekyll-site
 jekyll-site/
 ├── 404.html
@@ -29,7 +29,7 @@ jekyll-site/
     └── 2019-09-25-welcome-to-jekyll.markdown
 
 1 directory, 7 files
-```
+{% endhighlight %}
 
 ### Ficheros y directorios importantes
 
@@ -45,7 +45,8 @@ Para generar la web en el entorno de desarrollo, entramos en el directorio `/jek
 ## Modificando _config.yml
 
 Este fichero contiene por defecto solo algunos parámetros, pero podemos añadir cuantos nosotros queramos. Si instalamos una plantilla (como explico [aquí](/Como-instalar-una-plantilla-Jekyll/)) podremos observar que hay multiples parámetros adicionales. En principio, estos son los parámetros básicos:
-```
+
+{% highlight ruby %}
 # Site settings
 title: Your awesome title
 email: your-email@example.com
@@ -56,8 +57,8 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+{% highlight %}
 
-```
 * `title`: Es el título que tendrá tu página y que aparecerá en el texto de la pestaña.
 * `email`: Añade un botón con el email que indiques (de la misma forma se puede añadir *twitter*, *github*, etc).
 * `baseurl`: Indica la dirección de la página principal de la web, por ejemplo la raiz **"/"** o **"/home"**.
@@ -83,7 +84,7 @@ plugins:
 
 Para añadir páginas, deberás escribirlas en formato *markdown* y situarlas en el directorio **/_posts**. Nuestro ejemplo consistirá en una *entrada de blog* y modificaremos algunas lineas para dejar claras las reglas que deberemos seguir.
 Lo primero que veremos en el fichero es una **cabecera** como esta:
-```
+{% highlight markdown %}
 ---
 layout: post
 title:  "Mi primera entrada!"
@@ -91,7 +92,8 @@ date:   2019-10-02 23:18:39 +0200
 categories: ejemplo
 tags: [ejemplo, tutorial]
 ---
-```
+{% endhighlight %}
+
 Esta cabecera define los **datos principales**, como el título de la entrada, la fecha y la categoría. Todo esto es **necesario para** jekyll a la hora de **organizar** el contenido **de forma automática**. Por ejemplo, también indicaremos en el nombre del fichero alguno de estos parámetros, siguiendo este formato: **YYYY-MM-DD-nombre-del-post.markdown**.
 <a href="/images/first-page.png"><img src="/images/first-page.png" /></a>
 
