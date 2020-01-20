@@ -21,8 +21,61 @@ Para registrarnos tan solo tendremos que tener una cuenta en **github**, cuenta 
 En entradas anteriores teníamos nuestro proyecto dividido en dos repositorios y dichos repositorios los teníamos en local. Como con *Travis-CI* tanto la construcción de la página como el despliegue se realiza en desde un **docker** remoto, no necesitaremos tener el repositorio contenedor del html en local. De hecho, para tener un mayor orden vamos a situar todo en un mismo repositorio dividido en dos ramas distintas.
 La rama **master** contendrá los ficheros necesarios para que **jekyll** pueda construir la página. Y la rama **gh-pages** será la contenedora del *html*, y a la que estará "apuntando" el servicio de **Github Pages**.
 
-En mi caso el repositorio lo llamaré **blog**
+En mi caso el repositorio lo llamaré **blog** y además de contener los ficheros habituales de jekyll, vamos a añadir un fichero *yaml* con la siguiente configuración:
 
+<pre>
+language: ruby
+rvm:
+  - 2.6.3
+
+script: ./script/cibuild		# Ejecutamos el script para construir
+					# el html
+branches:
+  only:
+  - master				# Estas son las ramas donde va a
+  - gh-pages				# actuar Travis
+
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true	# Con esto aceleramos la instalación 
+					# de html-proofer
+
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
+
+cache: bundler 				# Guardamos en caché la instalación
+					# de gemas
+
+notifications:				# Desactivamos las notificaciones por
+  email: false				# mail
+
+deploy:					# Desplegamos usando el proveedor pages
+  provider: pages			# de github-pages. Especificamos el
+  skip_cleanup: true			# token $GITHUB_TOKEN que definiremos
+  local_dir: _site			# más adelante en el dashboard.
+  github_token: $GITHUB_TOKEN		# Con la opción "repo" y "branch"
+  on:					# indicamos el repositorio y la rama
+    repo: LuisaoStuff/blog		# respectivamente.
+    on:					# Por último, con el parámetro "fqdn"
+      branch: gh-pages			# definimos el dominio personal que
+  fqdn: blog.luisvazquezalejo.es	# vamos a utilizar.
+</pre>
+
+El contenido del *script* cuya ejecución hemos definido en el fichero *yaml*, tendrá el siguiente contenido:
+
+<pre>
+#!/usr/bin/env bash
+# Levanta una excepción en caso de error
+set -e
+
+# Construímos el html incrementalmente
+bundle exec jekyll build --incremental
+
+# Verificamos el html y comprobamos que las url externas son https
+bundle exec htmlproofer --empty-alt-ignore --enforce-https ./_site
+</pre>
 
 ## Configuración Travis-CI
 
