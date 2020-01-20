@@ -34,7 +34,8 @@ A partir de aquí, cada vez que queramos modificar la página, deberíamos gener
 
 Como hemos visto, tenemos la página en dos repositorios github, uno con el entorno de desarrollo, donde tenemos los ficheros de configuración y el otro con los ficheros **.html** que componen la página. A continuación vamos a automatizar el proceso de despliegue en producción a través de *Git Hooks*. ¿En qué consisten? Son unos **script** que se comportan como *triggers*, ya que se ejecutan en determinados momentos, como por ejemplo en la ejecución de un **commit** o antes de un **push**. Estos *script* se encuentran dentro del repositorio, concretamente en **.git/hooks/**.
 En nuestro caso utilizaremos el fichero **pre-push** que se ejecuta antes del *git push*.
-```
+
+{% highlight bash %}
 echo "actualizando repositorio local"
 bundle exec jekyll build --incremental
 cp -r /home/luis/Escritorio/github/pagina-jekyll/_site/* /home/luis/Escritorio/github/LuisaoStuff.github.io/
@@ -44,5 +45,6 @@ git commit -m "Autodeploy"
 git push
 echo "repositorio desplegado en producción"
 exit 0
-```
+{% endhighlight %}
+
 Con esto, cada vez que hayamos cambiado algun post, solo tenemos que hacer un `git commit -am` y un `git push` para desplegarlo en producción.
