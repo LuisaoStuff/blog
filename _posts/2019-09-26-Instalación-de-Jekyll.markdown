@@ -11,7 +11,7 @@ tags: [jekyll]
 Para instalar *jekyll* en Debian primero debemos comprobar que tenemos instalado *Ruby*, pues es el lenguaje que utiliza. Una vez hecho esto (y tras haber *actualizado* el sistema) ejecutamos el siguiente comando:
 {% highlight bash %}
 $ gem install jekyll bundler
-{% edndhighlight %}
+{% endhighlight %}
 
 ## Crear nueva página
 
@@ -57,7 +57,7 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
-{% highlight %}
+{% endhighlight %}
 
 * `title`: Es el título que tendrá tu página y que aparecerá en el texto de la pestaña.
 * `email`: Añade un botón con el email que indiques (de la misma forma se puede añadir *twitter*, *github*, etc).
