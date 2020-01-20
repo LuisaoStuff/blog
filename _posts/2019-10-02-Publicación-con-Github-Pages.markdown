@@ -46,4 +46,3 @@ echo "repositorio desplegado en producción"
 exit 0
 ```
 Con esto, cada vez que hayamos cambiado algun post, solo tenemos que hacer un `git commit -am` y un `git push` para desplegarlo en producción.
-

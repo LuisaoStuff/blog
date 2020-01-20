@@ -23,7 +23,7 @@ La rama **master** contendrá los ficheros necesarios para que **jekyll** pueda 
 
 En mi caso el repositorio lo llamaré **blog** y además de contener los ficheros habituales de jekyll, vamos a añadir un fichero *yaml* con la siguiente configuración:
 
-<pre>
+{% highlight ruby %}
 language: ruby
 rvm:
   - 2.6.3
@@ -61,11 +61,11 @@ deploy:					# Desplegamos usando el proveedor pages
     on:					# Por último, con el parámetro "fqdn"
       branch: gh-pages			# definimos el dominio personal que
   fqdn: blog.luisvazquezalejo.es	# vamos a utilizar.
-</pre>
+{% endhighlight %}
 
 El contenido del *script* cuya ejecución hemos definido en el fichero *yaml*, tendrá el siguiente contenido:
 
-<pre>
+{% highlight bash %}
 #!/usr/bin/env bash
 # Levanta una excepción en caso de error
 set -e
@@ -75,7 +75,7 @@ bundle exec jekyll build --incremental
 
 # Verificamos el html y comprobamos que las url externas son https
 bundle exec htmlproofer --empty-alt-ignore --enforce-https ./_site
-</pre>
+{% endhighlight %}
 
 ## Configuración Travis-CI
 
