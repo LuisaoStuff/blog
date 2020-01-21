@@ -1,7 +1,7 @@
 ---
-title:  "Instalación y configuración de Jekyll"
-excerpt: "Pequeña guía desde 0"
-date:   2019-09-25 15:04:00
+title:  "Rendimiento de servidores web"
+excerpt: "Comprobación de distintas configuraciones con php, python, apache y nginx"
+date:   2020-01-21 10:59:00
 categories: [Servicios]
 tags: [apache,nginx,php,python]
 ---
