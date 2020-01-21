@@ -23,13 +23,13 @@ Para realizar esta tarea de la práctica vamos a preparar cinco configuraciones:
 
 Vamos a instalar en la misma máquina los siguientes paquetes:
 
-{% highlight bash %}
+<pre>
 apt install mariadb-server apache2 nginx libapache2-mod-php php-fpm php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip
-{% endhighlight %}
+</pre>
 
 Descargamos e instalamos wordpress con su respectiva base de datos. Para modificar el tamaño máximo de los ficheros que podemos subir, nos tenemos que dirigir a */etc/php/7.3/apache2/php.ini* y modificar la siguiente lineas:
 
-{% highlight ruby %}
+<pre>
 ...
 
 ; Maximum size of POST data that PHP will accept.
@@ -45,7 +45,7 @@ post_max_size = 512M
 upload_max_filesize = 512M
 
 ...
-{% endhighlight %}
+</pre>
 
 Tamaño cambiado:
 
@@ -65,12 +65,12 @@ Dependiendo de qué estemos utilizando para ejecutar el código php, la ruta del
 
 Para cambiar a php-fpm, tenemos que deshabilitar el módulo de *php7.3* y activar el módulo de *proxy_fcgi*. También tendremos que desactivar el módulo de *mpm_prefork* y activar *mpm_event*.
 
-{% highlight bash %}
+<pre>
 $ a2dismod php7.3
 $ a2enmod proxy_fcgi
 $ a2dismod mpm_prefork
 $ a2enmod mpm_event
-{% endhighlight %}
+</pre>
 
 #### Pruebas
 
@@ -84,16 +84,16 @@ $ a2enmod mpm_event
 
 Para cambiar el socket a *tcp/ip* nos dirigimos primero al fichero */etc/php/7.3/fpm/pool.d/www.conf* y cambiamos la siguiente linea:
 
-{% highlight bash %}
+<pre>
 ;listen = /run/php/php7.3-fpm.sock
 listen = 127.0.0.1:9000
-{% endhighlight %}
+</pre>
 
 Y reiniciamos el servicio
 
 {% highlight %}
 systemctl restart php7.3-fpm
-{% endhighlight %}
+</pre>
 
 #### Pruebas
 
@@ -107,7 +107,7 @@ systemctl restart php7.3-fpm
 
 Iniciamos nginx, y como tiene el mismo *documentroot* que apache, no necesitamos modificar demasiadas cosas en el fichero del *virtualhost*. Tan solo descomentaremos las lineas de fastcgi_pass:
 
-{% highlight bash %}
+<pre>
 location ~ \.php$ {
 include snippets/fastcgi-php.conf;
 
@@ -116,7 +116,7 @@ fastcgi_pass unix:/run/php/php7.3-fpm.sock;
 # With php-cgi (or other tcp sockets):
 #       fastcgi_pass 127.0.0.1:9000;
 }
-{% endhighlight %}
+</pre>
 
 También tendremos que definir un nombre para el servidor, en mi caso lo llamaré *pruebawordpress.com*
 
@@ -132,7 +132,7 @@ También tendremos que definir un nombre para el servidor, en mi caso lo llamar�
 
 Cambiamos la configuración del *virtualhost* de _socket unix_ a _socket tcp/ip_:
 
-{% highlight bash %}
+<pre>
         location ~ \.php$ {
                 include snippets/fastcgi-php.conf;
 
@@ -141,7 +141,7 @@ Cambiamos la configuración del *virtualhost* de _socket unix_ a _socket tcp/ip_
                 # With php-cgi (or other tcp sockets):
                fastcgi_pass 127.0.0.1:9000;
         }
-{% endhighlight %} 
+</pre> 
 
 Y de igual forma modificamos el fichero */etc/php/7.3/fpm/pool.d/www.conf* tal y como hicimos antes.
 
@@ -158,13 +158,13 @@ Y de igual forma modificamos el fichero */etc/php/7.3/fpm/pool.d/www.conf* tal y
 ### Memcached
 
 Como hemos podido comprobar hemos obtenido el mejor resultado con la combinación de **PHP-FPM** (**socket unix**) + **nginx**. No obstante, todavía podemos optimizar algo más el rendimiento utilizando el paquete **memcached**. Los paquetes a instalar son los siguientes:
-{% highlight bash %}
+<pre>
 $ apt install memcached php-memcached
-{% endhighlight %} 
+</pre> 
 
 Después nos dirigimos al fichero de configuración ubicado en **/etc/memcached.conf** y cambiamos las siguientes lineas para que nos quede algo así:
 
-{% highlight bash %} 
+<pre> 
 # memcached default config file
 # 2003 - Jay Bonci <jaybonci@debian.org>
 # This configuration file is read by the start-memcached script provided as
@@ -221,23 +221,23 @@ logfile /var/log/memcached.log
 
 # Use a pidfile
 -P /var/run/memcached/memcached.pid
-{% endhighlight %} 
+</pre> 
 
 Acto seguido modificamos al usuario **memcache** y lo añadimos al grupo **www-data** y reiniciamos el servicio
 
-{% highlight bash %} 
+<pre> 
 $ usermod -g www-data memcache
 $ systemctl restart memcached
-{% endhighlight %} 
+</pre> 
 
 Y comprobamos que se ha creado el *socket* ejecutando <code>ls -l /var/run/memcached/</code>
 
-{% highlight bash %}
+<pre>
 $ ls -l /var/run/memcached/
 total 4
 -rw-r--r-- 1 memcache www-data 5 Jan 21 08:33 memcached.pid
 srwxrwxr-x 1 memcache www-data 0 Jan 21 08:33 memcached.sock
-{% endhighlight %}
+</pre>
 
 #### Pruebas
 
@@ -253,39 +253,39 @@ Como podemos observar hemos obtenido una mejora significativa en el rendimiento.
 
 Otro método para mejorar *nginx* es el uso del **proxy inverso** *Varnish*. Primero instalamos el paquete con <code>apt</code> y luego nos dirigimos a los ficheros de configuración. Abrimos el fichero **/etc/varnish/default.vcl** y modificamos los siguientes apartados para que queden así:
 
-{% highlight bash %}
+<pre>
 sub vcl_recv {
     unset req.http.cookie;
 }
 sub vcl_fetch {
     unset beresp.http.set-cookie;
 }
-{% endhighlight %}
+</pre>
 
 Despues modificamos el fichero **/etc/default/varnish**, cambiando la el parámetro **-a** de la directiva *DAEMON_OPTS* para que escuche por el puerto **80**, quedando de la siguiente forma:
 
-{% highlight bash %}
+<pre>
 DAEMON_OPTS="-a :80
              -T localhost:6082
              -f /etc/varnish/default.vcl
              -S /etc/varnish/secret
              -s malloc,256M"
-{% endhighlight %}
+</pre>
 
 Además tendremos que modificar el fichero de configuración de la unidad de *systemd* para que cambie definitivamente el puerto. La unidad de systemd está ubicada en **/lib/systemd/system/varnish.service** y tendremos que modificar la directiva **ExecStart** para que quede algo así:
 
-{% highlight bash %}
+<pre>
 ExecStart=/usr/sbin/varnishd -j unix,user=vcache -F -a :80 -T localhost:6082 -f /etc/varnish/default.vcl -S /etc/varnish/secret -s malloc,256m
-{% endhighlight %}
+</pre>
 
 Por último cambiamos el puerto de escucha de nginx al *8080*. Para ello cambiamos el parámetro *listen* del fichero de configuración del *virtualhost* y luego reiniciamos ambos servicios.
 
-{% highlight bash %}
+<pre>
 ...
         listen 8080;
         listen [::]:8080;
 ...
-{% endhighlight %}
+</pre>
 
 #### Pruebas
 
