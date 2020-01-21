@@ -84,7 +84,7 @@ $ a2enmod mpm_event
 
 Para cambiar el socket a *tcp/ip* nos dirigimos primero al fichero */etc/php/7.3/fpm/pool.d/www.conf* y cambiamos la siguiente linea:
 
-{% highlight %}
+{% highlight bash %}
 ;listen = /run/php/php7.3-fpm.sock
 listen = 127.0.0.1:9000
 {% endhighlight %}
