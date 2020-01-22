@@ -1,7 +1,7 @@
 ---
 title:  "Rendimiento de servidores web"
 excerpt: "Comprobación de distintas configuraciones con php, python, apache y nginx"
-date:   2020-01-19 10:59:00
+date:   2020-01-20 10:59:00
 categories: [Servicios]
 tags: [apache,nginx,php,python]
 ---
@@ -66,10 +66,10 @@ Dependiendo de qué estemos utilizando para ejecutar el código php, la ruta del
 Para cambiar a php-fpm, tenemos que deshabilitar el módulo de *php7.3* y activar el módulo de *proxy_fcgi*. También tendremos que desactivar el módulo de *mpm_prefork* y activar *mpm_event*.
 
 {% highlight bash %}
-$ a2dismod php7.3
-$ a2enmod proxy_fcgi
-$ a2dismod mpm_prefork
-$ a2enmod mpm_event
+a2dismod php7.3
+a2enmod proxy_fcgi
+a2dismod mpm_prefork
+a2enmod mpm_event
 {% endhighlight %}
 
 #### Pruebas
@@ -159,7 +159,7 @@ Y de igual forma modificamos el fichero */etc/php/7.3/fpm/pool.d/www.conf* tal y
 
 Como hemos podido comprobar hemos obtenido el mejor resultado con la combinación de **PHP-FPM** (**socket unix**) + **nginx**. No obstante, todavía podemos optimizar algo más el rendimiento utilizando el paquete **memcached**. Los paquetes a instalar son los siguientes:
 {% highlight bash %}
-$ apt install memcached php-memcached
+apt install memcached php-memcached
 {% endhighlight %} 
 
 Después nos dirigimos al fichero de configuración ubicado en **/etc/memcached.conf** y cambiamos las siguientes lineas para que nos quede algo así:
@@ -226,8 +226,8 @@ logfile /var/log/memcached.log
 Acto seguido modificamos al usuario **memcache** y lo añadimos al grupo **www-data** y reiniciamos el servicio
 
 {% highlight bash %} 
-$ usermod -g www-data memcache
-$ systemctl restart memcached
+ usermod -g www-data memcache
+ systemctl restart memcached
 {% endhighlight %} 
 
 Y comprobamos que se ha creado el *socket* ejecutando <code>ls -l /var/run/memcached/</code>
@@ -296,3 +296,30 @@ Por último cambiamos el puerto de escucha de nginx al *8080*. Para ello cambiam
 * 1000 peticiones concurrentes	:  100%   1134 (longest request)
 
 <a href="/images/bestphp.png"><img src="/images/bestphp.png" /></a>
+
+## Ejecución de scripts Python
+
+En esta parte de la práctica veremos las siguientes combinaciones:
+
+* apache2 + Módulo wsgi
+* apache2 + gunicorn
+* apache2 + uwsgi
+* nginx + gunicorn
+* nginx + uwsgi
+
+Para probar el rendimiento, vamos a instalar el _cms mezzanine_. Primero tenemos que instalar **git** ya que vamos a usar una plantilla y por lo tanto vamos a clonar un repositorio.
+{% highlight bash %}
+apt install git
+mkdir /var/www/mezzanine
+cd /var/www/mezzanine
+git clone https://github.com/thecodinghouse/mezzanine-themes.git
+{% endhighlight %}
+Después instalamos **pip**, el gestor de paquetes de **python** y activaremos el módulo de **wsgi** en _apache_.
+{% highlight bash %}
+apt install python3-pip
+pip install mezzanine
+
+python manage.py createdb
+{% endhighlight %}
+
+
