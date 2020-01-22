@@ -8,7 +8,7 @@ tags: [apache,nginx,php,python]
 
 ## Introducción
 
-A través de esta práctiva vamos a echarle un vistazo a las distintas configuraciones que nos permitirán la ejecución de código **php** y **python** en los _servidores web_ de **apache 2.4** y **nginx**, analizando en cada caso con cuál obtenemos un mayor rendimiento en base a un mayor número de peticiones concurrentes.
+A través de esta práctiva vamos a echarle un vistazo a las distintas configuraciones que nos permitirán la ejecución de código **php** y en los _servidores web_ de **apache 2.4** y **nginx**, analizando en cada caso con cuál obtenemos un mayor rendimiento en base a un mayor número de peticiones concurrentes.
 
 
 ## Ejecución de scripts php
@@ -296,30 +296,3 @@ Por último cambiamos el puerto de escucha de nginx al *8080*. Para ello cambiam
 * 1000 peticiones concurrentes	:  100%   1134 (longest request)
 
 <a href="/images/bestphp.png"><img src="/images/bestphp.png" /></a>
-
-## Ejecución de scripts Python
-
-En esta parte de la práctica veremos las siguientes combinaciones:
-
-* apache2 + Módulo wsgi
-* apache2 + gunicorn
-* apache2 + uwsgi
-* nginx + gunicorn
-* nginx + uwsgi
-
-Para probar el rendimiento, vamos a instalar el _cms mezzanine_. Primero tenemos que instalar **git** ya que vamos a usar una plantilla y por lo tanto vamos a clonar un repositorio.
-{% highlight bash %}
-apt install git
-mkdir /var/www/mezzanine
-cd /var/www/mezzanine
-git clone https://github.com/thecodinghouse/mezzanine-themes.git
-{% endhighlight %}
-Después instalamos **pip**, el gestor de paquetes de **python** y activaremos el módulo de **wsgi** en _apache_.
-{% highlight bash %}
-cd mezzanine-themes
-apt install python3-pip
-pip3 install mezzanine
-python manage.py createdb
-{% endhighlight %}
-
-

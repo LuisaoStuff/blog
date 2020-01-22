@@ -1,5 +1,5 @@
 ---
-title:  "Como instalar una plantilla Jekyll"
+title:  "Cómo instalar una plantilla Jekyll"
 excerpt: "Personaliza tu página!"
 date:   2019-09-27 10:57:00
 categories: [jekyll]
