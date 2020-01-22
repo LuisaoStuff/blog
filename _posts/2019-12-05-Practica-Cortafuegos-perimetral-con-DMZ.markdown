@@ -684,7 +684,7 @@ Dec 16 08:26:19 router-fw boot-firewall[7344]: se han aplicado todas las reglas
 Dec 16 08:26:19 router-fw systemd[1]: Started iptables rules on boot.
 {% endhighlight %}
 
-h2. MEJORA: Utiliza nuevas cadenas para clasificar el tráfico.
+## MEJORA: Utiliza nuevas cadenas para clasificar el tráfico.
 
 {% highlight bash %}
 # Establecemos política ACCEPT para no perder la conexión al limpiar las tablas
@@ -903,7 +903,7 @@ iptables -A DMZ_A_LAN -p tcp --dport 3306 -m state --state NEW,ESTABLISHED -j AC
 iptables -A LAN_A_DMZ -p tcp --sport 3306 -m state --state ESTABLISHED -j ACCEPT
 {% endhighlight %}
 
-h2. MEJORA: Consruye el cortafuego utilizando nftables.
+## MEJORA: Consruye el cortafuego utilizando nftables.
 
 Utilizando la herramienta *iptables-translate*, y un pequeño _script_ para facilitar el trabajo, he transformado las reglas *iptables* que ya tenía creadas en el cortafuegos a *nftables*. El _script_ que he utilizado tiene el siguiente contenido:
 
