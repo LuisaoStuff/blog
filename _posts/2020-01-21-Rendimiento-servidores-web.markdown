@@ -316,9 +316,9 @@ git clone https://github.com/thecodinghouse/mezzanine-themes.git
 {% endhighlight %}
 Después instalamos **pip**, el gestor de paquetes de **python** y activaremos el módulo de **wsgi** en _apache_.
 {% highlight bash %}
+cd mezzanine-themes
 apt install python3-pip
-pip install mezzanine
-
+pip3 install mezzanine
 python manage.py createdb
 {% endhighlight %}
 

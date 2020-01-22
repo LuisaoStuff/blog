@@ -1,7 +1,7 @@
 ---
 title:  "Sistema de ficheros ZFS"
 excerpt: "Instalación y configuración de ZFS"
-date:   2020-01-20 10:59:00
+date:   2020-01-23 10:59:00
 categories: [Sistemas]
 tags: [zfs,filesystem]
 ---
