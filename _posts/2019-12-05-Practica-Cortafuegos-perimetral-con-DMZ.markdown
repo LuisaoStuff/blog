@@ -456,10 +456,6 @@ Prueba de funcionamiento:
 
 <a><img src="/images/cortafuegos-dmz/mysql-from-dmz-to-lan.png"/></a>
 
-#### Si crees que necesitas más reglas de las que nos han indicado, describe porque pueden ser necesarias.
-
-...
-
 #### Debemos implementar que el cortafuego funcione después de un reinicio de la máquina.
 
 Para hacer esto vamos a crear una unidad de *systemd* que en realidad es algo bastante sencillo de hacer. Primero crearemos un _script_ con todas las reglas de iptables, puestas en secuencia. Este sería el contenido del script:
