@@ -203,7 +203,7 @@ logfile /var/log/memcached.log
 
 #Añadimos el socket y los permisos
 
--s /var/run/memcached.sock
+-s /var/run/memcached/memcached.sock
 -a 775
 
 
