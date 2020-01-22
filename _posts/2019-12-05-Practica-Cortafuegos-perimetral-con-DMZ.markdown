@@ -430,7 +430,7 @@ iptables -A FORWARD -i eth2 -o eth1 -p tcp --sport 25 -m state --state ESTABLISH
 
 En la *LAN* instalaremos solo <code>mariadb-server</code> mientras en en la *DMZ* instalaremos <code>mariadb-client</code> para probar el acceso remoto. Una vez hecho esto, en el lado del servidor, es decir, en la LAN, accederemos a *mariadb* desde el usuario *root* con: <code>mysql -u root</code> y ejecutaremos los siguientes comandos:
 
-{% highlight bash %}
+{% highlight sql %}
 create database pruebaFW;
 create user dmz@"192.168.200.10" identified by "dios";
 grant all privileges on pruebaFW.* to DMZ;
