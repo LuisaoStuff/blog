@@ -31,14 +31,14 @@ compress_html:
 # Links to include in menu navigation
 # For external links add external: true
 links:
-  - title: Home
+  - title: Inicio
     url: /
-  - title: Series
-    url: /series
+  - title: Categorías
+    url: /categorias
   - title: Tags
     url: /tags
-  - title: About Me
-    url: /about
+  - title: Sobre mí
+    url: /sobre-mi
 
 # exclude my node related stuff
 exclude: [vendor,'README.md', 'Gemfile', 'Gemfile.lock', 'screenshot.png','package.json', 'src', 'node_modules']
