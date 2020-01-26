@@ -13,7 +13,7 @@ Dicho esto vamos a simular un escenario con _Vagrant_ donde tendremos una máqui
 
 ## Preparación del escenario
 
-Si queréis probarlo, os dejo el [Vagrantfile](/docs/EscenarioZFS/Vagrantfile) donde básicamente creamos una máquina *Debian* con 5 discos adicionales de 400Mb cada uno, y añadimos los repositorios de _back-ports_ de Debian. Estos repositorios nos harán falta a la hora de instalar el paquete, ya que al no tener una licencia **GPL**, el propio _Debian_ no puede incluirlo en la rama _main_ y mucho menos en los paquetes de la instalación.
+Si queréis probarlo, os dejo el [Vagrantfile](/docs/EscenarioZFS/Vagrantfile) donde básicamente creamos una máquina *Debian Buster* con 5 discos adicionales de 400Mb cada uno, y añadimos los repositorios de _back-ports_ de Debian. Estos repositorios nos harán falta a la hora de instalar el paquete, ya que al no tener una licencia **GPL**, el propio _Debian_ no puede incluirlo en la rama _main_ y mucho menos en los paquetes de la instalación.
 Una vez creada la máquina, actualizamos el sistema e instalamos el paquete `zfsutils-linux`. Pero antes debemos instalar los `linux-headers`, que en mi caso corresponde con la versión del _kernel_ **4.19.0.6**.
 {% highlight bash %}
 apt upgrade -y
