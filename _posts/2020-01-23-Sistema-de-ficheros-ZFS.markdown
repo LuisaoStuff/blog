@@ -1,7 +1,7 @@
 ---
 title:  "Sistema de ficheros ZFS"
-excerpt: "Instalación y configuración de ZFS"
-date:   2020-01-23 10:59:00
+excerpt: "Instalación y configuración de ZFS en Debian Buster"
+date:   2020-01-25 10:59:00
 categories: [Sistemas]
 tags: [zfs,filesystem]
 ---
@@ -14,9 +14,11 @@ Dicho esto vamos a simular un escenario con _Vagrant_ donde tendremos una máqui
 ## Preparación del escenario
 
 Si queréis probarlo, os dejo el [Vagrantfile](/docs/EscenarioZFS/Vagrantfile) donde básicamente creamos una máquina *Debian* con 5 discos adicionales de 400Mb cada uno, y añadimos los repositorios de _back-ports_ de Debian. Estos repositorios nos harán falta a la hora de instalar el paquete, ya que al no tener una licencia **GPL**, el propio _Debian_ no puede incluirlo en la rama _main_ y mucho menos en los paquetes de la instalación.
-Una vez creada la máquina, actualizamos el sistema e instalamos el paquete `zfsutils-linux`.
+Una vez creada la máquina, actualizamos el sistema e instalamos el paquete `zfsutils-linux`. Pero antes debemos instalar los `linux-headers`, que en mi caso corresponde con la versión del _kernel_ **4.19.0.6**.
 {% highlight bash %}
-apt install zfsutils-linux
+apt install -y linux-headers-4.19.0-6-amd64
+apt install -yt buster-backports dkms spl-dkms
+apt install -yt buster-backports zfs-dkms zfsutils-linux
 {% endhighlight %}
 
 Para comprobar que **zfs** está funcionando podemos ejecutar:
@@ -35,46 +37,74 @@ ene 21 21:20:39 zfsMachine systemd[1]: Starting Mount ZFS filesystems...
 ene 21 21:20:39 zfsMachine systemd[1]: Started Mount ZFS filesystems.
 {% endhighlight %}
 
-## 
+## Creación y configuración de los "pool"
 
+Un _pool_ en **ZFS** sería algo así lo que un grupo de volúmenes en **LVM**. La principal diferencia es que con **ZFS** fusionamos lo que es la capa de volúmenes lógicos y la capa de _RAID_ software. Es por esto que durante la creación y configuración de un _pool_, podemos definir el tipo de _RAID_ que vamos a crear, así como otras diversas opciones; discos caché, tamaño de sectores, etc.
+Los tipos de _RAID_ soportados por **ZFS** son los siguientes.
 
+* [RAID0](https://es.wikipedia.org/wiki/RAID#RAID_0_(Data_Striping,_Striped_Volume)). Es igual que el tradicional. Mejora velocidad lectura/escritura pero _no ofrece redundancia_.
+* [RAID1](https://es.wikipedia.org/wiki/RAID#RAID_1_(espejo)). Es igual que el tradicional. Ofrece una redundancia igual a **n-1**
+* [RAID10](https://es.wikipedia.org/wiki/RAID#RAID_1+0). No hay diferencia con el tradicional. Es la combinación del _RAID_ 1 y 0. Es decir, es la agrupación de _RAID 1_ en _RAID 0_.
+* [RAIDZ](https://es.wikipedia.org/wiki/RAID#RAID_Z) **1**, **2** y **3**. Dependiendo del tipo tiene uno, dos o tres bit de paridad, necesitándose 3, 4 o 5 discos respectivamente.
 
+En esta ocasión vamos a trabar con **RAIDZ-2** por lo que necesitaremos **4** discos. La creación de estos _pool_ se realiza con el comando `zpool`.
 
-
-
-
-
-
-CONFIGURACIÓN DISCOS EN RAID
-
-Creamos un raid 1:
-
-root@debian:~# zpool create -f Raid1 mirror /dev/sdb /dev/sdc /dev/sde
-
-Comprobamos que se ha creado correctamente:
-
-root@debian:~# zpool status
-  pool: Raid1
+{% highlight bash %}
+zpool create -f EjemploRaidZ raidz2 /dev/sdb /dev/sdc /dev/sdd /dev/sde
+zpool status
+  pool: EjemploRaidZ
  state: ONLINE
   scan: none requested
 config:
 
-	NAME        STATE     READ WRITE CKSUM
-	Raid1       ONLINE       0     0     0
-	  mirror-0  ONLINE       0     0     0
-	    sdb     ONLINE       0     0     0
-	    sdc     ONLINE       0     0     0
-	    sde     ONLINE       0     0     0
+	NAME          STATE     READ WRITE CKSUM
+	EjemploRaidZ  ONLINE       0     0     0
+	  raidz2-0    ONLINE       0     0     0
+	    sdb       ONLINE       0     0     0
+	    sdc       ONLINE       0     0     0
+	    sdd       ONLINE       0     0     0
+	    sde       ONLINE       0     0     0
 
 errors: No known data errors
+{% endhighlight %}
 
-PRUEBAS DE FALLO Y SUSTITUCIÓN
+De la misma forma que en los _RAID_ tradicionales (como cuando los gestionamos con `mdadm`), podemos añadir discos de reserva (_hot spare_). De esta manera, si uno de los discos falla, el _hot spare_ se reemplazaría de forma automática. Para añadir un disco en modo reserva ejecutamos:
 
-Ahora añadimos un disco en modo "spare":
+{% highlight bash %}
+zpool add EjemploRaidZ spare sdf
+  pool: EjemploRaidZ
+ state: ONLINE
+  scan: none requested
+config:
 
-root@debian:~# zpool add -f Raid1 spare sdd
+	NAME          STATE     READ WRITE CKSUM
+	EjemploRaidZ  ONLINE       0     0     0
+	  raidz2-0    ONLINE       0     0     0
+	    sdb       ONLINE       0     0     0
+	    sdc       ONLINE       0     0     0
+	    sdd       ONLINE       0     0     0
+	    sde       ONLINE       0     0     0
+	spares
+	  sdf         AVAIL
 
-Hacemos que el dispositivo sde nos de un error:
+errors: No known data errors
+{% endhighlight %}
+
+## Simulación de fallos y pruebas de redundancia
+
+Vamos a ejecutar una serie de comandos para simular un fallo de un disco con el parámetro `offline` y vamos a obsevar como se reemplaza automáticamente y sin perder información. Antes vamos a crear varios ficheros para comprobar que siguen manteniendo su integridad.
+Montaremos el _Raid_ para probar en el directorio temporal de montaje de dispositivos de bloques, que en _Linux_ es **/mnt/**. Por lo tanto, miramos con `lsblk -f` el _UUID_ del _RAID_.
+{% highlight bash %}
+mkdir /mnt/VolumenRaidZ/
+
+{% endhighlight %}
+
+{% highlight bash %}
+zpool offline -f EjemploRaidZ sdc
+{% endhighlight %}
+
+
+
 
 root@debian:~# zpool offline -f Raid1 sde
 root@debian:~# zpool status
