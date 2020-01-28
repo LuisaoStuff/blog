@@ -1,7 +1,7 @@
 ---
 title:  "VPN con OpenVPN y certificados x509"
 excerpt: "Creación de un escenario cliente-servidor con OpenVPN"
-date:   2020-01-28 12:19:00
+date:   2020-01-27 12:19:00
 categories: [VPN,SSL]
 ---
 
@@ -13,7 +13,7 @@ En el siguiente supuesto práctico vamos a interconectar dos máquinas que está
 
 ### Configuración del servidor y CA
 
-* **Atención**: Esta configuración está hecha sobre una máquina _Vagrant_ con el sistema _Debian Buster_ y con el script **easyrsa3**. Si queréis replicar el ejercicio os dejo por aquí el [fichero Vagrant](/docs/EscenarioVPN/Vagrantfile).
+* **Atención**: Esta configuración está hecha sobre una máquina _Vagrant_ con el sistema _Debian Buster_ y con el script **easyrsa3**. Si queréis replicar el ejercicio os dejo por aquí el fichero vagrant del [servidor](/docs/EscenarioVPN/Vagrantfile) y el del [cliente](/docs/EscenarioVPNclient/Vagrantfile).
 
 Para hacer esto vamos a hacer uso del repositorio que nos da _OpenVPN_ y que contiene los _scripts_ necesarios para generar todas las claves, tanto la clave autofirmada, como las claves del cliente y del servidor. Por norma general necesitaremos las siguientes credenciales _como mínimo_.
 * Autoridad certificadora (CA)
@@ -237,7 +237,7 @@ verb 3
 askpass contraseña.txt
 {% endhighlight %}
 
-Como indico al final en el fichero de configuración, tendremos que crear un fichero con la frase de paso de las credenciales del servidor, para que al iniciar demonio de _openvpn_ no tengamos problemas. Para terminar la configuración del servidor, reiniciamos el servicio de _openvpn_ y comprobamos que está escuchando por el **puerto 1194**.
+Como indico al final en el fichero de configuración, tendremos que crear un fichero con la frase de paso de las credenciales del servidor, para que al iniciar demonio de _openvpn_ no tengamos problemas. Para terminar la configuración del servidor, reiniciamos el servicio de _openvpn_ y comprobamos que está "escuchando" por el **puerto 1194**.
 
 {% highlight bash %}
 root@servidor:/etc/openvpn#  lsof -i -P -n | grep openvpn
@@ -289,7 +289,7 @@ keepalive 10 60
 #Nivel de la información
 verb 3
 
-# Contraseña del certificado del servidor
+# Contraseña del certificado del cliente
 askpass contraseña.txt
 {% endhighlight %}
 
