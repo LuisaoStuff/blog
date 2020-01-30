@@ -260,23 +260,25 @@ md5sum directorio/ficheroRandom
 
 Como podemos ver, todo está correcto!
 
-### Copy on write [COW]
+### Gestión eficiente del almacenamiento
 
-Básicamente **COW** es una funcionalidad que previene la corrupción de los datos en caso de un apagado inesperado del sistema durante la modificación de ficheros. Cuando modificamos un fichero en _ZFS_, realmente estamos modificando una copia que apunta al fichero orginal, por lo que si se detiene el proceso de modificación de forma abrupta, el fichero original no sufrirá daños. Para probar esto vamos a modificar un fichero con **nano** y sin salir del editor vamos a forzar un apagado con **Virtualbox**.
-Si todo sale como es debido, el fichero debería conservarse con la linea que guardamos antes "_hola esto es una prueba_".
+#### Copy on write [COW]
 
-<a href="/images/cow-test.png"><img src="/images/cow-test.png" /></a>
+Básicamente **COW** es una funcionalidad cuyo fin es el ahorro de espacio (tanto en capacidad como en inodos) a través de un tipo de _copia diferencial_. Para hacer uso de esto, tenemos que especificarlo con el parámetro específico de cada paquete. Por ejemplo, en el caso del comando **cp**, tendríamos que utilizar `reflink=always`. De esta forma, se crearía un fichero que funcionaría como un puntero al original e iría aumentando de tamaño conforme se fuese diferenciando del original.
 
-Comprobamos después de iniciar la máquina que el fichero ha conservado la integridad.
+#### Deduplicación
+
+En esencia es igual que el COW, solo que cuando lo activamos, no nos haría falta especificarlo como hicimos antes. Para activarlo tan solo ejecutamos:
 
 {% highlight bash %}
-cat /EjemploRaidZ/testCOW
-hola esto es una prueba
+# Sintaxis
+# zfs set dedup=on|verify zfspool[/vol]
+zfs set dedup=on EjemploRaidZ
 {% endhighlight %}
 
 ### Creación de volúmenes lógicos
 
-Esta funcionalidad es de gran utilidad ya que podríamos utilizar _ZFS_ como base de una [SAN](https://es.wikipedia.org/wiki/Red_de_%C3%A1rea_de_almacenamiento), gracias a que estos volúmenes se comportan como cualquier dispositivo de bloques a ojos del sistema operativo. Podríamos particionarlos, darles un formato, crear un volúmenes lógicos con _LVM_, y todo esto funcionando por debajo _ZFS_, incluyendo todas las ventajas que hemos mencionado antes!
+Esta funcionalidad es de gran utilidad ya que podríamos utilizar _ZFS_ como base de una [SAN](https://es.wikipedia.org/wiki/Red_de_%C3%A1rea_de_almacenamiento), gracias a que estos volúmenes se comportan como cualquier dispositivo de bloques a ojos del sistema operativo. Podríamos particionarlos, darles un formato, etc, y todo esto funcionando por debajo _ZFS_, incluyendo todas las ventajas que hemos mencionado antes!
 Para crear estos dispositivos de bloques necesitamos tener un _zpool_, como el que hicimos antes. La sintaxis básica sería la siguiente:
 
 {% highlight bash %}
@@ -308,6 +310,30 @@ NAME   FSTYPE     LABEL        UUID                                 FSAVAIL FSUS
 
 ...
 zd0                                                                  174.2M     1% /home/vagrant/vol1
+{% endhighlight %}
+
+### Cifrado
+
+Esta funcionalidad nos sería bastante util en casos como por ejemplo, almacenamiento de datos crítios en copias de seguridad. Para activarlo sobre una unidad de nuestro sistema de ficheros debemos ejecutar un comando con la siguiente sintaxis:
+
+{% highlight bash %}
+zpool create -O encryption=off|on|distintos-algoritmos -O keyformat=passphrase \
+-O keylocation=prompt NombreDelPool /dev/DispositivoDeBloque
+{% endhighlight %}
+
+En mi caso voy a utilizar el volumen que creamos antes
+
+{% highlight bash %}
+zpool create -O encryption=on -O keyformat=passphrase -O keylocation=prompt \
+PoolCifrado /dev/zvol/EjemploRaidZ/vol1
+{% endhighlight %}
+
+Y comprobamos que se ha creado correctamente con el cifrado correspondiente
+
+{% highlight bash %}
+zfs get encryption PoolCifrado
+NAME         PROPERTY    VALUE        SOURCE
+PoolCifrado  encryption  aes-256-ccm  -
 {% endhighlight %}
 
 ### Snapshots
