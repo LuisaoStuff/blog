@@ -265,6 +265,12 @@ Como podemos ver, todo está correcto!
 #### Copy on write [COW]
 
 Básicamente **COW** es una funcionalidad cuyo fin es el ahorro de espacio (tanto en capacidad como en inodos) a través de un tipo de _copia diferencial_. Para hacer uso de esto, tenemos que especificarlo con el parámetro específico de cada paquete. Por ejemplo, en el caso del comando **cp**, tendríamos que utilizar `reflink=always`. De esta forma, se crearía un fichero que funcionaría como un puntero al original e iría aumentando de tamaño conforme se fuese diferenciando del original.
+No obstante, si nos encontramos en la versión de **OpenZFS**, empaquetada para _Debian Buster_, a día de hoy, esta funcionalidad no está completamente soportada.
+
+{% highlight bash %}
+root@zfsMachine:/EjemploRaidZ# cp --reflink=always ficheroRandom ficheroRandom2
+cp: failed to clone 'ficheroRandom2' from 'ficheroRandom': Operation not supported
+{% endhighlight %}
 
 #### Deduplicación
 
