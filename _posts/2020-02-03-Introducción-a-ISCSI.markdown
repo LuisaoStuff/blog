@@ -160,7 +160,7 @@ node.startup = automatic
 
 Después reiniciamos el servicio y observamos como se carga automáticamente.
 
-<script id="asciicast-giSMSvYrnWduD85lJaJ8gPcP3" src="https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.js" async></script>
+[![asciicast](https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.svg)](https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3)
 
 ## Caso 2. Target con 2 LUN y cliente Windows CHAP
 
