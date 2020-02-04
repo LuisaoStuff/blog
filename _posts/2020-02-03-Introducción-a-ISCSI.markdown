@@ -60,7 +60,7 @@ Después añadimos la unidad lógica al target.
 tgtadm --lld iscsi --op new --mode logicalunit --tid 1 --lun 1 -b /dev/ISCSI/vol1
 {% endhighlight %}
 
-Podemos ver el estado del **target** ejecutando `tgtadm --lld iscsi --op show --mode target`, obteniendo una salida como [esta](https://cutt.ly/9rIIQZB). Por último solo tenemos que introducir el siguiente comando para que los clientes puedan encontrar la _LUN_.
+Podemos ver el estado del **target** ejecutando `tgtadm --lld iscsi --op show --mode target`, obteniendo una salida como [esta](https://cutt.ly/9rIIQZB). Por último solo tenemos que introducir el siguiente comando para crear la _ACL_ correspondiente y de esta forma que los clientes puedan encontrar la _LUN_.
 
 {% highlight bash %}
 tgtadm --lld iscsi --op bind --mode target --tid 1 -I ALL
@@ -160,16 +160,103 @@ node.startup = automatic
 
 Después reiniciamos el servicio y observamos como se carga automáticamente.
 
-<p><script id="asciicast-giSMSvYrnWduD85lJaJ8gPcP3" src="https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.js" async></script></p>
+<p><script id="asciicast-giSMSvYrnWduD85lJaJ8gPcP3" src="https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.js" async></script><p>
 
-Por útlimo vamos a crear la unidad de **systemd** tipo **.mount** que mencionamos antes. La sintaxis es bastante sencilla, y es que solo tenemos que indicar **qué** vamos a montar y **dónde** lo vamos a montar. Además vamos a hacer uso de las variables en systemd, de esta forma podremos reutilizarla. Para introducir variables, tendremos que añadir un **@** al final del nombre de la unidad, en mi caso la llamaré **iscsi@.mount** y la ubicaré en el directorio **/etc/systemd/system/**. Una vez que estemos dándole contenido, podremos utilizar el parámetro **%i**, de forma que cuando iniciemos la unidad, tomará el valor que le pongamos después del **@**.
-En este ejercicio vamos a crear el directorio **/ISCSI** donde crearemos a su vez, el árbol de directorios en el cual estarán todas las unidades montadas por _ISCSI_ (por lo que ejecutamos `mkdir /ISCSI`).
+Por útlimo vamos a crear la unidad de **systemd** tipo **.mount** que mencionamos antes. La sintaxis es bastante sencilla, y es que solo tenemos que indicar **qué** vamos a montar y **dónde** lo vamos a montar. En este ejercicio vamos a crear el directorio **/ISCSI** donde crearemos a su vez, el árbol de directorios en el cual estarán todas las unidades montadas por _ISCSI_ (por lo que ejecutamos `mkdir /ISCSI`).
 Ahora sí, creamos la unidad:
 
+{% highlight bash %}
+[Unit]
+Description=Unidad de montaje para el target1
+After=open-iscsi.service
 
+[Mount]
+What=/dev/disk/by-uuid/fddbeb8d-870f-4f5b-add2-b7aefaebd39b
+Where=/ISCSI/target1
+Type=ext4
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target
+{% endhighlight %}
+
+Las unidades de tipo **mount** deben tener un nombre igual al directorio del punto de montaje, solo que cambiamos las **/** por **-**. En este caso se llamará **ISCSI-target1.mount**. Ya solo nos faltaría reiniciar los demonios, habilitar la unidad e iniciarla:
+
+{% highlight bash %}
+systemctl daemon-reload
+systemctl enable ISCSI-target1.mount
+systemctl start ISCSI-target1.mount
+{% endhighlight %}
+
+Si probamos a ver el estado del servicio de esta unidad, podemos comprobar que está en **enable** por lo que se ejecutará al inicio del sistema después de **open-iscsi**.
+
+{% highlight bash %}
+● ISCSI-target1.mount - Unidad de montaje para el target1
+   Loaded: loaded (/etc/systemd/system/ISCSI-target1.mount; enabled; vendor preset: enabled)
+   Active: active (mounted) since Tue 2020-02-04 17:39:22 GMT; 4min 15s ago
+    Where: /ISCSI/target1
+     What: /dev/sdb
+    Tasks: 0 (limit: 544)
+   Memory: 112.0K
+   CGroup: /system.slice/ISCSI-target1.mount
+
+Feb 04 17:39:22 clienteLinux systemd[1]: Mounting Unidad de montaje para el target1...
+Feb 04 17:39:22 clienteLinux systemd[1]: Mounted Unidad de montaje para el target1.
+{% endhighlight %}
 
 ## Caso 2. Target con 2 LUN y cliente Windows CHAP
 
 ### Configuración del servidor
 
+Esta vez vamos a crear un _target_ con dos **LUN**. El procedimiento es prácticamente el mismo que en el primer caso por lo que primero creamos el target:
+
+{% highlight bash %}
+tgtadm --lld iscsi --op new --mode target --tid 2 -T iqn.2020-02.es.luisvazquezalejo:targetwindows
+{% endhighlight %}
+
+Después añadimos las unidades lógicas al target como hicimos antes.
+
+{% highlight bash %}
+tgtadm --lld iscsi --op new --mode logicalunit --tid 2 --lun 1 -b /dev/ISCSI/vol2
+tgtadm --lld iscsi --op new --mode logicalunit --tid 2 --lun 2 -b /dev/ISCSI/vol3
+{% endhighlight %}
+
+Esta vez vamos a establecer una restricción a la hora de acceder al target, y es que activaremos la autenticación **CHAP**. Básicamente consiste en una autenticación _usuario/contraseña_, así que primero creamos al usuario y después lo añadimos al _target_.
+
+{% highlight bash %}
+#Creamos al usuario
+tgtadm --lld iscsi --mode account --op new --user "Usuario" --password "contrasena1234"
+#Lo añadimos al target
+tgtadm --lld iscsi --mode account --op bind --tid 2 --user "Usuario"
+{% endhighlight %}
+
+Como este _target_ lo utilizaremos en **windows**, tenemos que tener en cuenta que la contraseña tiene que tener obligatoriamente **entre 12 y 15 caracteres**.
+Por último creamos la _ACL_ para que sea visible en el _discovery_.
+
+{% highlight bash %}
+tgtadm --lld iscsi --op bind --mode target --tid 1 -I ALL
+{% endhighlight %}
+
 ### Configuración del cliente
+
+Los pasos a seguir en windows son bastante simples. Encendemos la máquina, en el buscador del menú de inicio introducimos "ISCSI" y accedemos al programa "**ISCSI Initiator**"
+
+![](/images/ISCSIwindows/menu)
+
+Después nos dirigimos a la última pestaña, la de configuración y cambiamos el nombre del _initiator_.
+
+![](/images/ISCSIwindows/changeinitiator)
+
+Volvemos a la primera pestaña, refrescamos la página, seleccionamos el _target_ deseado y nos conectamos. Se nos abrirá una ventana, donde tendremos que acceder a la configuración avanzada. Aparecerá una última ventana donde tendremos que dejar marcado la casilla de **enable CHAP log on** e introduciremos el usuario y la contraseña que establecimos antes.
+
+![](/images/ISCSIwindows/logon)
+
+Ahora vamos a darle formato al disco y vamos a probar que podemos acceder. Para hacer esto utilizaremos el programa "**Create and format disk partitions**". En este caso, vamos a crear un **raid 0** y lo formatearemos con **NTFS**.
+
+![](/images/ISCSIwindows/raid0)
+
+![](/images/ISCSIwindows/NTFS)
+
+Por último probamos a acceder a la unidad.
+
+![](/images/ISCSIwindows/access)
