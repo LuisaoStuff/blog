@@ -243,22 +243,22 @@ De la misma forma que antes, podremos comprobar el estado del target ejecutando 
 
 Los pasos a seguir en windows son bastante simples. Encendemos la máquina, en el buscador del menú de inicio introducimos "ISCSI" y accedemos al programa "**ISCSI Initiator**"
 
-![](/images/ISCSIwindows/menu)
+![](/images/ISCSIwindows/menu.png)
 
 Después nos dirigimos a la última pestaña, la de configuración y cambiamos el nombre del _initiator_.
 
-![](/images/ISCSIwindows/changeinitiator)
+![](/images/ISCSIwindows/changeinitiator.png)
 
 Volvemos a la primera pestaña, refrescamos la página, seleccionamos el _target_ deseado y nos conectamos. Se nos abrirá una ventana, donde tendremos que acceder a la configuración avanzada. Aparecerá una última ventana donde tendremos que dejar marcado la casilla de **enable CHAP log on** e introduciremos el usuario y la contraseña que establecimos antes.
 
-![](/images/ISCSIwindows/logon)
+![](/images/ISCSIwindows/logon.png)
 
 Ahora vamos a darle formato al disco y vamos a probar que podemos acceder. Para hacer esto utilizaremos el programa "**Create and format disk partitions**". En este caso, vamos a crear un **raid 0** y lo formatearemos con **NTFS**.
 
-![](/images/ISCSIwindows/raid0)
+![](/images/ISCSIwindows/raid0.png)
 
-![](/images/ISCSIwindows/NTFS)
+![](/images/ISCSIwindows/NTFS.png)
 
 Por último probamos a acceder a la unidad.
 
-![](/images/ISCSIwindows/access)
+![](/images/ISCSIwindows/access.png)
