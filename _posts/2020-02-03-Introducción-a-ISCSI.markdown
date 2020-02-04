@@ -160,7 +160,13 @@ node.startup = automatic
 
 Después reiniciamos el servicio y observamos como se carga automáticamente.
 
-[![asciicast](https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.svg)](https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3)
+<p><script id="asciicast-giSMSvYrnWduD85lJaJ8gPcP3" src="https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.js" async></script></p>
+
+Por útlimo vamos a crear la unidad de **systemd** tipo **.mount** que mencionamos antes. La sintaxis es bastante sencilla, y es que solo tenemos que indicar **qué** vamos a montar y **dónde** lo vamos a montar. Además vamos a hacer uso de las variables en systemd, de esta forma podremos reutilizarla. Para introducir variables, tendremos que añadir un **@** al final del nombre de la unidad, en mi caso la llamaré **iscsi@.mount** y la ubicaré en el directorio **/etc/systemd/system/**. Una vez que estemos dándole contenido, podremos utilizar el parámetro **%i**, de forma que cuando iniciemos la unidad, tomará el valor que le pongamos después del **@**.
+En este ejercicio vamos a crear el directorio **/ISCSI** donde crearemos a su vez, el árbol de directorios en el cual estarán todas las unidades montadas por _ISCSI_ (por lo que ejecutamos `mkdir /ISCSI`).
+Ahora sí, creamos la unidad:
+
+
 
 ## Caso 2. Target con 2 LUN y cliente Windows CHAP
 
