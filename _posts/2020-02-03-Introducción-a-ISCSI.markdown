@@ -160,7 +160,7 @@ node.startup = automatic
 
 Después reiniciamos el servicio y observamos como se carga automáticamente.
 
-<p><script id="asciicast-giSMSvYrnWduD85lJaJ8gPcP3" src="https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.js" async></script><p>
+<p><script id="asciicast-giSMSvYrnWduD85lJaJ8gPcP3" src="https://asciinema.org/a/giSMSvYrnWduD85lJaJ8gPcP3.js" async></script></p>
 
 Por útlimo vamos a crear la unidad de **systemd** tipo **.mount** que mencionamos antes. La sintaxis es bastante sencilla, y es que solo tenemos que indicar **qué** vamos a montar y **dónde** lo vamos a montar. En este ejercicio vamos a crear el directorio **/ISCSI** donde crearemos a su vez, el árbol de directorios en el cual estarán todas las unidades montadas por _ISCSI_ (por lo que ejecutamos `mkdir /ISCSI`).
 Ahora sí, creamos la unidad:
