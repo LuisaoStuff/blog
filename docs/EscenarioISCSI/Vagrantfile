@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "debian/buster64"
+
+  config.vm.define :san do |san|
+    san.vm.box = "debian/buster64"
+    san.vm.hostname = "san"
+    san.vm.network "private_network",
+                ip: "192.168.100.10",
+                virtualbox__intnet: "Local"
+    san.vm.provider "virtualbox" do |vb|
+      Drives = [1,2,3,4,5]
+      Drives.each do |hd|
+        puts "harddrive #{hd}"
+        unless File.exist?("./Disco#{hd}.vdi")
+          vb.customize ['createhd', '--filename', "./Disco#{hd}.vdi",'--variant', 'Fixed', '--size', 1024]
+        end
+        vb.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', hd+1, '--type', 'hdd', '--medium', "./Disco#{hd}.vdi"]
+      end
+    end
+    san.vm.provision "shell", inline: <<-SHELL
+	echo '''deb http://deb.debian.org/debian buster-backports main contrib
+             deb-src http://deb.debian.org/debian buster-backports main contrib''' \
+	     >> /etc/apt/sources.list
+       apt update
+    SHELL
+  end
+
+  config.vm.define :clienteLinux do |clienteLinux|
+    clienteLinux.vm.box = "debian/buster64"
+    clienteLinux.vm.hostname = "clienteLinux"
+    clienteLinux.vm.network "private_network",
+                ip: "192.168.100.20",
+                virtualbox__intnet: "Local"
+    clienteLinux.vm.provision "shell", inline: <<-SHELL
+      apt update
+    SHELL
+  end
+  config.vm.define :clienteWindows do |clienteWindows|
+    clienteWindows.vm.box = "icehofman/windows-7-virtualbox"
+    clienteWindows.vm.hostname = "clienteWindows"
+    clienteWindows.vm.network "private_network",
+                ip: "192.168.100.30",
+                virtualbox__intnet: "Local"
+  end
+end
