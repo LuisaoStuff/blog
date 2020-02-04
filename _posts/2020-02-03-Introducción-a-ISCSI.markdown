@@ -237,6 +237,8 @@ Por último creamos la _ACL_ para que sea visible en el _discovery_.
 tgtadm --lld iscsi --op bind --mode target --tid 1 -I ALL
 {% endhighlight %}
 
+De la misma forma que antes, podremos comprobar el estado del target ejecutando `tgtadm --lld iscsi --op show --mode target`, y obtendremos una salida como [esta](https://cutt.ly/4rPIwZ1).
+
 ### Configuración del cliente
 
 Los pasos a seguir en windows son bastante simples. Encendemos la máquina, en el buscador del menú de inicio introducimos "ISCSI" y accedemos al programa "**ISCSI Initiator**"
