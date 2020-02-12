@@ -352,4 +352,172 @@ AUTOSTART="cliente"
 
 Deberás especificar la o las configuraciones vpn que quieras iniciar con el demonio. El nombre de estas es igual que el de los ficheros de configuración sin la extensión **.conf**. Como en mi caso he creado el fichero de configuración **cliente.conf** la _VPN_ se llama **cliente**. También podríamos levantarlas todas a la vez especificando **ALL**.
 
+## Configuración VPN sitio a sitio
+
+A diferencia del escenario anterior, una **VPN sitio a sitio** se basa en un concepto algo distinto. Mientras que en el primer caso, hemos conectado _una máquina_ a _una red remota_, en este caso vamos a conectar **dos redes remotas**, por lo que técnicamente, estaremos fusionando las dos redes a _nivel de aplicación_.
+En este nuevo escenario, tendremos dos máquinas en redes locales diferentes; por un lado la **192.168.100.0/24** y por otro lado la **192.168.200.0/24**. A su vez, cada una de estas máquinas estará compartiendo la red con un servidor que serán los que gestionen la conexión de la **VPN**, que tendrán una red común, la **172.22.0.0/16**. Por lo tanto el exquema de la red es el siguiente:
+
+![](/images/vpn-site-to-site/)
+
+Si ya os habéis peleado con la configuración de la **VPN cliente-servidor**, esta os resultará bastante familiar. Los ficheros de configuración son muy similares, y la única diferencia reside en el encaminamiento o _enrutamiento_ que definimos. Aunque en una primera instancia podamos pensar que en este escenario va a haber dos servidores. La conexión funcionara prácticamente igual que en el caso anterior, donde habrá un _servidor_ y un _cliente_, salvo que este último funcionará también como el _servidor_ de su _red local_. Vamos a ver el fichero de configuración del servidor (en el esquema sería **R2**):
+
+{% highlight bash %}
+# Dispositivo de túnel
+dev tun
+# Encaminamiento
+ifconfig 10.99.99.1 10.99.99.2
+route 192.168.200.0 255.255.255.0
+# Rol de cliente
+tls-server
+
+# Certificado Diffie-Hellman
+dh /etc/openvpn/pki/dh.pem
+# Certificado de la CA
+ca /etc/openvpn/pki/ca.crt
+# Certificado local
+cert /etc/openvpn/pki/issued/servidor.crt
+# Clave privada local
+key /etc/openvpn/pki/private/servidor.key
+
+# Activar la compresión LZO
+comp-lzo
+
+# Detectar caídas de la conexión
+keepalive 10 60
+
+# Nivel de información
+verb 3
+
+askpass contra.txt
+{% endhighlight %}
+
+Como podemos observar, si comparamos con el fichero de configuración de la **VPN cliente-servidor**, lo único que cambia son estas lineas
+
+{% highlight bash %}
+# CLIENTE-SERVIDOR
+#Direcciones IP virtuales
+server 10.99.99.0 255.255.255.0 
+
+#subred local
+push "route 192.168.100.0 255.255.255.0"
+
+# SITE-TO-SITE
+# Encaminamiento
+ifconfig 10.99.99.1 10.99.99.2
+route 192.168.200.0 255.255.255.0
+{% endhighlight %}
+
+Tenemos dos campos distintos.
+* **ifconfig**: definirá la _ip virtual origen_ del servidor en primer lugar, y en segundo lugar la _ip virtual del "cliente" remoto_.
+* **route**: define la _red física remota_ a la que queremos conectarnos.
+
+En el lado del cliente nos encontramos con la siguiente configuración:
+
+{% highlight bash %}
+# Dispositivo de túnel
+dev tun
+# Encaminamiento
+ifconfig 10.99.99.2 10.99.99.1
+# Direcciones IP virtuales
+remote 172.22.6.24 
+# Subred remota
+route 192.168.100.0 255.255.255.0
+# Rol de cliente
+tls-client
+
+# Certificado de la CA
+ca /etc/openvpn/pki/ca-client/ca.crt
+
+#Certificado local
+cert /etc/openvpn/pki/server-client/Luis.crt
+
+#Clave privada local
+key /etc/openvpn/pki/server-client/Luis.key
+
+#Activar la compresión LZO
+comp-lzo
+
+#Detectar caídas de la conexión
+keepalive 10 60
+
+#Nivel de información
+verb 3
+
+askpass password.txt
+{% endhighlight %}
+
+En este caso podemos detectar tres campos clave que han cambiado, y son:
+* **ifconfig**: Tal y como hemos explicado antes, define la _ip virtual origen_ del servidor en primer lugar, y la _ip virtual del "cliente" remoto_.
+* **remote**: Aquí tenemos que especificar la dirección IP, del servidor **VPN**. Si ambos servidores no contasen con una red local común y simplemente estuviesen conectados a internet, aquí tendríamos que colocar la _IP pública_ o el respectivo _DNS_ de la máquina.
+* **route**: De la misma forma que en el servidor, indicamos la _red física remota_ a la que nos conectaremos.
+
+Una vez definidos, modificamos el fichero **/etc/default/openvpn** si hemos creado nuevos ficheros **.conf** para definir esta nueva conexión, y posteriormente reiniciamos los servicios. Primero el servicio del servidor, y luego el del cliente.
+Debemos recordar activar el **bit de forward** en ambas máquinas, para que puedan "pasar" el tráfico sus respectivas _redes locales_. Una vez hecho esto probamos que funciona. Primero probamos un **ping** desde el _PC1_ al _PC2_.
+
+{% highlight bash %}
+vagrant@cliente:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:8d:c0:4d brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 85522sec preferred_lft 85522sec
+    inet6 fe80::a00:27ff:fe8d:c04d/64 scope link 
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:ae:6e:e7 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.200.40/24 brd 192.168.200.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:feae:6ee7/64 scope link 
+       valid_lft forever preferred_lft forever
+vagrant@cliente:~$ ping -c 3 192.168.100.50
+PING 192.168.100.50 (192.168.100.50) 56(84) bytes of data.
+64 bytes from 192.168.100.50: icmp_seq=1 ttl=62 time=3.49 ms
+64 bytes from 192.168.100.50: icmp_seq=2 ttl=62 time=3.15 ms
+64 bytes from 192.168.100.50: icmp_seq=3 ttl=62 time=3.83 ms
+
+--- 192.168.100.50 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 5ms
+rtt min/avg/max/mdev = 3.150/3.487/3.826/0.280 ms
+{% endhighlight %}
+
+Luego probamos desde el _PC2_ al _PC1_.
+
+{% highlight bash %}
+vagrant@openvpnprivada:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:8d:c0:4d brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 85777sec preferred_lft 85777sec
+    inet6 fe80::a00:27ff:fe8d:c04d/64 scope link 
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:48:99:9a brd ff:ff:ff:ff:ff:ff
+    inet 192.168.100.50/24 brd 192.168.100.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe48:999a/64 scope link 
+       valid_lft forever preferred_lft forever
+vagrant@openvpnprivada:~$ ping -c 3 192.168.200.40
+PING 192.168.200.40 (192.168.200.40) 56(84) bytes of data.
+64 bytes from 192.168.200.40: icmp_seq=1 ttl=62 time=3.77 ms
+64 bytes from 192.168.200.40: icmp_seq=2 ttl=62 time=2.94 ms
+64 bytes from 192.168.200.40: icmp_seq=3 ttl=62 time=3.47 ms
+
+--- 192.168.200.40 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 4ms
+rtt min/avg/max/mdev = 2.944/3.395/3.773/0.345 ms
+{% endhighlight %}
+
 * **Referencias**: [Documentación oficial OpenVPN](https://openvpn.net/community-resources/how-to/)
+
+
