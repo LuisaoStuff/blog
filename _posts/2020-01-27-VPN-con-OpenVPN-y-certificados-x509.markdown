@@ -357,7 +357,7 @@ Deberás especificar la o las configuraciones vpn que quieras iniciar con el dem
 A diferencia del escenario anterior, una **VPN sitio a sitio** se basa en un concepto algo distinto. Mientras que en el primer caso, hemos conectado _una máquina_ a _una red remota_, en este caso vamos a conectar **dos redes remotas**, por lo que técnicamente, estaremos fusionando las dos redes a _nivel de aplicación_.
 En este nuevo escenario, tendremos dos máquinas en redes locales diferentes; por un lado la **192.168.100.0/24** y por otro lado la **192.168.200.0/24**. A su vez, cada una de estas máquinas estará compartiendo la red con un servidor que serán los que gestionen la conexión de la **VPN**, que tendrán una red común, la **172.22.0.0/16**. Por lo tanto el exquema de la red es el siguiente:
 
-![](/images/vpn-site-to-site/)
+![](/images/vpn-site-to-site.png)
 
 Si ya os habéis peleado con la configuración de la **VPN cliente-servidor**, esta os resultará bastante familiar. Los ficheros de configuración son muy similares, y la única diferencia reside en el encaminamiento o _enrutamiento_ que definimos. Aunque en una primera instancia podamos pensar que en este escenario va a haber dos servidores. La conexión funcionara prácticamente igual que en el caso anterior, donde habrá un _servidor_ y un _cliente_, salvo que este último funcionará también como el _servidor_ de su _red local_. Vamos a ver el fichero de configuración del servidor (en el esquema sería **R2**):
 
@@ -519,5 +519,3 @@ rtt min/avg/max/mdev = 2.944/3.395/3.773/0.345 ms
 {% endhighlight %}
 
 * **Referencias**: [Documentación oficial OpenVPN](https://openvpn.net/community-resources/how-to/)
-
-
