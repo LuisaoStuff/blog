@@ -1,5 +1,5 @@
 ---
-title:  "Introducción a SELinux"
+title:  "Introduccion a SELinux"
 excerpt: "Conceptos básicos y funcionamiento de SELinux en Centos 8"
 date:   2020-02-17 14:25:00
 categories: [Sistemas, Seguridad]
