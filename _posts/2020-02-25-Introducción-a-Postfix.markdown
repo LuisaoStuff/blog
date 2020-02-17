@@ -1,7 +1,7 @@
 ---
 title:  "Introducción a Postfix"
 excerpt: "Configuración del servidor de correos Postfix con relayhost"
-date:   2020-02-17 14:25:00
+date:   2020-02-25 14:25:00
 categories: [postfix,Servicios]
 ---
 
