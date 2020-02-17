@@ -18,6 +18,35 @@ Durante varios años, cuando se estaba empezando a desarrollar el proyecto del *
 **SELinux** es una aplicación que funciona a nivel de **Kernel**, controlando el acceso de las aplicaciones a según que objetos del sistema.
 Para poder aplicar las reglas que definirán las políticas de acceso, se utilizan los contextos y las normas de carácter _booleano_. 
 
+### Modos de funcionamiento
+
+**SELinux** presenta tres modos de funcionamiento principales; _enforcing_, _permissive_ y _disabled_. Desafortunadamente existe demasiada gente que ya sea por la falta de formación en **SELinux** o simple pereza, lo primero que hacen es desactivarlo nada más instalar **RHEL** o **Centos**. En esta entrada no vamos a tener en cuenta esta última opción (disabled), y vamos a centrarnos en las dos primeras.
+
+* **enforcing mode**: En este modo, **denegará** cualquier acción sobre cualquier objeto que no esté definida previamente en la política. Este es el modo que viene activado por defecto.
+
+* **permisive mode**: Se **permiten** todas las **acciones**, pero aquellas que incumplan la política definida, serán **notificadas** en el **log** (/var/log/messages).
+
+Para consultar el estado actual de SELinux, utilizamos el comando `getenforce` o `sestatus` si queremos una salida más detallada.
+
+{% highlight bash %}
+[root@salmorejo centos]# getenforce
+Enforcing
+
+[root@salmorejo centos]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      31
+{% endhighlight %}
+
+Si queremos cambiar entre los modos de SELinux, utilizamos `setenforce Enforcing | Permissive`.
+
 ## Boolean SELinux
 
 las normas de carácter _booleano_ son bastante fáciles de entender, y son simplemente un conjunto de reglas verdadero/falso, que determinan el acceso de una aplicación a un protocolo. Veámoslo con un ejemplo.
@@ -146,3 +175,9 @@ Es por esto que la regla de **Mezzanine** deberíamos cambiarla por una aplicada
 semanage fcontext -a -t httpd_sys_rw_content_t '/var/www/mezzanine(/.*)?'
 {% endhighlight %}
 
+#### Referencias
+
+* [Relabel SELinux](https://www.digrouz.com/mediawiki/index.php/(RHEL)_HOWTO_relabel_a_filesystem_(SELinux))
+* [Diferencia principal entre chcon y semanage](https://superuser.com/questions/669198/semanage-command-not-changing-file-context)
+* [Documentación oficial SELinux RHEL](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/index)
+* [Modos de funcionamiento en SELinux](https://docs.fedoraproject.org/es-ES/Fedora/13/html/Security-Enhanced_Linux/sect-Security-Enhanced_Linux-Working_with_SELinux-Enabling_and_Disabling_SELinux.html)
