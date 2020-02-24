@@ -183,6 +183,6 @@ http_access deny blacklist
 
 Igualmente creamos el correspondiente fichero y en mi caso solo pondré www.google.com. Recargamos la configuración y probamos.
 
-![](/images/EscenarioProxySQUID/whitelist.png)
+![](/images/EscenarioProxySQUID/blacklist.png)
 
 Como podemos observar, ahora no nos permite el acceso a www.google.com pero sí nos permite acceder a cualquier otra página.
