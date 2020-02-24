@@ -150,12 +150,39 @@ Si mostramos el fichero de accesos del _proxy_ **/var/log/squid/access.log** pod
 
 ## Listas Blancas y Negras
 
-Para gestionar el acceso a internet
+Para gestionar el acceso a internet utilizaremos listas blancas y negras. Una lista blanca se encarga de permitir **solo** el acceso a los dominios que figuran en ella y **deniegan** todo lo demás. Por el contrario, una lista negra **deniega** los dominios que contiene y **permite** el acceso a todo lo demás.
 
+### Lista blanca
 
+En el propio fichero de **/etc/squid/squid.conf** vamos a crear una **acl** con los siguientes parámetros.
 
-##############
-ERRORES
-##############
+{% highlight bash %}
+acl whitelist dstdomain "/etc/squid/whitelist.txt"
+http_access deny !whitelist
+{% endhighlight %}
 
-He intentado usar tanto SquidGuard como las correspondientes directivas de configuración en el fichero squid.conf (whitelist y blacklist) y no consigo que funcionen.
+Es muy importante que esto lo definamos en las primeras lineas del fichero, puesto que, al igual que las reglas de **iptables**, _squid_ lo lee de forma **secuencial**.
+Después creamos el fichero que hemos indicado y vamos añadiendo los dominios que queramos que se puedan acceder. En mi caso he añadido solo a www.google.com, por lo que solo debería poder acceder a esa página. Recargamos la configuración con:
+
+{% highlight bash %}
+squid -k reconfigure
+{% endhighlight %}
+
+Y probamos a acceder a dos páginas:
+
+![](/images/EscenarioProxySQUID/whitelist.png)
+
+### Lista Negra
+
+De la misma forma, definimos otra acl (también situada en las primeras lineas del fichero), quedando así:
+
+{% highlight bash %}
+acl blacklist dstdomain "/etc/squid/blacklist.txt"
+http_access deny blacklist
+{% endhighlight %}
+
+Igualmente creamos el correspondiente fichero y en mi caso solo pondré www.google.com. Recargamos la configuración y probamos.
+
+![](/images/EscenarioProxySQUID/whitelist.png)
+
+Como podemos observar, ahora no nos permite el acceso a www.google.com pero sí nos permite acceder a cualquier otra página.
