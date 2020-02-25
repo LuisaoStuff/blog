@@ -36,7 +36,7 @@ Después de contactar con el administrador para que añada mi servidor de correo
 
 {% highlight bash %}
 relayhost = babuino-smtp.gonzalonazareno.org
-{% highlight bash %}
+{% endhighlight %}
 
 Vamos a probar a enviar un correo a **gmail** con el comando `mail`.
 
@@ -46,7 +46,7 @@ Cc: 						 # Destinatarios adicionales
 Subject: prueba					 # Asunto
 esto es una prueba de relay			 # Cuerpo del mensaje
 ^D						 # Fin del mensaje
-{% highlight bash %}
+{% endhighlight %}
 
 Comprobamos la bandeja de entrada, y efectivamente tenemos un mensaje de **root@luis.gonzalonazareno.org**.
 
@@ -196,6 +196,7 @@ Reiniciamos el servicio de **cron** y esperamos a que nos llegue el correo:
 {% highlight bash %}
 systemctl restart cron
 {% endhighlight %}
+
 ![](/images/escenario-postfix/crontab-forward-mail.png)
 
 
