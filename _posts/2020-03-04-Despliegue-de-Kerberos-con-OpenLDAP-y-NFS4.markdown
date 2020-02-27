@@ -1,7 +1,7 @@
 ---
 title:  "Despliegue de Kerberos con OpenLDAP y NFS4"
 excerpt: "Instalación básica del sistema de autenticación centralizado Kerberos con OpenLDAP y gestión de los ficheros de usuario con NFS4"
-date:   2020-02-26 10:00:00
+date:   2020-03-04 10:00:00
 categories: [Sistemas, Seguridad]
 ---
 ## Introdicción

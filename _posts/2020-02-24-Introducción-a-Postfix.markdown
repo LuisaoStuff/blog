@@ -8,10 +8,8 @@ categories: [postfix,Servicios]
 ## Introducción
 
 Postfix es un **servidor de correos** cuya primera versión data de **2001**. Aunque su origen nos pueda parecer ya lejano, este _software_ se ha mantenido y se ha ido desarrollando a lo largo de los años, siendo su última **versión estable** la **3.4.9**, la cual fue lanzada hace muy poco (3 de febrero de 2020).
-Aunque en sus inicios, nos bastaba con el servidor de correos (utilizandose simplemente en local, entre usuarios del sistema), hoy en día el esquema de funcionamiento estandar se compone de tres bloques:
-
+Aunque en sus inicios, nos bastaba con el servidor de correos (utilizandose simplemente en local, entre usuarios del sistema), hoy en día el esquema de funcionamiento estandar se compone de tres bloques.
 ![](/images/escenario-postfix/esquema.png)
-
 * **MUA**: Son los clientes de correo, por ejemplo _**thunderbird**_, que son los que normalmente utilizan los usuarios finales. Se encargan de enviar el correo al **MTA**, y lo hacen a través del protocolo **SMTP**, mientras que cuando lo descargan, utilizan el protocolo **POP** o **IMAP**.
 
 * **MTA**: Los propios servidores de correo. Pueden tener varios _roles_; servidor destinatario, servidor remitente, pueden tener en la misma máquina un **MDA** o consultar desde la misma máquina el buzón a través de linea de comandos.
