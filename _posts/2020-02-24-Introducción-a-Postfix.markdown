@@ -8,14 +8,15 @@ categories: [postfix,Servicios]
 ## Introducción
 
 Postfix es un **servidor de correos** cuya primera versión data de **2001**. Aunque su origen nos pueda parecer ya lejano, este _software_ se ha mantenido y se ha ido desarrollando a lo largo de los años, siendo su última **versión estable** la **3.4.9**, la cual fue lanzada hace muy poco (3 de febrero de 2020).
-![](/images/escenario-postfix/esquema.png)
 Aunque en sus inicios, nos bastaba con el servidor de correos (utilizandose simplemente en local, entre usuarios del sistema), hoy en día el esquema de funcionamiento estandar se compone de tres bloques:
 
-* **MUA**: Son los clientes de correo, por ejemplo _**thunderbird**_, que son los que normalmente utilizan los usuarios finales. Se encargan de enviar el correo al **MTA**, y lo hacen a través del protocolo **SMTP**, mientras que cuando lo descargan, utilizan el protocolo **POP** o **IMAP**.
+![](/images/escenario-postfix/esquema.png)
 
-* **MTA**: Los propios servidores de correo. Pueden tener varios _roles_; servidor destinatario, servidor remitente, pueden tener en la misma máquina un **MDA** o consultar desde la misma máquina el buzón a través de linea de comandos.
+- **MUA**: Son los clientes de correo, por ejemplo _**thunderbird**_, que son los que normalmente utilizan los usuarios finales. Se encargan de enviar el correo al **MTA**, y lo hacen a través del protocolo **SMTP**, mientras que cuando lo descargan, utilizan el protocolo **POP** o **IMAP**.
 
-* **MDA**: Se encargan, utilizando el protocolo [POP](https://es.wikipedia.org/wiki/Protocolo_de_oficina_de_correo) o [IMAP](https://es.wikipedia.org/wiki/Protocolo_de_acceso_a_mensajes_de_Internet), de servir el correo a los usuarios finales, ya sean clientes web ([gmail](mail.google.com)) o clientes aplicaciones de escritorio.
+- **MTA**: Los propios servidores de correo. Pueden tener varios _roles_; servidor destinatario, servidor remitente, pueden tener en la misma máquina un **MDA** o consultar desde la misma máquina el buzón a través de linea de comandos.
+
+- **MDA**: Se encargan, utilizando el protocolo [POP](https://es.wikipedia.org/wiki/Protocolo_de_oficina_de_correo) o [IMAP](https://es.wikipedia.org/wiki/Protocolo_de_acceso_a_mensajes_de_Internet), de servir el correo a los usuarios finales, ya sean clientes web ([gmail](mail.google.com)) o clientes aplicaciones de escritorio.
     * Protocolo **POP**: Descarga el correo del servidor en el cliente, y borra dichos correos del servidor. En el momento en el que disponemos de diversos clientes, este protocolo es poco útil.
     * Procotolo **IMAP**: Permite visualizar los correos de forma remota, por lo que no los borra de la fuente y podemos ir sincronizando cada cliente con el servidor de correos. Este es el protocolo que utilizan la mayoría de clientes web, como **gmail**.
 
