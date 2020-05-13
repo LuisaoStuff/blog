@@ -185,7 +185,7 @@ Levantamos el escenario ejecutanto `docker-compose up -d`, y más tarde introduc
 docker exec aplicacion python3 /usr/src/app/manage.py migrate
 {% endhighlight %}
 
-## Ejecución de python a través de Gunicorn
+## Ejecución de python a través de UWSGI
 
 En este caso desplegaremos un total de **3 contenedores**; el primero tendrá el **servidor web**, el segundo la base de datos **mysql** y el tercero el **servidor de aplicaciones** [gunicorn](https://gunicorn.org/).
 Empezaremos por definir una nueva imagen con la que construiremos el contenedor del servidor web. Dicha imagen tendrá el siguiente contenido:
