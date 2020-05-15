@@ -90,4 +90,4 @@ Podemos comprobar, que existen **3 proxys inversos**. Dos de ellos se encargan d
 Jitsi tiene un repositorio en [github](https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md) donde explican como realizar la instalación de forma manual. En dicha explicación nos presentan un **esquema** de como funciona la **aplicación** completa (con el _proxy inverso_ incluido) a **nivel de red**.
 > El siguiente esquema lo he hecho con la herramienta [visual-paradigm](https://online.visual-paradigm.com) basándome en el proporcionado por jitsi en su repositorio.
 
-![](/images/jitsi/schema.jpg)
+![](/images/jitsi/scheme.jpg)
