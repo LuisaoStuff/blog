@@ -1,20 +1,20 @@
 # Site settings
-title: Luis Vázquez Alej
-description: Administrador de sistemas informáticos
+title: Luis Vázquez Alejo
+description: Administrador de Sistemas Informáticos en Red
 baseurl: "" # the subpath of your site, e.g. /blog
 url: ""
 
 # User settings
 username: Luis Vázquez Alejo
 user_description: Administrador de Sistemas Informáticos en Red
-user_title: Técnico Superior ASIR
+user_title: Administrador de Sistemas Informáticos en Red
 email: mail@luisvazquezalejo.es
 #twitter_username: lorem_ipsum
 github_username:  luisaostuff
 #gplus_username:  lorem_ipsum
 #disqus_username: lorem_ipsum
 paypal_username: luisaostuff
-linkedin: luis-vazquez-alejo
+#linkedin: luis-vazquez-alejo
 
 # Build settings
 markdown: kramdown
