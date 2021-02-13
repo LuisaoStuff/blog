@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Introducción a Openshift con Minishift</title>
+    <meta name="description" content="Administrador de Sistemas Informáticos en Red">
+
+    <!-- Google Authorship Markup -->
+    <link rel="author" href="https://plus.google.com/?rel=author">
+
+    <!-- Social: Twitter -->
+    <meta name="twitter:card" content="summary_large_image"> 
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:title" content="Introducción a Openshift con Minishift">
+    <meta name="twitter:description" content="Administrador de Sistemas Informáticos en Red">
+    
+    <meta property="twitter:image:src" content="/assets/img/blog-image.png">
+    
+    <!-- Social: Facebook / Open Graph -->
+    <meta property="og:url" content="/Introducci%C3%B3n-a-OpenShift-con-minishift/">
+    <meta property="og:title" content="Introducción a Openshift con Minishift">
+    
+    <meta property="og:image" content="/assets/img/blog-image.png">
+    
+    <meta property="og:description" content="Administrador de Sistemas Informáticos en Red">
+    <meta property="og:site_name" content="Luis Vázquez Alejo">
+    <!-- Social: Google+ / Schema.org  -->
+    <meta itemprop="name" content="Introducción a Openshift con Minishift"/>
+    <meta itemprop="description" content="Administrador de Sistemas Informáticos en Red">
+    <meta itemprop="image" content="/assets/img/blog-image.png"/>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/img/icons/favicon.ico" type="image/x-icon" />
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/icons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/icons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/icons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/img/icons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/img/icons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/img/icons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/icons/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/img/icons/apple-touch-icon-152x152.png" />
+    <!-- Windows 8 Tile Icons -->
+    <meta name="application-name" content="Luis Vázquez Alejo Blog">
+    <meta name="msapplication-TileColor" content="#0562DC">
+    <meta name="msapplication-square70x70logo" content="smalltile.png" />
+    <meta name="msapplication-square150x150logo" content="mediumtile.png" />
+    <meta name="msapplication-wide310x150logo" content="widetile.png" />
+    <meta name="msapplication-square310x310logo" content="largetile.png" />
+    <!-- Android Lolipop Theme Color -->
+    <meta name="theme-color" content="#0562DC">
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="/Introducci%C3%B3n-a-OpenShift-con-minishift/">
+    <link rel="alternate" type="application/rss+xml" title="Luis Vázquez Alejo" href="/feed.xml" />
+</head>
+
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" display="none" version="1.1"><defs><symbol id="icon-menu" viewBox="0 0 1024 1024"><path class="path1" d="M128 213.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 725.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 469.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5z"/></symbol><symbol id="icon-search" viewBox="0 0 951 1024"><path class="path1" d="M658.286 475.429q0-105.714-75.143-180.857t-180.857-75.143-180.857 75.143-75.143 180.857 75.143 180.857 180.857 75.143 180.857-75.143 75.143-180.857zM950.857 950.857q0 29.714-21.714 51.429t-51.429 21.714q-30.857 0-51.429-21.714l-196-195.429q-102.286 70.857-228 70.857-81.714 0-156.286-31.714t-128.571-85.714-85.714-128.571-31.714-156.286 31.714-156.286 85.714-128.571 128.571-85.714 156.286-31.714 156.286 31.714 128.571 85.714 85.714 128.571 31.714 156.286q0 125.714-70.857 228l196 196q21.143 21.143 21.143 51.429z"/></symbol><symbol id="icon-email" viewBox="0 0 1024 1024"><path class="path1" d="M950.857 859.429v-438.857q-18.286 20.571-39.429 37.714-153.143 117.714-243.429 193.143-29.143 24.571-47.429 38.286t-49.429 27.714-58.571 14h-1.143q-27.429 0-58.571-14t-49.429-27.714-47.429-38.286q-90.286-75.429-243.429-193.143-21.143-17.143-39.429-37.714v438.857q0 7.429 5.429 12.857t12.857 5.429h841.143q7.429 0 12.857-5.429t5.429-12.857zM950.857 258.857v-14t-0.286-7.429-1.714-7.143-3.143-5.143-5.143-4.286-8-1.429h-841.143q-7.429 0-12.857 5.429t-5.429 12.857q0 96 84 162.286 110.286 86.857 229.143 181.143 3.429 2.857 20 16.857t26.286 21.429 25.429 18 28.857 15.714 24.571 5.143h1.143q11.429 0 24.571-5.143t28.857-15.714 25.429-18 26.286-21.429 20-16.857q118.857-94.286 229.143-181.143 30.857-24.571 57.429-66t26.571-75.143zM1024 237.714v621.714q0 37.714-26.857 64.571t-64.571 26.857h-841.143q-37.714 0-64.571-26.857t-26.857-64.571v-621.714q0-37.714 26.857-64.571t64.571-26.857h841.143q37.714 0 64.571 26.857t26.857 64.571z"/></symbol><symbol id="icon-close" viewBox="0 0 805 1024"><path class="path1" d="M741.714 755.429q0 22.857-16 38.857l-77.714 77.714q-16 16-38.857 16t-38.857-16l-168-168-168 168q-16 16-38.857 16t-38.857-16l-77.714-77.714q-16-16-16-38.857t16-38.857l168-168-168-168q-16-16-16-38.857t16-38.857l77.714-77.714q16-16 38.857-16t38.857 16l168 168 168-168q16-16 38.857-16t38.857 16l77.714 77.714q16 16 16 38.857t-16 38.857l-168 168 168 168q16 16 16 38.857z"/></symbol><symbol id="icon-twitter" viewBox="0 0 951 1024"><path class="path1" d="M925.714 233.143q-38.286 56-92.571 95.429 0.571 8 0.571 24 0 74.286-21.714 148.286t-66 142-105.429 120.286-147.429 83.429-184.571 31.143q-154.857 0-283.429-82.857 20 2.286 44.571 2.286 128.571 0 229.143-78.857-60-1.143-107.429-36.857t-65.143-91.143q18.857 2.857 34.857 2.857 24.571 0 48.571-6.286-64-13.143-106-63.714t-42-117.429v-2.286q38.857 21.714 83.429 23.429-37.714-25.143-60-65.714t-22.286-88q0-50.286 25.143-93.143 69.143 85.143 168.286 136.286t212.286 56.857q-4.571-21.714-4.571-42.286 0-76.571 54-130.571t130.571-54q80 0 134.857 58.286 62.286-12 117.143-44.571-21.143 65.714-81.143 101.714 53.143-5.714 106.286-28.571z"/></symbol><symbol id="icon-facebook" viewBox="0 0 585 1024"><path class="path1" d="M548 6.857v150.857h-89.714q-49.143 0-66.286 20.571t-17.143 61.714v108h167.429l-22.286 169.143h-145.143v433.714h-174.857v-433.714h-145.714v-169.143h145.714v-124.571q0-106.286 59.429-164.857t158.286-58.571q84 0 130.286 6.857z"/></symbol><symbol id="icon-rss" viewBox="0 0 805 1024"><path class="path1" d="M219.429 768q0 45.714-32 77.714t-77.714 32-77.714-32-32-77.714 32-77.714 77.714-32 77.714 32 32 77.714zM512 838.286q1.143 16-9.714 27.429-10.286 12-26.857 12h-77.143q-14.286 0-24.571-9.429t-11.429-23.714q-12.571-130.857-105.429-223.714t-223.714-105.429q-14.286-1.143-23.714-11.429t-9.429-24.571v-77.143q0-16.571 12-26.857 9.714-9.714 24.571-9.714h2.857q91.429 7.429 174.857 46t148 103.714q65.143 64.571 103.714 148t46 174.857zM804.571 839.429q1.143 15.429-10.286 26.857-10.286 11.429-26.286 11.429h-81.714q-14.857 0-25.429-10t-11.143-24.286q-6.857-122.857-57.714-233.429t-132.286-192-192-132.286-233.429-58.286q-14.286-0.571-24.286-11.143t-10-24.857v-81.714q0-16 11.429-26.286 10.286-10.286 25.143-10.286h1.714q149.714 7.429 286.571 68.571t243.143 168q106.857 106.286 168 243.143t68.571 286.571z"/></symbol><symbol id="icon-google-plus" viewBox="0 0 951 1024"><path class="path1" d="M420 454.857q0 20.571 18.286 40.286t44.286 38.857 51.714 42 44 59.429 18.286 81.143q0 51.429-27.429 98.857-41.143 69.714-120.571 102.571t-170.286 32.857q-75.429 0-140.857-23.714t-98-78.571q-21.143-34.286-21.143-74.857 0-46.286 25.429-85.714t67.714-65.714q74.857-46.857 230.857-57.143-18.286-24-27.143-42.286t-8.857-41.714q0-20.571 12-48.571-26.286 2.286-38.857 2.286-84.571 0-142.571-55.143t-58-139.714q0-46.857 20.571-90.857t56.571-74.857q44-37.714 104.286-56t124.286-18.286h238.857l-78.857 50.286h-74.857q42.286 36 64 76t21.714 91.429q0 41.143-14 74t-33.714 53.143-39.714 37.143-34 35.143-14 37.714zM336.571 400q21.714 0 44.571-9.429t37.714-24.857q30.286-32.571 30.286-90.857 0-33.143-9.714-71.429t-27.714-74-48.286-59.143-66.857-23.429q-24 0-47.143 11.143t-37.429 30q-26.857 33.714-26.857 91.429 0 26.286 5.714 55.714t18 58.857 29.714 52.857 42.857 38.286 55.143 14.857zM337.714 898.857q33.143 0 63.714-7.429t56.571-22.286 41.714-41.714 15.714-62.286q0-14.286-4-28t-8.286-24-15.429-23.714-16.857-20-22-19.714-20.857-16.571-23.714-17.143-20.857-14.857q-9.143-1.143-27.429-1.143-30.286 0-60 4t-61.429 14.286-55.429 26.286-39.143 42.571-15.429 60.286q0 40 20 70.571t52.286 47.429 68 25.143 72.857 8.286zM800.571 398.286h121.714v61.714h-121.714v125.143h-60v-125.143h-121.143v-61.714h121.143v-124h60v124z"/></symbol><symbol id="icon-angle-down" viewBox="0 0 658 1024"><path class="path1" d="M614.286 420.571q0 7.429-5.714 13.143l-266.286 266.286q-5.714 5.714-13.143 5.714t-13.143-5.714l-266.286-266.286q-5.714-5.714-5.714-13.143t5.714-13.143l28.571-28.571q5.714-5.714 13.143-5.714t13.143 5.714l224.571 224.571 224.571-224.571q5.714-5.714 13.143-5.714t13.143 5.714l28.571 28.571q5.714 5.714 5.714 13.143z"/></symbol><symbol id="icon-github-alt" viewBox="0 0 951 1024"><path class="path1" d="M365.714 694.857q0 22.857-7.143 46.857t-24.571 43.429-41.429 19.429-41.429-19.429-24.571-43.429-7.143-46.857 7.143-46.857 24.571-43.429 41.429-19.429 41.429 19.429 24.571 43.429 7.143 46.857zM731.429 694.857q0 22.857-7.143 46.857t-24.571 43.429-41.429 19.429-41.429-19.429-24.571-43.429-7.143-46.857 7.143-46.857 24.571-43.429 41.429-19.429 41.429 19.429 24.571 43.429 7.143 46.857zM822.857 694.857q0-68.571-39.429-116.571t-106.857-48q-23.429 0-111.429 12-40.571 6.286-89.714 6.286t-89.714-6.286q-86.857-12-111.429-12-67.429 0-106.857 48t-39.429 116.571q0 50.286 18.286 87.714t46.286 58.857 69.714 34.286 80 16.857 85.143 4h96q46.857 0 85.143-4t80-16.857 69.714-34.286 46.286-58.857 18.286-87.714zM950.857 594.286q0 118.286-34.857 189.143-21.714 44-60.286 76t-80.571 49.143-97.143 27.143-98 12.571-95.429 2.571q-44.571 0-81.143-1.714t-84.286-7.143-87.143-17.143-78.286-29.429-69.143-46.286-49.143-65.714q-35.429-70.286-35.429-189.143 0-135.429 77.714-226.286-15.429-46.857-15.429-97.143 0-66.286 29.143-124.571 61.714 0 108.571 22.571t108 70.571q84-20 176.571-20 84.571 0 160 18.286 60-46.857 106.857-69.143t108-22.286q29.143 58.286 29.143 124.571 0 49.714-15.429 96 77.714 91.429 77.714 227.429z"/></symbol></defs></svg>
+
+        <header class="header-post" role="banner">
+    <div class="content">
+        
+            <time itemprop="datePublished" datetime="2020-04-21 14:00:00 +0000" class="date">21 Apr 2020</time>
+        
+        <h1 class="post-title" itemprop="name">Introducción a Openshift con Minishift</h1>
+        <p itemprop="description" class="subtitle"></p>
+    </div>
+     <a class="down" data-scroll href="#scroll"><svg class="icon icon-angle-down"><use xlink:href="#icon-angle-down"></use></svg></a>
+     <div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" class="search-field" placeholder="Buscar...">
+        <svg class="icon-remove-sign"><use xlink:href="#icon-close"></use></svg>
+        <ul class="search-results search-list"></ul>
+    </div>
+</div>
+
+<div id="fade" class="overlay"></div>
+<a id="slide" class="slideButton fade">
+    <svg id="open" class="icon-menu"><use xlink:href="#icon-menu"></use></svg>
+    <svg id="close" class="icon-menu"><use xlink:href="#icon-close"></use></svg>
+</a>
+<aside id="sidebar">
+<nav id="navigation">
+  <h2>MENU</h2>
+  <ul>
+    
+    
+      <li><a href="/">Inicio</a></li>
+    
+    
+    
+      <li><a href="/categorias">Categorías</a></li>
+    
+    
+    
+      <li><a href="/tags">Tags</a></li>
+    
+    
+    
+      <li><a href="/sobre-mi">Sobre mí</a></li>
+    
+    
+  </ul>
+</nav>
+</aside>
+<a id="search" class="dosearch">
+    <svg class="icon-menu icon-search"><use xlink:href="#icon-search"></use></svg>
+</a>
+
+</header>
+
+        <section class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+            <article role="article" id="scroll" class="post-content" itemprop="articleBody">
+                <h2 id="introducción">Introducción</h2>
+
+<p>OpenShift es un producto que ofrece <strong>plataforma como servicio</strong> (o <strong>PaaS</strong>, en inglés <em>platform as a service</em>). Desarrollado por <a href="https://www.redhat.com/es">Redhat</a> sobre <strong>Kubernetes</strong>, nos proporciona un sistema donde desplegar nuestras aplicaciones web, añadiendo funcionalidades adicionales a las que tenemos cuando utilizamos el “software base” de <em>Kubernetes</em>. Entre algunas de ellas tenemos <a href="https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/builds_and_image_streams.html#source-build">source2image</a> que se encargará de automatizar la creación de imágenes <em>docker</em> basándose en el repositorio <strong>github</strong> donde tendremos nuestra aplicación.</p>
+
+<p>Sin más preámbulo, empezaremos con la instalación de <strong>Minishift</strong>.</p>
+
+<h2 id="preparatorios">Preparatorios</h2>
+
+<p>En esta ocasión usaremos la herramienta antes mencionada que nos proporcionará una instalación (de un solo nodo) de <strong>OpenShift</strong>. He de avisar que para hacer uso de esta aplicación, tendremos que tener un equipo con unos requisitos mínimos, debemos recordar que <em>OpenShift</em> es una aplicación pensada para desplegarse en un <strong>cluster</strong>.
+Podremos hacer uso de distintos sistemas de virtualización, pero en mi caso voy a utilizar <strong>KVM</strong> puesto que es el que más he usado durante mi formación y ha sido el “menos problemático”.
+Procedemos a instalar las dependencias:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">apt update
+<span class="c"># Instalamos las dependencias</span>
+apt <span class="nb">install install </span>qemu-kvm libvirt-daemon libvirt-daemon-system
+<span class="c"># Añadimos a nuestro usuario al grupo libvirt</span>
+usermod <span class="nt">-a</span> <span class="nt">-G</span> libvirt <span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span>
+<span class="c"># Actualizamos nuestro grupo principal de forma temporal</span>
+newgroup libvirt
+<span class="c"># Por último instalamos el driver correspondiente de KVM</span>
+curl <span class="nt">-L</span> https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-ubuntu14.04 <span class="nt">-o</span> /usr/local/bin/docker-machine-driver-kvm
+<span class="nb">chmod</span> +x /usr/local/bin/docker-machine-driver-kvm</code></pre></figure>
+
+<p>Descargamos la versión correspondiente de <strong>Minishift</strong> desde el <a href="https://github.com/minishift/minishift/releases">repositorio oficial</a>, lo descomprimimos y movemos la aplicación a nuestro directorio donde se encuentran los demás binarios.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">tar</span> <span class="nt">-xf</span> minishift-1.34.2-linux-amd64.tgz
+<span class="nb">cd </span>minishift-1.34.2-linux-amd64
+<span class="nb">cp </span>minishift /usr/local/bin/</code></pre></figure>
+
+<p>Después de todo esto ya podremos usar <strong>minishift</strong> como cualquier otro paquete que tengamos instalado. Por lo que ejecutamos:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">minishift start</code></pre></figure>
+
+<p>Este proceso tardará un rato, ya que tiene que descargar la imagen <strong>ISO</strong>, crear la máquina virtual, etc. Una vez que finalice el proceso obtendremos una salida como esta:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">OpenShift server started.
+
+The server is accessible via web console at:
+    https://192.168.42.113:8443/console
+
+You are logged <span class="k">in </span>as:
+    User:     developer
+    Password: &lt;any value&gt;
+
+To login as administrator:
+    oc login <span class="nt">-u</span> system:admin</code></pre></figure>
+
+<p>Como es una herramienta para desarrollar o simplemente experimentar un poco con OpenShift, obviamente carece de sistemas de seguridad, por lo que podremos acceder al panel web con el usuario <em>developer</em> y <strong>cualquier contraseña</strong>.
+Una vez que hayamos iniciado sesión, creamos un proyecto.</p>
+
+<p><img src="/images/intr-openshift/1.png" alt="" /></p>
+
+<p>Para empezar, vamos a desplegar simplemente un <strong>servidor web</strong> con una página estática <strong>html</strong>, y utilizaremos para ello el siguiente <a href="https://github.com/josedom24/html_for_openshift">repositorio</a> junto con la imagen base de <strong>php</strong>.</p>
+
+<p><img src="/images/intr-openshift/2.png" alt="" /></p>
+
+<p><img src="/images/intr-openshift/3.png" alt="" /></p>
+
+<p>A la hora de gestionar nuestros proyectos tenemos, a grandes rasgos, tres opciones:</p>
+
+<ul>
+  <li>Panel web</li>
+  <li>Uso del cliente <strong>oc</strong> a través de linea de comandos</li>
+  <li>Crear un programa que haga uso de la <strong>API</strong></li>
+</ul>
+
+<h2 id="panel-web">Panel web</h2>
+
+<p>Es el que tiene la funcionalidad más reducida de los tres, pero para empezar es el más intuitivo. En resumen vamos a probar las siguientes funciones:</p>
+
+<ul>
+  <li>Balanceo de carga</li>
+  <li>Rollback</li>
+  <li>Despliegue continuo</li>
+</ul>
+
+<h3 id="balanceo-de-carga">Balanceo de carga</h3>
+
+<p>A partir de un despliegue de dos <strong>pods</strong> o más, <strong>OpenShift</strong> se encargará de balancear la carga entre ellos. Si queremos aumentar el número de pods de nuestro proyect, tan solo tendremos que dirigirnos a la sección <strong>Overview</strong> (el panel general del proyecto) y pulsar sobre la flecha hacia arriba.</p>
+
+<p><img src="/images/intr-openshift/4.png" alt="" /></p>
+
+<p>Nosotros comprobaremos el balanceo de carga a través de un <em>script php</em> con el siguiente contenido:</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="s2">"Servidor:"</span><span class="p">;</span> <span class="k">echo</span> <span class="nb">gethostname</span><span class="p">();</span><span class="k">echo</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span> <span class="cp">?&gt;</span></code></pre></figure>
+
+<p>Básicamente lo que hace es imprimir por pantalla el nombre de la máquina donde se está ejecutando. Utilizaré un bucle for para realizar 10 peticiones con <strong>curl</strong> de ese fichero:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">for </span>i <span class="k">in</span> <span class="o">{</span>1..10<span class="o">}</span><span class="p">;</span> <span class="k">do </span>curl curso-openshift-curso-openshift.192.168.42.113.nip.io/info.php<span class="p">;</span> doneServidor:curso-openshift-4-m7pnb
+Servidor:curso-openshift-4-vcz2m
+Servidor:curso-openshift-4-m7pnb
+Servidor:curso-openshift-4-vcz2m
+Servidor:curso-openshift-4-m7pnb
+Servidor:curso-openshift-4-vcz2m
+Servidor:curso-openshift-4-m7pnb
+Servidor:curso-openshift-4-vcz2m
+Servidor:curso-openshift-4-m7pnb
+Servidor:curso-openshift-4-vcz2m</code></pre></figure>
+
+<p>Y efectivamente podemos comprobar como se van alternando las máquinas en cada petición.</p>
+
+<h3 id="rollback">Rollback</h3>
+
+<p>En este momento nos pondremos desde el punto de vista del <strong>desarrollador</strong>. En principio <strong>no tendríamos que saber</strong> como funciona todo esto por debajo, ya que para eso estamos utilizando esta <strong>capa de abstracción</strong> sobre <strong>docker</strong>, <strong>kubernetes</strong>, etc. Es por esto que a la hora de seguir un control de versiones, <strong>OpenShift</strong> nos facilita la vida.
+Realizaremos un cambio del código en nuestro repositorio remoto, algo tan simple como cambiar una linea del <strong>html</strong>. Después solo tendremos que dirigirnos al apartado <strong>builds</strong>, entrar en nuestro proyecto y seleccionar <strong>start build</strong>.</p>
+
+<p><img src="/images/intr-openshift/5.png" alt="" /></p>
+
+<p>Si volvemos a acceder a la página podremos observar como se ha realizado el cambio una vez que se haya completado la “construcción” y el despliegue del nuevo <strong>pod</strong> con la nueva imagen:</p>
+
+<p><img src="/images/intr-openshift/6.png" alt="" /></p>
+
+<p>Si quisiéramos volver a una versión anterior por cualquier motivo, solo tenemos que acceder a la sección <strong>deployments</strong>, elegir el despliegue que queramos y pulsar sobre el botón <strong>Roll back</strong>:</p>
+
+<p><img src="/images/intr-openshift/7.png" alt="" /></p>
+
+<p><img src="/images/intr-openshift/8.png" alt="" /></p>
+
+<h3 id="despliegue-continuo">Despliegue Continuo</h3>
+
+<p>Como ya vimos en la entrada de integración continua con <strong>jekyll</strong> y <strong>Travis CI</strong>, <strong>github</strong> nos proporciona la posibilidad de hacer uso de <strong>webhooks</strong> para que aplicaciones como <strong>OpenShift</strong> realicen unas determinadas tareas en un determinado evento disparado por un <em>git commit</em>, un <em>git push</em>… en resumen, una modificación del repositorio.
+Para activar esta funcionalidad, entramos en la configuración de los <strong>builds</strong> de nuestro proyecto y copiamos el enlace indicado como <strong>Github Webhook URL</strong>.</p>
+
+<p><img src="/images/intr-openshift/9.png" alt="" /></p>
+
+<p>Después nos dirigimos a la página de nuestro repositorio, accedemos a la configuración y seguidamente a <strong>Webhooks</strong>.</p>
+
+<p><img src="/images/intr-openshift/10.png" alt="" /></p>
+
+<p>Lo único que tendremos que hacer es pegar el enlace que hemos copiado antes e indicar que la información que se va a mandar es en formato <strong>json</strong>.</p>
+
+<p><img src="/images/intr-openshift/11.png" alt="" /></p>
+
+<p>A partir de ahora cada vez que hagamos un <strong>git push</strong> modificando este repositorio, se construirá automáticamente una nueva imagen y esta se desplegará.</p>
+
+<h2 id="cliente-oc">Cliente OC</h2>
+
+<p>La instalación del cliente es aún más sencilla que la de <strong>minishift</strong> ya que solo tendremos que descargar el paquete de la siguiente <a href="https://github.com/openshift/origin/releases">página</a>, descomprimirlo y mover el binario al <em>path</em> correspondiente. En mi caso lo moveré a <strong>/usr/local/bin</strong>.
+Una vez instalado, tendremos que iniciar sesión. La forma más sencilla es dirigirnos al panel web, hacer <em>click</em> en nuestro usuario y seleccionamos <strong>Copy login command</strong>.
+Después introducimos el comando en la terminal y deberíamos obtener una salida como esta:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc login https://192.168.42.113:8443 <span class="nt">--token</span><span class="o">=</span>bxMkNw65lKmUyjTaY_r-8xgfCYAOR4w-jEc98NSy6gk
+Logged into <span class="s2">"https://192.168.42.113:8443"</span> as <span class="s2">"admin"</span> using the token provided.
+
+You have one project on this server: <span class="s2">"curso-openshift"</span>
+
+Using project <span class="s2">"curso-openshift"</span>.</code></pre></figure>
+
+<p>Lo primero que haremos será borrar el proyecto anterior. Para ello introducimos la siguiente instrucción:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"> oc delete project curso-openshift
+project.project.openshift.io <span class="s2">"curso-openshift"</span> deleted</code></pre></figure>
+
+<p>Acto seguido creamos uno nuevo:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc new-project aplicacion-desde-oc
+Now using project <span class="s2">"aplicacion-desde-oc"</span> on server <span class="s2">"https://192.168.42.113:8443"</span><span class="nb">.</span>
+
+You can add applications to this project with the <span class="s1">'new-app'</span> command. For example, try:
+
+    oc new-app centos/ruby-25-centos7~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application <span class="k">in </span>Ruby.</code></pre></figure>
+
+<p>Si queremos crear una nueva aplicación, tendremos que seguir la siguiente sintaxis:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc new-app plantilla:versión~repositorioGitHub <span class="nt">--name</span> nombre-aplicación</code></pre></figure>
+
+<p>En mi caso voy a lanzar de nuevo una aplicación usando el mismo repositorio y plantilla que antes:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc new-app php:7.1~https://github.com/LuisaoStuff/html_for_openshift.git <span class="nt">--name</span> pagina-estatica
+
+<span class="nt">--</span><span class="o">&gt;</span> Found image dc5aa55 <span class="o">(</span>4 months old<span class="o">)</span> <span class="k">in </span>image stream <span class="s2">"openshift/php"</span> under tag <span class="s2">"7.1"</span> <span class="k">for</span> <span class="s2">"php:7.1"</span>
+
+    Apache 2.4 with PHP 7.1 
+    <span class="nt">-----------------------</span> 
+    PHP 7.1 available as container is a base platform <span class="k">for </span>building and running various PHP 7.1 applications and frameworks. PHP is an HTML-embedded scripting language. PHP attempts to make it easy <span class="k">for </span>developers to write dynamically generated web pages. PHP also offers built-in database integration <span class="k">for </span>several commercial and non-commercial database management systems, so writing a database-enabled webpage with PHP is fairly simple. The most common use of PHP coding is probably as a replacement <span class="k">for </span>CGI scripts.
+
+    Tags: builder, php, php71, rh-php71
+
+    <span class="k">*</span> A <span class="nb">source </span>build using <span class="nb">source </span>code from https://github.com/LuisaoStuff/html_for_openshift.git will be created
+      <span class="k">*</span> The resulting image will be pushed to image stream tag <span class="s2">"pagina-estatica:latest"</span>
+      <span class="k">*</span> Use <span class="s1">'start-build'</span> to trigger a new build
+    <span class="k">*</span> This image will be deployed <span class="k">in </span>deployment config <span class="s2">"pagina-estatica"</span>
+    <span class="k">*</span> Ports 8080/tcp, 8443/tcp will be load balanced by service <span class="s2">"pagina-estatica"</span>
+      <span class="k">*</span> Other containers can access this service through the <span class="nb">hostname</span> <span class="s2">"pagina-estatica"</span>
+
+<span class="nt">--</span><span class="o">&gt;</span> Creating resources ...
+    imagestream.image.openshift.io <span class="s2">"pagina-estatica"</span> created
+    buildconfig.build.openshift.io <span class="s2">"pagina-estatica"</span> created
+    deploymentconfig.apps.openshift.io <span class="s2">"pagina-estatica"</span> created
+    service <span class="s2">"pagina-estatica"</span> created
+<span class="nt">--</span><span class="o">&gt;</span> Success
+    Build scheduled, use <span class="s1">'oc logs -f bc/pagina-estatica'</span> to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     <span class="s1">'oc expose svc/pagina-estatica'</span> 
+    Run <span class="s1">'oc status'</span> to view your app.</code></pre></figure>
+
+<p>Aunque aquí hemos creado la aplicación, deberemos dar un paso más y ejecutar <code class="language-plaintext highlighter-rouge">oc expose svc/pagina-estatica</code> para exponer el servicio y obtener una <strong>URL</strong> accesible. Después comprobamos el estado y vemos cuál es el link.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc status
+In project aplicacion-desde-oc on server https://192.168.42.113:8443
+
+http://pagina-estatica-aplicacion-desde-oc.192.168.42.113.nip.io to pod port 8080-tcp <span class="o">(</span>svc/pagina-estatica<span class="o">)</span>
+  dc/pagina-estatica deploys istag/pagina-estatica:latest &lt;
+    bc/pagina-estatica <span class="nb">source </span>builds https://github.com/LuisaoStuff/html_for_openshift.git on openshift/php:7.1 
+    deployment <span class="c">#1 deployed 4 minutes ago - 1 pod</span>
+
+
+2 infos identified, use <span class="s1">'oc status --suggest'</span> to see details.</code></pre></figure>
+
+<p>De la misma forma que en el panel web, podemos realizar múltiples tareas desde el cliente <strong>oc</strong> como escalar el número de <strong>pods</strong>, e incluso algunas más como obtener información de estos que está creando <strong>OpenShift</strong> con <strong>kubernetes</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc scale dc pagina-estatica <span class="nt">--replicas</span><span class="o">=</span>3
+deploymentconfig.apps.openshift.io/pagina-estatica scaled
+oc get pods <span class="nt">-o</span> wide
+NAME                      READY     STATUS      RESTARTS   AGE       IP            NODE        NOMINATED NODE
+pagina-estatica-1-build   0/1       Completed   0          54m       172.17.0.6    localhost   &lt;none&gt;
+pagina-estatica-1-kqj6c   1/1       Running     0          10s       172.17.0.12   localhost   &lt;none&gt;
+pagina-estatica-1-trwxf   1/1       Running     0          54m       172.17.0.6    localhost   &lt;none&gt;
+pagina-estatica-1-wr8tw   1/1       Running     0          10s       172.17.0.10   localhost   &lt;none&gt;</code></pre></figure>
+
+<h2 id="despliegue-de-aplicación-python">Despliegue de aplicación python</h2>
+
+<p>De la misma forma que hemos desplegado una aplicación que contenía una página estática, también podemos desplegar una aplicación <strong>python</strong>. Desde la linea de comandos podemos comprobar que dicho lenguaje está soportado, e incluso algunos <strong>frameworks</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc new-app <span class="nt">--search</span> python
+Image streams <span class="o">(</span>oc new-app <span class="nt">--image-stream</span><span class="o">=</span>&lt;image-stream&gt; <span class="o">[</span><span class="nt">--code</span><span class="o">=</span>&lt;<span class="nb">source</span><span class="o">&gt;])</span>
+<span class="nt">-----</span>
+python
+  Project: openshift
+  Tags:    2.7, 3.5, 3.6, latest
+...</code></pre></figure>
+
+<p>En este ejemplo voy a usar la aplicación que desarrollé en primero de FP y que hacía uso de <strong>flask</strong>. Lo único que modificaré del código es definir un puerto fijo en lugar de utilizar la librería <strong>os</strong>. Después ejecutamos un comando parecido al que utilizamos con la página estática y, ¡listo!</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Creamos un nuevo proyecto</span>
+oc new-project aplicacion-python
+<span class="c"># Y creamos la aplicación</span>
+oc new-app python:3.6~https://github.com/LuisaoStuff/Mountains-OpenShift.git <span class="nt">--name</span> ejemplo-python</code></pre></figure>
+
+<p>Tardará unos instantes en desplegarla pero podemos ir creando la ruta para que sea accesible, ejecutando como antes <code class="language-plaintext highlighter-rouge">oc expose svc/ejemplo-python</code>.
+Una vez finalizado el proceso, accedemos a la url indicada por la salida del comando <code class="language-plaintext highlighter-rouge">oc status</code> y comprobamos que, ¡efectivamente está en funcionamiento!</p>
+
+<p><img src="/images/intr-openshift/12.png" alt="" /></p>
+
+<h2 id="despliegue-de-aplicación-php">Despliegue de aplicación php</h2>
+
+<p>Esta vez instalaremos un <strong>cms</strong> cuyo sistema de base de datos es <strong>sqlite</strong>. Algo que no hemos comentado hasta ahora es la efimeridad de los datos. Cuando se elimina un pod, todos los datos y modificaciones realizadas durante su existencia, se borran. Es por esto que existen los volúmenes persistentes, y es por ello que he escogido el despliegue de un <strong>cms</strong>.</p>
+
+<p>Vamos a hacer un par de comprobaciones. Primero instalaremos el cms sin el uso de volúmenes persistentes. Después realizaremos una modificación (comprobando que sí que se ha hecho), y <strong>borraremos el pod</strong> para poder observar cómo, al crearse un pod sustituto, el <strong>cms</strong> vuelve al estado original.
+Para instalar el cms, introducimos con oc el siguiente comando:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc new-project php-app
+oc new-app php:7.1~https://github.com/ilosuna/phpsqlitecms <span class="nt">--name</span> appphp
+oc expose svc/appphp</code></pre></figure>
+
+<p>Accedemos a la web y realizamos una modificación de la página principal:</p>
+
+<p><img src="/images/intr-openshift/13.png" alt="" /></p>
+
+<p><img src="/images/intr-openshift/14.png" alt="" /></p>
+
+<p>Eliminamos el pod:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc delete pod/appphp-1-gmhh4
+pod <span class="s2">"appphp-1-gmhh4"</span> deleted</code></pre></figure>
+
+<p>Y comprobamos como <strong>no</strong> se ha guardado la modificación que hicimos antes.</p>
+
+<p><img src="/images/intr-openshift/15.png" alt="" /></p>
+
+<p>Para solucionar esto, vamos a crear un <strong>volumen persistente</strong> y cambiando la <strong>estrategia del despliegue</strong> de la aplicación de <em>rolling</em> a <strong>recreate</strong>.
+Después accederemos al <em>pod</em> con <strong>rsh</strong> para ver cuál es la ruta donde se guardan los ficheros <strong>sqlite</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc get pods
+NAME             READY     STATUS      RESTARTS   AGE
+appphp-1-build   0/1       Completed   0          34m
+appphp-1-ntkp8   1/1       Running     0          13m
+oc rsh appphp-1-ntkp8
+sh-4.2<span class="nv">$ </span><span class="nb">cd </span>cms/data/
+sh-4.2<span class="nv">$ </span><span class="nb">pwd</span>
+/opt/app-root/src/cms/data
+<span class="nb">exit
+
+</span>oc get pvc
+NAME      STATUS    VOLUME    CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+vol1      Bound     pv0030    1Gi        RWO,ROX,RWX                   5s</code></pre></figure>
+
+<p>Una vez que tenemos la ruta donde se guardan los datos, accedemos al apartado de <strong>deployments</strong> y en el menú desplegable <strong>actions</strong> seleccionamos <strong>add storage</strong></p>
+
+<p><img src="/images/intr-openshift/16.png" alt="" /></p>
+
+<p>Por último ya solo nos quedaría clonar el repositorio de la aplicación y copiar el contenido de <strong>/data</strong> con <strong>oc cp</strong>:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc get pods
+NAME             READY     STATUS      RESTARTS   AGE
+appphp-1-build   0/1       Completed   0          44m
+appphp-2-6dnr9   1/1       Running     0          4m
+luis@kutulu:~/phpsqlitecms/cms<span class="nv">$ </span>oc <span class="nb">cp </span>data appphp-2-6dnr9:cms/</code></pre></figure>
+
+<p>Probamos a modificar la página principal:</p>
+
+<p><img src="/images/intr-openshift/17.png" alt="" /></p>
+
+<p><img src="/images/intr-openshift/18.png" alt="" /></p>
+
+<p>Eliminamos el pod.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">oc delete pod/appphp-2-6dnr9
+pod <span class="s2">"appphp-2-6dnr9"</span> deleted</code></pre></figure>
+
+<p>Y volvemos a acceder a la página!</p>
+
+<p><img src="/images/intr-openshift/19.png" alt="" /></p>
+
+            </article>
+
+            <section class="share">
+    <h3>Compartir</h3>
+    <a aria-label="Share on Twitter" href="https://twitter.com/intent/tweet?text=&quot;&quot;%20https://blog.luisvazquezalejo.es/Introducci%C3%B3n-a-OpenShift-con-minishift/%20via%20&#64;&hashtags="
+    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" title="Compartir en Twitter">
+        <svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>
+    </a>
+    <a aria-label="Share on Facebook"href="https://www.facebook.com/sharer/sharer.php?u=https://blog.luisvazquezalejo.es/Introducci%C3%B3n-a-OpenShift-con-minishift/"
+    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" title="Compartir en Facebook">
+        <svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>
+    </a>
+</section>
+
+            <section class="author" itemprop="author">
+    <div class="details" itemscope itemtype="http://schema.org/Person">
+        <img itemprop="image" class="img-rounded" src="/assets/img/blog-author.jpg" alt="">
+        <p class="def">Autor</p>
+        <p class="desc">Administrador de Sistemas Informáticos en Red</p>
+        <a itemprop="email" class="email" href="mailto:mail@luisvazquezalejo.es">mail@luisvazquezalejo.es</a>
+    </div>
+</section>
+
+            <footer>
+    <p>Plantilla hecha con <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> y <span class="love">❤</span> por <a href="https://willianjusten.com.br">Willian Justen</a></p>
+</footer>
+<script src="/assets/js/main.js"></script>
+
+        </section>
+    </body>
+</html>

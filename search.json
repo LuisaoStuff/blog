@@ -1,0 +1,131 @@
+[
+  
+    {
+      "title"    : "Instalación de Jitsi",
+      "category" : "ContenedoresDockerJava",
+      "tags"     : "",
+      "url"      : "/Instalaci%C3%B3n-de-Jitsi/",
+      "date"     : "15 May 2020"
+    } ,
+  
+    {
+      "title"    : "Despliegue de una aplicación Python con Docker",
+      "category" : "ContenedoresDockerPython",
+      "tags"     : "",
+      "url"      : "/Despliegue-de-una-aplicaci%C3%B3n-Python-con-Docker/",
+      "date"     : "25 Apr 2020"
+    } ,
+  
+    {
+      "title"    : "Introducción a Openshift con Minishift",
+      "category" : "ContenedoresDockerKubernetesOpenShift",
+      "tags"     : "",
+      "url"      : "/Introducci%C3%B3n-a-OpenShift-con-minishift/",
+      "date"     : "21 Apr 2020"
+    } ,
+  
+    {
+      "title"    : "Introducción a Openshift con Minishift",
+      "category" : "ContenedoresDockerKubernetesOpenShift",
+      "tags"     : "",
+      "url"      : "/Introducci%C3%B3n-a-OpenShift-con-minishift/",
+      "date"     : "20 Apr 2020"
+    } ,
+  
+    {
+      "title"    : "Despliegue de aplicación web en Kubernetes",
+      "category" : "KubernetesSistemasImplantacion Web",
+      "tags"     : "",
+      "url"      : "/Introducci%C3%B3n-a-Postfix/",
+      "date"     : "07 Mar 2020"
+    } ,
+  
+    {
+      "title"    : "Servidor proxy: Squid",
+      "category" : "ServiciosProxy",
+      "tags"     : "",
+      "url"      : "/Servidor-proxy-Squid/",
+      "date"     : "23 Feb 2020"
+    } ,
+  
+    {
+      "title"    : "Introducción a SELinux",
+      "category" : "SistemasSeguridad",
+      "tags"     : "",
+      "url"      : "/Introducci%C3%B3n-a-SELinux/",
+      "date"     : "17 Feb 2020"
+    } ,
+  
+    {
+      "title"    : "Introducción a ISCSI",
+      "category" : "Sistemas",
+      "tags"     : "ISCSI and filesystem",
+      "url"      : "/Introducci%C3%B3n-a-ISCSI/",
+      "date"     : "03 Feb 2020"
+    } ,
+  
+    {
+      "title"    : "VPN con OpenVPN y certificados x509",
+      "category" : "VPNSSL",
+      "tags"     : "",
+      "url"      : "/VPN-con-OpenVPN-y-certificados-x509/",
+      "date"     : "27 Jan 2020"
+    } ,
+  
+    {
+      "title"    : "Sistema de ficheros ZFS",
+      "category" : "Sistemas",
+      "tags"     : "zfs and filesystem",
+      "url"      : "/Sistema-de-ficheros-ZFS/",
+      "date"     : "25 Jan 2020"
+    } ,
+  
+    {
+      "title"    : "Rendimiento de servidores web",
+      "category" : "Servicios",
+      "tags"     : "apache, nginx, php, and python",
+      "url"      : "/Rendimiento-servidores-web/",
+      "date"     : "20 Jan 2020"
+    } ,
+  
+    {
+      "title"    : "Integración continua con Jekyll",
+      "category" : "jekylltravis-cigithub",
+      "tags"     : "jekyll and integracion-continua",
+      "url"      : "/Integraci%C3%B3n-continua-con-Jekyll/",
+      "date"     : "17 Jan 2020"
+    } ,
+  
+    {
+      "title"    : "Práctica: Cortafuegos perimetral con DMZ",
+      "category" : "Seguridad",
+      "tags"     : "iptables and nftables",
+      "url"      : "/Practica-Cortafuegos-perimetral-con-DMZ/",
+      "date"     : "05 Dec 2019"
+    } ,
+  
+    {
+      "title"    : "Publicación con Github-Pages",
+      "category" : "jekyllgithub",
+      "tags"     : "jekyll and github",
+      "url"      : "/Publicaci%C3%B3n-con-Github-Pages/",
+      "date"     : "02 Oct 2019"
+    } ,
+  
+    {
+      "title"    : "Cómo instalar una plantilla Jekyll",
+      "category" : "jekyll",
+      "tags"     : "jekyll",
+      "url"      : "/Como-instalar-una-plantilla-Jekyll/",
+      "date"     : "27 Sep 2019"
+    } ,
+  
+    {
+      "title"    : "Instalación y configuración de Jekyll",
+      "category" : "jekyll",
+      "tags"     : "jekyll",
+      "url"      : "/Instalaci%C3%B3n-de-Jekyll/",
+      "date"     : "25 Sep 2019"
+    } 
+  
+]

@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Práctica: Cortafuegos perimetral con DMZ</title>
+    <meta name="description" content="Administrador de Sistemas Informáticos en Red">
+
+    <!-- Google Authorship Markup -->
+    <link rel="author" href="https://plus.google.com/?rel=author">
+
+    <!-- Social: Twitter -->
+    <meta name="twitter:card" content="summary_large_image"> 
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:title" content="Práctica: Cortafuegos perimetral con DMZ">
+    <meta name="twitter:description" content="Administrador de Sistemas Informáticos en Red">
+    
+    <meta property="twitter:image:src" content="/assets/img/blog-image.png">
+    
+    <!-- Social: Facebook / Open Graph -->
+    <meta property="og:url" content="/Practica-Cortafuegos-perimetral-con-DMZ/">
+    <meta property="og:title" content="Práctica: Cortafuegos perimetral con DMZ">
+    
+    <meta property="og:image" content="/assets/img/blog-image.png">
+    
+    <meta property="og:description" content="Administrador de Sistemas Informáticos en Red">
+    <meta property="og:site_name" content="Luis Vázquez Alejo">
+    <!-- Social: Google+ / Schema.org  -->
+    <meta itemprop="name" content="Práctica: Cortafuegos perimetral con DMZ"/>
+    <meta itemprop="description" content="Administrador de Sistemas Informáticos en Red">
+    <meta itemprop="image" content="/assets/img/blog-image.png"/>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/img/icons/favicon.ico" type="image/x-icon" />
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/icons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/icons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/icons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/img/icons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/img/icons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/img/icons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/icons/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/img/icons/apple-touch-icon-152x152.png" />
+    <!-- Windows 8 Tile Icons -->
+    <meta name="application-name" content="Luis Vázquez Alejo Blog">
+    <meta name="msapplication-TileColor" content="#0562DC">
+    <meta name="msapplication-square70x70logo" content="smalltile.png" />
+    <meta name="msapplication-square150x150logo" content="mediumtile.png" />
+    <meta name="msapplication-wide310x150logo" content="widetile.png" />
+    <meta name="msapplication-square310x310logo" content="largetile.png" />
+    <!-- Android Lolipop Theme Color -->
+    <meta name="theme-color" content="#0562DC">
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="/Practica-Cortafuegos-perimetral-con-DMZ/">
+    <link rel="alternate" type="application/rss+xml" title="Luis Vázquez Alejo" href="/feed.xml" />
+</head>
+
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" display="none" version="1.1"><defs><symbol id="icon-menu" viewBox="0 0 1024 1024"><path class="path1" d="M128 213.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 725.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 469.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5z"/></symbol><symbol id="icon-search" viewBox="0 0 951 1024"><path class="path1" d="M658.286 475.429q0-105.714-75.143-180.857t-180.857-75.143-180.857 75.143-75.143 180.857 75.143 180.857 180.857 75.143 180.857-75.143 75.143-180.857zM950.857 950.857q0 29.714-21.714 51.429t-51.429 21.714q-30.857 0-51.429-21.714l-196-195.429q-102.286 70.857-228 70.857-81.714 0-156.286-31.714t-128.571-85.714-85.714-128.571-31.714-156.286 31.714-156.286 85.714-128.571 128.571-85.714 156.286-31.714 156.286 31.714 128.571 85.714 85.714 128.571 31.714 156.286q0 125.714-70.857 228l196 196q21.143 21.143 21.143 51.429z"/></symbol><symbol id="icon-email" viewBox="0 0 1024 1024"><path class="path1" d="M950.857 859.429v-438.857q-18.286 20.571-39.429 37.714-153.143 117.714-243.429 193.143-29.143 24.571-47.429 38.286t-49.429 27.714-58.571 14h-1.143q-27.429 0-58.571-14t-49.429-27.714-47.429-38.286q-90.286-75.429-243.429-193.143-21.143-17.143-39.429-37.714v438.857q0 7.429 5.429 12.857t12.857 5.429h841.143q7.429 0 12.857-5.429t5.429-12.857zM950.857 258.857v-14t-0.286-7.429-1.714-7.143-3.143-5.143-5.143-4.286-8-1.429h-841.143q-7.429 0-12.857 5.429t-5.429 12.857q0 96 84 162.286 110.286 86.857 229.143 181.143 3.429 2.857 20 16.857t26.286 21.429 25.429 18 28.857 15.714 24.571 5.143h1.143q11.429 0 24.571-5.143t28.857-15.714 25.429-18 26.286-21.429 20-16.857q118.857-94.286 229.143-181.143 30.857-24.571 57.429-66t26.571-75.143zM1024 237.714v621.714q0 37.714-26.857 64.571t-64.571 26.857h-841.143q-37.714 0-64.571-26.857t-26.857-64.571v-621.714q0-37.714 26.857-64.571t64.571-26.857h841.143q37.714 0 64.571 26.857t26.857 64.571z"/></symbol><symbol id="icon-close" viewBox="0 0 805 1024"><path class="path1" d="M741.714 755.429q0 22.857-16 38.857l-77.714 77.714q-16 16-38.857 16t-38.857-16l-168-168-168 168q-16 16-38.857 16t-38.857-16l-77.714-77.714q-16-16-16-38.857t16-38.857l168-168-168-168q-16-16-16-38.857t16-38.857l77.714-77.714q16-16 38.857-16t38.857 16l168 168 168-168q16-16 38.857-16t38.857 16l77.714 77.714q16 16 16 38.857t-16 38.857l-168 168 168 168q16 16 16 38.857z"/></symbol><symbol id="icon-twitter" viewBox="0 0 951 1024"><path class="path1" d="M925.714 233.143q-38.286 56-92.571 95.429 0.571 8 0.571 24 0 74.286-21.714 148.286t-66 142-105.429 120.286-147.429 83.429-184.571 31.143q-154.857 0-283.429-82.857 20 2.286 44.571 2.286 128.571 0 229.143-78.857-60-1.143-107.429-36.857t-65.143-91.143q18.857 2.857 34.857 2.857 24.571 0 48.571-6.286-64-13.143-106-63.714t-42-117.429v-2.286q38.857 21.714 83.429 23.429-37.714-25.143-60-65.714t-22.286-88q0-50.286 25.143-93.143 69.143 85.143 168.286 136.286t212.286 56.857q-4.571-21.714-4.571-42.286 0-76.571 54-130.571t130.571-54q80 0 134.857 58.286 62.286-12 117.143-44.571-21.143 65.714-81.143 101.714 53.143-5.714 106.286-28.571z"/></symbol><symbol id="icon-facebook" viewBox="0 0 585 1024"><path class="path1" d="M548 6.857v150.857h-89.714q-49.143 0-66.286 20.571t-17.143 61.714v108h167.429l-22.286 169.143h-145.143v433.714h-174.857v-433.714h-145.714v-169.143h145.714v-124.571q0-106.286 59.429-164.857t158.286-58.571q84 0 130.286 6.857z"/></symbol><symbol id="icon-rss" viewBox="0 0 805 1024"><path class="path1" d="M219.429 768q0 45.714-32 77.714t-77.714 32-77.714-32-32-77.714 32-77.714 77.714-32 77.714 32 32 77.714zM512 838.286q1.143 16-9.714 27.429-10.286 12-26.857 12h-77.143q-14.286 0-24.571-9.429t-11.429-23.714q-12.571-130.857-105.429-223.714t-223.714-105.429q-14.286-1.143-23.714-11.429t-9.429-24.571v-77.143q0-16.571 12-26.857 9.714-9.714 24.571-9.714h2.857q91.429 7.429 174.857 46t148 103.714q65.143 64.571 103.714 148t46 174.857zM804.571 839.429q1.143 15.429-10.286 26.857-10.286 11.429-26.286 11.429h-81.714q-14.857 0-25.429-10t-11.143-24.286q-6.857-122.857-57.714-233.429t-132.286-192-192-132.286-233.429-58.286q-14.286-0.571-24.286-11.143t-10-24.857v-81.714q0-16 11.429-26.286 10.286-10.286 25.143-10.286h1.714q149.714 7.429 286.571 68.571t243.143 168q106.857 106.286 168 243.143t68.571 286.571z"/></symbol><symbol id="icon-google-plus" viewBox="0 0 951 1024"><path class="path1" d="M420 454.857q0 20.571 18.286 40.286t44.286 38.857 51.714 42 44 59.429 18.286 81.143q0 51.429-27.429 98.857-41.143 69.714-120.571 102.571t-170.286 32.857q-75.429 0-140.857-23.714t-98-78.571q-21.143-34.286-21.143-74.857 0-46.286 25.429-85.714t67.714-65.714q74.857-46.857 230.857-57.143-18.286-24-27.143-42.286t-8.857-41.714q0-20.571 12-48.571-26.286 2.286-38.857 2.286-84.571 0-142.571-55.143t-58-139.714q0-46.857 20.571-90.857t56.571-74.857q44-37.714 104.286-56t124.286-18.286h238.857l-78.857 50.286h-74.857q42.286 36 64 76t21.714 91.429q0 41.143-14 74t-33.714 53.143-39.714 37.143-34 35.143-14 37.714zM336.571 400q21.714 0 44.571-9.429t37.714-24.857q30.286-32.571 30.286-90.857 0-33.143-9.714-71.429t-27.714-74-48.286-59.143-66.857-23.429q-24 0-47.143 11.143t-37.429 30q-26.857 33.714-26.857 91.429 0 26.286 5.714 55.714t18 58.857 29.714 52.857 42.857 38.286 55.143 14.857zM337.714 898.857q33.143 0 63.714-7.429t56.571-22.286 41.714-41.714 15.714-62.286q0-14.286-4-28t-8.286-24-15.429-23.714-16.857-20-22-19.714-20.857-16.571-23.714-17.143-20.857-14.857q-9.143-1.143-27.429-1.143-30.286 0-60 4t-61.429 14.286-55.429 26.286-39.143 42.571-15.429 60.286q0 40 20 70.571t52.286 47.429 68 25.143 72.857 8.286zM800.571 398.286h121.714v61.714h-121.714v125.143h-60v-125.143h-121.143v-61.714h121.143v-124h60v124z"/></symbol><symbol id="icon-angle-down" viewBox="0 0 658 1024"><path class="path1" d="M614.286 420.571q0 7.429-5.714 13.143l-266.286 266.286q-5.714 5.714-13.143 5.714t-13.143-5.714l-266.286-266.286q-5.714-5.714-5.714-13.143t5.714-13.143l28.571-28.571q5.714-5.714 13.143-5.714t13.143 5.714l224.571 224.571 224.571-224.571q5.714-5.714 13.143-5.714t13.143 5.714l28.571 28.571q5.714 5.714 5.714 13.143z"/></symbol><symbol id="icon-github-alt" viewBox="0 0 951 1024"><path class="path1" d="M365.714 694.857q0 22.857-7.143 46.857t-24.571 43.429-41.429 19.429-41.429-19.429-24.571-43.429-7.143-46.857 7.143-46.857 24.571-43.429 41.429-19.429 41.429 19.429 24.571 43.429 7.143 46.857zM731.429 694.857q0 22.857-7.143 46.857t-24.571 43.429-41.429 19.429-41.429-19.429-24.571-43.429-7.143-46.857 7.143-46.857 24.571-43.429 41.429-19.429 41.429 19.429 24.571 43.429 7.143 46.857zM822.857 694.857q0-68.571-39.429-116.571t-106.857-48q-23.429 0-111.429 12-40.571 6.286-89.714 6.286t-89.714-6.286q-86.857-12-111.429-12-67.429 0-106.857 48t-39.429 116.571q0 50.286 18.286 87.714t46.286 58.857 69.714 34.286 80 16.857 85.143 4h96q46.857 0 85.143-4t80-16.857 69.714-34.286 46.286-58.857 18.286-87.714zM950.857 594.286q0 118.286-34.857 189.143-21.714 44-60.286 76t-80.571 49.143-97.143 27.143-98 12.571-95.429 2.571q-44.571 0-81.143-1.714t-84.286-7.143-87.143-17.143-78.286-29.429-69.143-46.286-49.143-65.714q-35.429-70.286-35.429-189.143 0-135.429 77.714-226.286-15.429-46.857-15.429-97.143 0-66.286 29.143-124.571 61.714 0 108.571 22.571t108 70.571q84-20 176.571-20 84.571 0 160 18.286 60-46.857 106.857-69.143t108-22.286q29.143 58.286 29.143 124.571 0 49.714-15.429 96 77.714 91.429 77.714 227.429z"/></symbol></defs></svg>
+
+        <header class="header-post" role="banner">
+    <div class="content">
+        
+            <time itemprop="datePublished" datetime="2019-12-05 16:30:00 +0000" class="date">05 Dec 2019</time>
+        
+        <h1 class="post-title" itemprop="name">Práctica: Cortafuegos perimetral con DMZ</h1>
+        <p itemprop="description" class="subtitle"></p>
+    </div>
+     <a class="down" data-scroll href="#scroll"><svg class="icon icon-angle-down"><use xlink:href="#icon-angle-down"></use></svg></a>
+     <div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" class="search-field" placeholder="Buscar...">
+        <svg class="icon-remove-sign"><use xlink:href="#icon-close"></use></svg>
+        <ul class="search-results search-list"></ul>
+    </div>
+</div>
+
+<div id="fade" class="overlay"></div>
+<a id="slide" class="slideButton fade">
+    <svg id="open" class="icon-menu"><use xlink:href="#icon-menu"></use></svg>
+    <svg id="close" class="icon-menu"><use xlink:href="#icon-close"></use></svg>
+</a>
+<aside id="sidebar">
+<nav id="navigation">
+  <h2>MENU</h2>
+  <ul>
+    
+    
+      <li><a href="/">Inicio</a></li>
+    
+    
+    
+      <li><a href="/categorias">Categorías</a></li>
+    
+    
+    
+      <li><a href="/tags">Tags</a></li>
+    
+    
+    
+      <li><a href="/sobre-mi">Sobre mí</a></li>
+    
+    
+  </ul>
+</nav>
+</aside>
+<a id="search" class="dosearch">
+    <svg class="icon-menu icon-search"><use xlink:href="#icon-search"></use></svg>
+</a>
+
+</header>
+
+        <section class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+            <article role="article" id="scroll" class="post-content" itemprop="articleBody">
+                <h2 id="introducción">Introducción</h2>
+
+<p>En esta entrada vamos a realizar una práctica que consistirá en la creación de un cortafuegos perimetral contando con una zona DMZ y una zona segura. Dicho cortafuegos lo implementaremos con <strong>iptables</strong> y más tarde lo optimizaremos haciendo uso de <em>cadenas</em> para segmentar las reglas de cortafuegos según la dirección y sentido del tráfico que estamos filtrando.</p>
+
+<h4 id="política-por-defecto-drop-para-las-cadenas-input-forward-y-output">Política por defecto DROP para las cadenas INPUT, FORWARD y OUTPUT.</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#Establecemos política ACCEPT para no perder la conexión al limpiar las tablas</span>
+iptables <span class="nt">-P</span> INPUT ACCEPT
+iptables <span class="nt">-P</span> OUTPUT ACCEPT
+iptables <span class="nt">-P</span> FORWARD ACCEPT
+
+<span class="c"># Limpiamos las tablas</span>
+iptables <span class="nt">-F</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-F</span>
+iptables <span class="nt">-Z</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-Z</span>
+
+<span class="c">#Habilitamos ssh para administrar, vamos a utilizar el módulo para filtrar por MAC, utilizando la MAC de croqueta para que solo podamos administrar el router desde allí.</span>
+
+iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> mac <span class="nt">--mac-source</span> fa:16:3e:8f:8e:6e <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+<span class="c"># Establecemos la política</span>
+iptables <span class="nt">-P</span> INPUT DROP
+iptables <span class="nt">-P</span> OUTPUT DROP
+iptables <span class="nt">-P</span> FORWARD DROP
+
+<span class="c">#Bit de forward</span>
+<span class="nb">echo </span>1 <span class="o">&gt;</span> /proc/sys/net/ipv4/ip_forward</code></pre></figure>
+
+<h4 id="la-máquina-router-fw-tiene-un-servidor-ssh-escuchando-por-el-puerto-22-pero-al-acceder-desde-el-exterior-habrá-que-conectar-al-puerto-2222">La máquina router-fw tiene un servidor ssh escuchando por el puerto 22, pero al acceder desde el exterior habrá que conectar al puerto 2222.</h4>
+
+<ul>
+  <li>Redirigir peticiones del puerto 2222 al puerto 22</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> tcp <span class="nt">--dport</span> 2222 <span class="nt">-j</span> REDIRECT <span class="nt">--to-ports</span> 22</code></pre></figure>
+
+<ul>
+  <li>Bloquear el acceso directo desde el puerto 22</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> DNAT <span class="nt">--to-destination</span> 127.0.0.1:22</code></pre></figure>
+
+<p>Si probamos a conectarnos desde el puerto 22, no podemos, tendremos que hacerlo usando el puerto 2222:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">debian@croqueta:~<span class="nv">$ </span>ssh debian@10.0.0.6
+^C
+debian@croqueta:~<span class="nv">$ </span>ssh <span class="nt">-p</span> 2222 debian@10.0.0.6
+Linux router-fw 4.19.0-6-cloud-amd64 <span class="c">#1 SMP Debian 4.19.67-2+deb10u1 (2019-09-20) x86_64</span>
+
+The programs included with the Debian GNU/Linux system are free software<span class="p">;</span>
+the exact distribution terms <span class="k">for </span>each program are described <span class="k">in </span>the
+individual files <span class="k">in</span> /usr/share/doc/<span class="k">*</span>/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Dec 10 11:02:23 2019 from 10.0.0.3
+debian@router-fw:~<span class="nv">$ </span></code></pre></figure>
+
+<h4 id="desde-la-lan-y-la-dmz-se-debe-permitir-la-conexión-ssh-por-el-puerto-22-al-la-máquina-router-fw">Desde la LAN y la DMZ se debe permitir la conexión ssh por el puerto 22 al la máquina router-fw.</h4>
+
+<ul>
+  <li>Permitir desde la LAN:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> INPUT <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><a><img src="/images/cortafuegos-dmz/ssh-desde-LAN.png" /></a></p>
+
+<ul>
+  <li>Permitir desde la DMZ:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> INPUT <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><a><img src="/images/cortafuegos-dmz/ssh-desde-DMZ.png" /></a></p>
+
+<h4 id="la-máquina-router-fw-debe-tener-permitido-el-tráfico-para-la-interfaz-loopback">La máquina router-fw debe tener permitido el tráfico para la interfaz loopback.</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> lo <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> lo <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<h4 id="a-la-máquina-router-fw-se-le-puede-hacer-ping-desde-la-dmz-pero-desde-la-lan-se-le-debe-rechazar-la-conexión-reject">A la máquina router-fw se le puede hacer ping desde la DMZ, pero desde la LAN se le debe rechazar la conexión (REJECT).</h4>
+
+<ul>
+  <li>Ping desde la DMZ</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth2 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><a><img src="/images/cortafuegos-dmz/ping-dmz.png" /></a></p>
+
+<ul>
+  <li>Ping desde la LAN</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth1 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> REJECT <span class="nt">--reject-with</span> icmp-port-unreachable
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> RELATED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><a><img src="/images/cortafuegos-dmz/ping-lan.png" /></a></p>
+
+<h4 id="la-máquina-router-fw-puede-hacer-ping-a-la-lan-la-dmz-y-al-exterior">La máquina router-fw puede hacer ping a la LAN, la DMZ y al exterior.</h4>
+
+<ul>
+  <li>Ping a la LAN</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth1 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><em>Prueba</em></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@router-fw:~# ping <span class="nt">-c</span> 3 192.168.100.10
+PING 192.168.100.10 <span class="o">(</span>192.168.100.10<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 192.168.100.10: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.806 ms
+64 bytes from 192.168.100.10: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.659 ms
+64 bytes from 192.168.100.10: <span class="nv">icmp_seq</span><span class="o">=</span>3 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.776 ms
+
+<span class="nt">---</span> 192.168.100.10 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 received, 0% packet loss, <span class="nb">time </span>9ms
+rtt min/avg/max/mdev <span class="o">=</span> 0.659/0.747/0.806/0.063 ms</code></pre></figure>
+
+<ul>
+  <li>Ping a la DMZ</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth2 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><em>Prueba</em></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@router-fw:~# ping <span class="nt">-c</span> 3 192.168.200.10
+PING 192.168.200.10 <span class="o">(</span>192.168.200.10<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 192.168.200.10: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>1.82 ms
+64 bytes from 192.168.200.10: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>1.09 ms
+64 bytes from 192.168.200.10: <span class="nv">icmp_seq</span><span class="o">=</span>3 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>1.09 ms
+
+<span class="nt">---</span> 192.168.200.10 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 received, 0% packet loss, <span class="nb">time </span>5ms
+rtt min/avg/max/mdev <span class="o">=</span> 1.092/1.335/1.821/0.344 ms</code></pre></figure>
+
+<ul>
+  <li>Ping al exterior</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth0 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth0 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><em>Prueba</em></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@router-fw:~# ping <span class="nt">-c</span> 3 8.8.8.8
+PING 8.8.8.8 <span class="o">(</span>8.8.8.8<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 8.8.8.8: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>51 <span class="nb">time</span><span class="o">=</span>43.1 ms
+64 bytes from 8.8.8.8: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>51 <span class="nb">time</span><span class="o">=</span>43.2 ms
+64 bytes from 8.8.8.8: <span class="nv">icmp_seq</span><span class="o">=</span>3 <span class="nv">ttl</span><span class="o">=</span>51 <span class="nb">time</span><span class="o">=</span>49.7 ms
+
+<span class="nt">---</span> 8.8.8.8 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 received, 0% packet loss, <span class="nb">time </span>5ms
+rtt min/avg/max/mdev <span class="o">=</span> 43.107/45.337/49.683/3.078 ms</code></pre></figure>
+
+<h4 id="desde-la-máquina-dmz-se-puede-hacer-ping-y-conexión-ssh-a-la-máquina-lan">Desde la máquina DMZ se puede hacer ping y conexión ssh a la máquina LAN.</h4>
+
+<p>Añadimos las reglas <em>FORWARD</em> con su correspondiente seguimiento de la conexión.</p>
+
+<ul>
+  <li>SSH desde DMZ a la LAN</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<ul>
+  <li>Prueba ssh desde la <em>DMZ</em> a la <em>LAN</em></li>
+</ul>
+
+<p><a><img src="/images/cortafuegos-dmz/ssh-from-dmz-to-lan.png" /></a></p>
+
+<ul>
+  <li>Ping desde DMZ a la LAN</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<ul>
+  <li>Prueba ping desde la <em>DMZ</em> a la <em>LAN</em></li>
+</ul>
+
+<p><a><img src="/images/cortafuegos-dmz/ping-from-dmz-to-lan.png" /></a></p>
+
+<h4 id="desde-la-máquina-lan-no-se-puede-hacer-ping-pero-si-se-puede-conectar-por-ssh-a-la-máquina-dmz">Desde la máquina LAN no se puede hacer ping, pero si se puede conectar por ssh a la máquina DMZ.</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><em>Prueba ssh</em></p>
+
+<p><a><img src="/images/cortafuegos-dmz/ssh-from-LAN-to-DMZ.png" /></a></p>
+
+<h4 id="configura-la-máquina-router-fw-para-que-las-máquinas-lan-y-dmz-puedan-acceder-al-exterior">Configura la máquina router-fw para que las máquinas LAN y DMZ puedan acceder al exterior.</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE</code></pre></figure>
+
+<h4 id="la-máquina-lan-se-le-permite-hacer-ping-al-exterior">La máquina LAN se le permite hacer ping al exterior.</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><a><img src="/images/cortafuegos-dmz/ping-from-LAN-to-EXT.png" /></a></p>
+
+<h4 id="la-máquina-lan-puede-navegar">La máquina LAN puede navegar.</h4>
+
+<p>Para conseguir esto, tenemos que permitirle resolución <em>dns</em> y los protocolos <em>http</em> y <em>https</em> (puertos 53, 80 y 443). De este modo crearemos una regla SNAT para enmascarar todo este tráfico y las reglas <em>forward</em> pertinentes.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># HTTP/S</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+<span class="c"># DNS</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-p</span> udp <span class="nt">--sport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p>Para probar esto, actualizamos el sistema:</p>
+
+<p><a><img src="/images/cortafuegos-dmz/trying-update-from-LAN.png" /></a></p>
+
+<h4 id="la-máquina-dmz-puede-navegar-instala-un-servidor-web-un-servidor-ftp-y-un-servidor-de-correos">La máquina DMZ puede navegar. Instala un servidor web, un servidor ftp y un servidor de correos.</h4>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># HTTP/S</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+<span class="c"># DNS</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> udp <span class="nt">--sport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p>Acto seguido instalamos los siguientes paquetes:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">apt update
+apt <span class="nb">install </span>apache2 postfix proftpd</code></pre></figure>
+
+<ul>
+  <li>
+    <p>Servidor web: <em>apache2</em></p>
+  </li>
+  <li>
+    <p>Servidor de correos: <em>postfix</em></p>
+  </li>
+  <li>
+    <p>Servidor ftp: <em>proftpd</em></p>
+  </li>
+</ul>
+
+<p>En este servicio simplemente vamos a configurar el acceso anónimo para evitar tener que crear usuarios adicionales. Esto se hace modificando el fichero <em>/etc/proftpd/</em> y descomentando estas lineas:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">&lt;Anonymous /srv/doc&gt;
+   User				ftp
+   Group			nogroup
+   <span class="c"># We want clients to be able to login with "anonymous" as well as "ftp"</span>
+   UserAlias			anonymous ftp
+   <span class="c"># Cosmetic changes, all files belongs to ftp user</span>
+   DirFakeUser	on ftp
+   DirFakeGroup on ftp
+ 
+   RequireValidShell		off
+ 
+   <span class="c"># Limit the maximum number of anonymous logins</span>
+   MaxClients			10
+ 
+   <span class="c"># We want 'welcome.msg' displayed at login, and '.message' displayed</span>
+   <span class="c"># in each newly chdired directory.</span>
+   DisplayLogin			welcome.msg
+   DisplayChdir		.message
+ 
+   <span class="c"># Limit WRITE everywhere in the anonymous chroot</span>
+   &lt;Directory <span class="k">*</span><span class="o">&gt;</span>
+     &lt;Limit WRITE&gt;
+       DenyAll
+     &lt;/Limit&gt;
+   &lt;/Directory&gt;
+ 
+   <span class="c"># Uncomment this if you're brave.</span>
+   <span class="c"># &lt;Directory incoming&gt;</span>
+   <span class="c">#   # Umask 022 is a good standard umask to prevent new files and dirs</span>
+   <span class="c">#   # (second parm) from being group and world writable.</span>
+   <span class="c">#   Umask				022  022</span>
+   <span class="c">#            &lt;Limit READ WRITE&gt;</span>
+   <span class="c">#            DenyAll</span>
+   <span class="c">#            &lt;/Limit&gt;</span>
+   <span class="c">#            &lt;Limit STOR&gt;</span>
+   <span class="c">#            AllowAll</span>
+   <span class="c">#            &lt;/Limit&gt;</span>
+   <span class="c"># &lt;/Directory&gt;</span>
+
+ &lt;/Anonymous&gt;</code></pre></figure>
+
+<p>Después simplemente reiniciamos el servicio con:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">systemctl restart proftpd</code></pre></figure>
+
+<h4 id="configura-la-máquina-router-fw-para-que-los-servicios-web-y-ftp-sean-accesibles-desde-el-exterior">Configura la máquina router-fw para que los servicios web y ftp sean accesibles desde el exterior.</h4>
+
+<p>Para que puedan ser accesibles, necesitaremos una regla DNAT que redirija el tráfico de los puertos 20,21,80 y 443 a la máquina de la DMZ.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10
+
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 21 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10:21
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 21 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-j</span> SNAT <span class="nt">--to</span> 192.168.200.2
+
+
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 20 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10:21
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 20 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-j</span> SNAT <span class="nt">--to</span> 192.168.200.2</code></pre></figure>
+
+<p>Y las reglas FORWARD</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 21 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 20 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2  <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0  <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p>Prueba de accesibilidad al servidor web:</p>
+
+<p><a><img src="/images/cortafuegos-dmz/dmz-apache.png" /></a></p>
+
+<p>Prueba del servidor ftp:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">luis@kutulu:~<span class="nv">$ </span>ftp 172.22.200.56
+Connected to 172.22.200.56.
+220 ProFTPD Server <span class="o">(</span>Debian<span class="o">)</span> <span class="o">[</span>::ffff:192.168.200.10]
+Name <span class="o">(</span>172.22.200.56:luis<span class="o">)</span>: ftp
+331 Anonymous login ok, send your <span class="nb">complete </span>email address as your password
+Password:
+230 Anonymous access granted, restrictions apply
+Remote system <span class="nb">type </span>is UNIX.
+Using binary mode to transfer files.
+ftp&gt; <span class="nb">pwd
+</span>257 <span class="s2">"/"</span> is the current directory
+ftp&gt; <span class="nb">ls
+</span>500 Illegal PORT <span class="nb">command
+</span>ftp: <span class="nb">bind</span>: Address already <span class="k">in </span>use
+ftp&gt; <span class="nb">cd </span>dir1
+250 CWD <span class="nb">command </span>successful
+ftp&gt; <span class="nb">pwd
+</span>257 <span class="s2">"/dir1"</span> is the current directory</code></pre></figure>
+
+<h4 id="el-servidor-web-y-el-servidor-ftp-deben-ser-accesible-desde-la-lan-y-desde-el-exterior">El servidor web y el servidor ftp deben ser accesible desde la LAN y desde el exterior.</h4>
+
+<p>Debemos aplicar unas reglas <em>FORWARD</em> similares a las anteriores, solo que teniendo como origen de las peticiones la red <em>LAN</em></p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-s</span> 192.168.200.10 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 21 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 20 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2  <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1  <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<ul>
+  <li>Prueba acceso servidor <em>FTP</em> desde la <em>LAN</em></li>
+</ul>
+
+<p><a><img src="/images/cortafuegos-dmz/ftp-from-lan-to-dmz.png" /></a></p>
+
+<ul>
+  <li>Prueba acceso servidor <em>WEB</em> desde la <em>LAN</em></li>
+</ul>
+
+<p><a><img src="/images/cortafuegos-dmz/curl-from-lan-to-dmz.png" /></a></p>
+
+<h4 id="el-servidor-de-correos-sólo-debe-ser-accesible-desde-la-lan">El servidor de correos sólo debe ser accesible desde la LAN.</h4>
+
+<p>Para que sea accesible desde la LAN, en la instalación elegimos <em>internet site</em>. Además tendremos que especificar el el fichero de configuración <em>/etc/postfix/main.cnf</em> las redes desde las que se permitirán conexiones. Esto se hace modificando la siguiente linea:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">...
+mynetworks <span class="o">=</span> 127.0.0.0/8 192.168.100.0/24
+...</code></pre></figure>
+
+<p>Además tendremos que crear las respectivas reglas <em>FORWARD</em> que funcionen con el puerto <em>25</em>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 25 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 25 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p><a><img src="/images/cortafuegos-dmz/prueba-postfix-from-LAN.png" /></a></p>
+
+<h4 id="en-la-máquina-lan-instala-un-servidor-mysql-a-este-servidor-sólo-se-puede-acceder-desde-la-dmz">En la máquina LAN instala un servidor mysql. A este servidor sólo se puede acceder desde la DMZ.</h4>
+
+<p>En la <em>LAN</em> instalaremos solo <code>mariadb-server</code> mientras en en la <em>DMZ</em> instalaremos <code>mariadb-client</code> para probar el acceso remoto. Una vez hecho esto, en el lado del servidor, es decir, en la LAN, accederemos a <em>mariadb</em> desde el usuario <em>root</em> con: <code>mysql -u root</code> y ejecutaremos los siguientes comandos:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">pruebaFW</span><span class="p">;</span>
+<span class="k">create</span> <span class="k">user</span> <span class="n">dmz</span><span class="o">@</span><span class="nv">"192.168.200.10"</span> <span class="n">identified</span> <span class="k">by</span> <span class="nv">"dios"</span><span class="p">;</span>
+<span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="n">pruebaFW</span><span class="p">.</span><span class="o">*</span> <span class="k">to</span> <span class="n">DMZ</span><span class="p">;</span>
+<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span></code></pre></figure>
+
+<p>También nos dirigiremos al fichero <em>/etc/mysql/mariadb.conf.d/50-server.cnf</em> y editaremos la directiva <em>bind-address</em> para que quede así:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">...
+bind-address            <span class="o">=</span> 0.0.0.0
+...</code></pre></figure>
+
+<p>Ahora solo nos queda crear las reglas <em>FORWARD</em>:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 3306 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 3306 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<p>Prueba de funcionamiento:</p>
+
+<p><a><img src="/images/cortafuegos-dmz/mysql-from-dmz-to-lan.png" /></a></p>
+
+<h4 id="debemos-implementar-que-el-cortafuego-funcione-después-de-un-reinicio-de-la-máquina">Debemos implementar que el cortafuego funcione después de un reinicio de la máquina.</h4>
+
+<p>Para hacer esto vamos a crear una unidad de <em>systemd</em> que en realidad es algo bastante sencillo de hacer. Primero crearemos un <em>script</em> con todas las reglas de iptables, puestas en secuencia. Este sería el contenido del script:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+
+<span class="c"># Establecemos política ACCEPT para no perder la conexión al limpiar las tablas</span>
+iptables <span class="nt">-P</span> INPUT ACCEPT
+iptables <span class="nt">-P</span> OUTPUT ACCEPT
+iptables <span class="nt">-P</span> FORWARD ACCEPT
+
+
+<span class="c"># Limpiamos las tablas</span>
+iptables <span class="nt">-F</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-F</span>
+iptables <span class="nt">-Z</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-Z</span>
+
+
+<span class="c"># Habilitamos ssh para administrar, vamos a utilizar el módulo para filtrar por MAC,</span>
+<span class="c"># utilizando la MAC de croqueta para que solo podamos administrar el router desde allí.</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> mac <span class="nt">--mac-source</span> fa:16:3e:8f:8e:6e <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Establecemos la política</span>
+iptables <span class="nt">-P</span> INPUT DROP
+iptables <span class="nt">-P</span> OUTPUT DROP
+iptables <span class="nt">-P</span> FORWARD DROP
+
+<span class="c"># Bit de forward</span>
+<span class="nb">echo </span>1 <span class="o">&gt;</span> /proc/sys/net/ipv4/ip_forward
+
+
+<span class="c"># Redirigimos el tráfico directo del puerto 2222 al 22</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> tcp <span class="nt">--dport</span> 2222 <span class="nt">-j</span> REDIRECT <span class="nt">--to-ports</span> 22
+
+
+<span class="c"># Redirigimos el tráfico directo del puerto 22 a la loopback para inutilizarlo</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> DNAT <span class="nt">--to-destination</span> 127.0.0.1:22
+
+
+<span class="c"># Permitir SSH desde la LAN</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir  SSH desde la DMZ</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir tráfico loopback</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> lo <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> lo <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping desde la DMZ</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth2 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Rechazar ping desde la LAN </span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth1 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> REJECT <span class="nt">--reject-with</span> icmp-port-unreachable
+
+
+<span class="c"># Permitir ping a la LAN</span>
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth1 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping a la DMZ</span>
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth2 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping al exterior</span>
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth0 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth0 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping y ssh desde la DMZ a la LAN</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ssh desde la LAN a la DMZ</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c">#Permitir acceso de DMZ y LAN al exterior</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+
+
+<span class="c"># Permitir ping desde la LAN al exterior</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir navegación web desde la LAN</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-p</span> udp <span class="nt">--sport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir navegación web desde la DMZ</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> udp <span class="nt">--sport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor WEB de la DMZ desde el exterior</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor FTP de la DMZ desde el exterior</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 21 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10:21
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 21 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-j</span> SNAT <span class="nt">--to</span> 192.168.200.2
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 20 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10:21
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 20 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-j</span> SNAT <span class="nt">--to</span> 192.168.200.2
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 21 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 20 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor WEB de la DMZ desde la LAN</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-s</span> 192.168.200.10 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c">#Permitir acceso al servidor FTP de la DMZ desde la LAN</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 21 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 20 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor de correos de la DMZ desde la LAN</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 25 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 25 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor MYSQL de la LAN desde la DMZ</span>
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 3306 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--sport</span> 3306 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+<span class="nv">nat</span><span class="o">=</span><span class="si">$(</span>iptables <span class="nt">-t</span> nat <span class="nt">-S</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'^-P'</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span>
+<span class="nv">rules</span><span class="o">=</span><span class="si">$(</span>iptables <span class="nt">-S</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'^-P'</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span>
+<span class="nv">total</span><span class="o">=</span><span class="k">$((</span><span class="nv">$nat</span><span class="o">+</span><span class="nv">$rules</span><span class="k">))</span>
+
+<span class="nv">triedrules</span><span class="o">=</span><span class="si">$(</span><span class="nb">cat</span> /usr/bin/boot-firewall | <span class="nb">grep</span> <span class="s1">'^iptables.*'</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'.*-P.*\|.*-Z.*\|.*-F.*'</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$total</span> <span class="nt">-eq</span> <span class="nv">$triedrules</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+	</span><span class="nb">echo</span> <span class="s2">"se han aplicado todas las reglas"</span>
+	<span class="nb">exit </span>0
+<span class="k">else
+	</span><span class="nb">echo</span> <span class="s2">"algo salió mal"</span>
+	<span class="nb">exit </span>1
+<span class="k">fi</span></code></pre></figure>
+
+<p>Le daremos al fichero permisos de ejecución. Por seguridad le daré solo permisos de ejecución y lectura al propietario:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">chmod </span>500 boot-firewall</code></pre></figure>
+
+<p>Acto seguido, sitúo el <em>script</em> en <em>/usr/bin</em> y creo la unidad de systemd, que llamaré <em>boot-firewall.service</em> y la pondré en el directorio <em>/etc/systemd/system/</em>:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit]
+<span class="nv">Description</span><span class="o">=</span>iptables rules on boot
+<span class="nv">After</span><span class="o">=</span>networking.service
+<span class="nv">StartLimitIntervalSec</span><span class="o">=</span>0
+
+<span class="o">[</span>Service]
+<span class="nv">Type</span><span class="o">=</span>oneshot
+<span class="nv">RemainAfterExit</span><span class="o">=</span>True
+<span class="nv">User</span><span class="o">=</span>root
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/boot-firewall
+
+<span class="o">[</span>Install]
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</code></pre></figure>
+
+<p>En la directiva <em>After</em> indicamos después de que servicio podrá ejecutarse, y aquí le indico que se ejecute después de que se levanten las interfaces con <em>networking.service</em>. También le indico la ruta absoluta del script y qué usuario lo ejecutará.
+Después simplemente tengo que iniciar el servicio:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">systemctl start boot-firewall</code></pre></figure>
+
+<p>Y habilito que se ejecute en el inicio:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">systemctl <span class="nb">enable </span>boot-firewall</code></pre></figure>
+
+<p>Compruebo que se ha ejecutado correctamente:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@router-fw:~# systemctl status boot-firewall 
+● boot-firewall.service - iptables rules on boot
+   Loaded: loaded <span class="o">(</span>/etc/systemd/system/boot-firewall.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+   Active: active <span class="o">(</span>exited<span class="o">)</span> since Mon 2019-12-16 08:26:19 UTC<span class="p">;</span> 5s ago
+  Process: 7344 <span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/boot-firewall <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span>0/SUCCESS<span class="o">)</span>
+ Main PID: 7344 <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span>0/SUCCESS<span class="o">)</span>
+
+Dec 16 08:26:19 router-fw systemd[1]: Starting iptables rules on boot...
+Dec 16 08:26:19 router-fw boot-firewall[7344]: se han aplicado todas las reglas
+Dec 16 08:26:19 router-fw systemd[1]: Started iptables rules on boot.</code></pre></figure>
+
+<h2 id="mejora-utiliza-nuevas-cadenas-para-clasificar-el-tráfico">MEJORA: Utiliza nuevas cadenas para clasificar el tráfico.</h2>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Establecemos política ACCEPT para no perder la conexión al limpiar las tablas</span>
+iptables <span class="nt">-P</span> INPUT ACCEPT
+iptables <span class="nt">-P</span> OUTPUT ACCEPT
+iptables <span class="nt">-P</span> FORWARD ACCEPT
+
+<span class="c"># Limpiamos las tablas</span>
+iptables <span class="nt">-F</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-F</span>
+iptables <span class="nt">-Z</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-Z</span>
+
+<span class="c"># [Borramos las cadenas]</span>
+<span class="c"># iptables -X ROUTER_A_DMZ</span>
+<span class="c"># iptables -X ROUTER_A_LAN</span>
+<span class="c"># iptables -X ROUTER_A_EXT</span>
+<span class="c"># iptables -X EXT_A_ROUTER</span>
+<span class="c"># iptables -X DMZ_A_ROUTER</span>
+<span class="c"># iptables -X DMZ_A_EXT</span>
+<span class="c"># iptables -X DMZ_A_LAN</span>
+<span class="c"># iptables -X EXT_A_DMZ</span>
+<span class="c"># iptables -X LAN_A_ROUTER</span>
+<span class="c"># iptables -X LAN_A_EXT</span>
+<span class="c"># iptables -X LAN_A_DMZ</span>
+<span class="c"># iptables -X EXT_A_LAN</span>
+
+<span class="c"># Creamos las nuevas cadenas</span>
+
+<span class="c"># Cadena router a DMZ</span>
+iptables <span class="nt">-N</span> ROUTER_A_DMZ
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth2 <span class="nt">-d</span> 192.168.200.0/24 <span class="nt">-j</span> ROUTER_A_DMZ
+
+<span class="c"># Cadena router a LAN</span>
+iptables <span class="nt">-N</span> ROUTER_A_LAN
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth1 <span class="nt">-d</span> 192.168.100.0/24 <span class="nt">-j</span> ROUTER_A_LAN
+
+<span class="c"># Cadena router al exterior</span>
+iptables <span class="nt">-N</span> ROUTER_A_EXT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> eth0 <span class="nt">-j</span> ROUTER_A_EXT
+
+<span class="c"># Cadena exterior al router</span>
+iptables <span class="nt">-N</span> EXT_A_ROUTER
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth0 <span class="nt">-j</span> EXT_A_ROUTER
+
+<span class="c"># Cadena DMZ a router</span>
+iptables <span class="nt">-N</span> DMZ_A_ROUTER
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth2 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-j</span> DMZ_A_ROUTER
+
+<span class="c"># Cadena DMZ al exterior</span>
+iptables <span class="nt">-N</span> DMZ_A_EXT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-j</span> DMZ_A_EXT
+
+<span class="c"># Cadena DMZ a LAN</span>
+iptables <span class="nt">-N</span> DMZ_A_LAN
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth1 <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-j</span> DMZ_A_LAN
+
+<span class="c"># Cadena EXT a DMZ</span>
+iptables <span class="nt">-N</span> EXT_A_DMZ
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-j</span> EXT_A_DMZ
+
+<span class="c"># Cadena LAN a router</span>
+iptables <span class="nt">-N</span> LAN_A_ROUTER
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> eth1 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-j</span> LAN_A_ROUTER
+
+<span class="c"># Cadena LAN al exterior</span>
+iptables <span class="nt">-N</span> LAN_A_EXT
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth0 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-j</span> LAN_A_EXT
+
+<span class="c"># Cadena LAN a DMZ</span>
+iptables <span class="nt">-N</span> LAN_A_DMZ
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth1 <span class="nt">-o</span> eth2 <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-j</span> LAN_A_DMZ
+
+<span class="c"># Cadena EXT a LAN</span>
+iptables <span class="nt">-N</span> EXT_A_LAN
+iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth1 <span class="nt">-j</span> EXT_A_LAN
+
+
+
+<span class="c"># Habilitamos ssh para administrar, vamos a utilizar el módulo para filtrar por MAC,</span>
+<span class="c"># utilizando la MAC de croqueta para que solo podamos administrar el router desde allí.</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> mac <span class="nt">--mac-source</span> fa:16:3e:8f:8e:6e <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Establecemos la política</span>
+iptables <span class="nt">-P</span> INPUT DROP
+iptables <span class="nt">-P</span> OUTPUT DROP
+iptables <span class="nt">-P</span> FORWARD DROP
+
+<span class="c"># Bit de forward</span>
+<span class="nb">echo </span>1 <span class="o">&gt;</span> /proc/sys/net/ipv4/ip_forward
+
+
+<span class="c"># Redirigimos el tráfico directo del puerto 2222 al 22</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> tcp <span class="nt">--dport</span> 2222 <span class="nt">-j</span> REDIRECT <span class="nt">--to-ports</span> 22
+
+
+<span class="c"># Redirigimos el tráfico directo del puerto 22 a la loopback para inutilizarlo</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> DNAT <span class="nt">--to-destination</span> 127.0.0.1:22
+
+
+<span class="c"># Permitir SSH desde la LAN</span>
+iptables <span class="nt">-A</span> LAN_A_ROUTER <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> ROUTER_A_LAN <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir  SSH desde la DMZ</span>
+iptables <span class="nt">-A</span> DMZ_A_ROUTER <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> ROUTER_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-j</span> ACCEPT
+
+
+
+<span class="c"># Permitir tráfico loopback</span>
+iptables <span class="nt">-A</span> INPUT <span class="nt">-i</span> lo <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> OUTPUT <span class="nt">-o</span> lo <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping desde la DMZ</span>
+iptables <span class="nt">-A</span> DMZ_A_ROUTER <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> ROUTER_A_DMZ <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Rechazar ping desde la LAN </span>
+iptables <span class="nt">-A</span> LAN_A_ROUTER <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> REJECT <span class="nt">--reject-with</span> icmp-port-unreachable
+
+
+<span class="c"># Permitir ping a la LAN</span>
+iptables <span class="nt">-A</span> ROUTER_A_LAN <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> ROUTER_A_LAN <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> ROUTER_A_LAN <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_ROUTER <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping a la DMZ</span>
+iptables <span class="nt">-A</span> ROUTER_A_DMZ <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_ROUTER <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping al exterior</span>
+iptables <span class="nt">-A</span> ROUTER_A_EXT <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_ROUTER <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ping y ssh desde la DMZ a la LAN</span>
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-request <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> icmp <span class="nt">-m</span> icmp <span class="nt">--icmp-type</span> echo-reply <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir ssh desde la LAN a la DMZ</span>
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--dport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> tcp <span class="nt">--sport</span> 22 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c">#Permitir acceso de DMZ y LAN al exterior</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-s</span> 192.168.100.0/24 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-s</span> 192.168.200.0/24 <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+
+
+<span class="c"># Permitir ping desde la LAN al exterior</span>
+iptables <span class="nt">-A</span> LAN_A_EXT <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_LAN <span class="nt">-p</span> icmp <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir navegación web desde la LAN</span>
+iptables <span class="nt">-A</span> LAN_A_EXT <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_LAN <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_EXT <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_LAN <span class="nt">-p</span> udp <span class="nt">--sport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir navegación web desde la DMZ</span>
+iptables <span class="nt">-A</span> DMZ_A_EXT <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_DMZ <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_EXT <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_DMZ <span class="nt">-p</span> udp <span class="nt">--sport</span> 53 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor WEB de la DMZ desde el exterior</span>
+iptables <span class="nt">-A</span> EXT_A_DMZ <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_EXT <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor FTP de la DMZ desde el exterior</span>
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 21 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10:21
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 21 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-j</span> SNAT <span class="nt">--to</span> 192.168.200.2
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> PREROUTING <span class="nt">-i</span> eth0 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 20 <span class="nt">-j</span> DNAT <span class="nt">--to</span> 192.168.200.10:21
+iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--dport</span> 20 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-j</span> SNAT <span class="nt">--to</span> 192.168.200.2
+iptables <span class="nt">-A</span> EXT_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 21 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_DMZ <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 20 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> EXT_A_DMZ <span class="nt">-i</span> eth0 <span class="nt">-o</span> eth2 <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_EXT <span class="nt">-i</span> eth2 <span class="nt">-o</span> eth0 <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor WEB de la DMZ desde la LAN</span>
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--dports</span> 80,443 <span class="nt">-d</span> 192.168.200.10 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> tcp <span class="nt">-m</span> multiport <span class="nt">--sports</span> 80,443 <span class="nt">-s</span> 192.168.200.10 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c">#Permitir acceso al servidor FTP de la DMZ desde la LAN</span>
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 21 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--syn</span> <span class="nt">--dport</span> 20 <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> NEW <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> tcp <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> ESTABLISHED,RELATED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor de correos de la DMZ desde la LAN</span>
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--dport</span> 25 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> tcp <span class="nt">--sport</span> 25 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT
+
+
+<span class="c"># Permitir acceso al servidor MYSQL de la LAN desde la DMZ</span>
+iptables <span class="nt">-A</span> DMZ_A_LAN <span class="nt">-p</span> tcp <span class="nt">--dport</span> 3306 <span class="nt">-m</span> state <span class="nt">--state</span> NEW,ESTABLISHED <span class="nt">-j</span> ACCEPT
+iptables <span class="nt">-A</span> LAN_A_DMZ <span class="nt">-p</span> tcp <span class="nt">--sport</span> 3306 <span class="nt">-m</span> state <span class="nt">--state</span> ESTABLISHED <span class="nt">-j</span> ACCEPT</code></pre></figure>
+
+<h2 id="mejora-consruye-el-cortafuego-utilizando-nftables">MEJORA: Consruye el cortafuego utilizando nftables.</h2>
+
+<p>Utilizando la herramienta <em>iptables-translate</em>, y un pequeño <em>script</em> para facilitar el trabajo, he transformado las reglas <em>iptables</em> que ya tenía creadas en el cortafuegos a <em>nftables</em>. El <em>script</em> que he utilizado tiene el siguiente contenido:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+
+<span class="c"># Guarda todas las reglas iptables en un fichero,</span>
+<span class="c"># excepto las relgas de las directivas generales</span>
+iptables <span class="nt">-S</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'^\-P.*'</span> <span class="o">&gt;</span> /home/debian/iptables.txt
+iptables <span class="nt">-t</span> nat <span class="nt">-S</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s1">'^\-P.*'</span> <span class="o">&gt;&gt;</span> /home/debian/iptables.txt
+
+<span class="c"># Inyecta el contenido del fichero en la salida nº3</span>
+<span class="nb">exec </span>3&lt; /home/debian/iptables.txt
+<span class="nv">contador</span><span class="o">=</span>0
+
+<span class="c"># Recorre el fichero, y le da un formato correcto:</span>
+<span class="c">#       -Pone todo el tecto en minúsculas (con tr)</span>
+<span class="c">#       -Cambia el tipo "ip" a "innet" (con sed)</span>
+<span class="c">#       -Crea un fichero y añade las relgas</span>
+<span class="k">while </span><span class="nb">read </span>linea &lt;&amp;3<span class="p">;</span> <span class="k">do
+        if</span> <span class="o">[</span> <span class="nv">$contador</span> <span class="nt">-eq</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+                </span>iptables-translate <span class="nv">$linea</span> | <span class="nb">tr</span> <span class="o">[</span>:upper:] <span class="o">[</span>:lower:] <span class="se">\</span>
+                | <span class="nb">sed</span> <span class="s1">'s/\ ip\ /\ inet\ /g'</span> <span class="o">&gt;</span> nftables.txt
+        <span class="k">else
+                </span>iptables-translate <span class="nv">$linea</span> | <span class="nb">tr</span> <span class="o">[</span>:upper:] <span class="o">[</span>:lower:] <span class="se">\</span>
+                | <span class="nb">sed</span> <span class="s1">'s/\ ip\ /\ inet\ /g'</span> <span class="o">&gt;&gt;</span> nftables.txt
+        <span class="k">fi
+        </span><span class="nv">contador</span><span class="o">=</span><span class="k">$((</span><span class="nv">$contador</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>
+<span class="k">done</span></code></pre></figure>
+
+<p>Una vez ejecutado, me ha dado el siguiente resultado:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">nft add rule inet filter input tcp dport 22 ether saddr fa:16:3e:8f:8e:6e counter accept
+nft add rule inet filter input inet saddr 192.168.100.0/24 tcp dport 22 counter accept
+nft add rule inet filter input inet saddr 192.168.200.0/24 tcp dport 22 counter accept
+nft add rule inet filter input iifname <span class="s2">"lo"</span> counter accept
+nft add rule inet filter input iifname <span class="s2">"eth2"</span> inet saddr 192.168.200.0/24 icmp <span class="nb">type </span>echo-request counter accept
+nft add rule inet filter input iifname <span class="s2">"eth1"</span> inet saddr 192.168.100.0/24 icmp <span class="nb">type </span>echo-request counter reject
+nft add rule inet filter input iifname <span class="s2">"eth1"</span> inet saddr 192.168.100.0/24 icmp <span class="nb">type </span>echo-reply counter accept
+nft add rule inet filter input iifname <span class="s2">"eth2"</span> inet saddr 192.168.200.0/24 icmp <span class="nb">type </span>echo-reply counter accept
+nft add rule inet filter input iifname <span class="s2">"eth0"</span> icmp <span class="nb">type </span>echo-reply counter accept
+nft add rule inet filter output tcp sport 22 counter accept
+nft add rule inet filter output inet daddr 192.168.100.0/24 tcp sport 22 counter accept
+nft add rule inet filter output inet daddr 192.168.200.0/24 tcp sport 22 counter accept
+nft add rule inet filter output oifname <span class="s2">"lo"</span> counter accept
+nft add rule inet filter output oifname <span class="s2">"eth2"</span> inet daddr 192.168.200.0/24 icmp <span class="nb">type </span>echo-reply counter accept
+nft add rule inet filter output oifname <span class="s2">"eth1"</span> inet daddr 192.168.100.0/24 icmp <span class="nb">type </span>echo-reply counter accept
+nft add rule inet filter output oifname <span class="s2">"eth1"</span> inet protocol icmp inet daddr 192.168.100.0/24 ct state related  counter accept
+nft add rule inet filter output oifname <span class="s2">"eth1"</span> inet daddr 192.168.100.0/24 icmp <span class="nb">type </span>echo-request counter accept
+nft add rule inet filter output oifname <span class="s2">"eth2"</span> inet daddr 192.168.200.0/24 icmp <span class="nb">type </span>echo-request counter accept
+nft add rule inet filter output oifname <span class="s2">"eth0"</span> icmp <span class="nb">type </span>echo-request counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> tcp dport 22 ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> tcp sport 22 ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> inet saddr 192.168.200.0/24 icmp <span class="nb">type </span>echo-request counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> inet daddr 192.168.200.0/24 icmp <span class="nb">type </span>echo-reply counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> tcp dport 22 ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> tcp sport 22 ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth0"</span> inet protocol icmp ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth1"</span> inet protocol icmp ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth0"</span> inet protocol tcp tcp dport <span class="o">{</span> 80,443<span class="o">}</span> ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth1"</span> inet protocol tcp tcp sport <span class="o">{</span> 80,443<span class="o">}</span> ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth0"</span> udp dport 53 ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth1"</span> udp sport 53 ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth0"</span> inet protocol tcp tcp dport <span class="o">{</span> 80,443<span class="o">}</span> ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth2"</span> inet protocol tcp tcp sport <span class="o">{</span> 80,443<span class="o">}</span> ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth0"</span> udp dport 53 ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth2"</span> udp sport 53 ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth2"</span> inet protocol tcp tcp dport <span class="o">{</span> 80,443<span class="o">}</span> ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth0"</span> inet protocol tcp tcp sport <span class="o">{</span> 80,443<span class="o">}</span> ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth2"</span> tcp dport 21 tcp flags &amp; <span class="o">(</span>fin|syn|rst|ack<span class="o">)</span> <span class="o">==</span> syn ct state new counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth2"</span> tcp dport 20 tcp flags &amp; <span class="o">(</span>fin|syn|rst|ack<span class="o">)</span> <span class="o">==</span> syn ct state new counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth0"</span> oifname <span class="s2">"eth2"</span> inet protocol tcp ct state related,established counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth0"</span> inet protocol tcp ct state related,established counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> inet protocol tcp inet daddr 192.168.200.10 tcp dport <span class="o">{</span> 80,443<span class="o">}</span> ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> inet protocol tcp inet saddr 192.168.200.10 tcp sport <span class="o">{</span> 80,443<span class="o">}</span> ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> tcp dport 21 tcp flags &amp; <span class="o">(</span>fin|syn|rst|ack<span class="o">)</span> <span class="o">==</span> syn ct state new counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> tcp dport 20 tcp flags &amp; <span class="o">(</span>fin|syn|rst|ack<span class="o">)</span> <span class="o">==</span> syn ct state new counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> inet protocol tcp ct state related,established counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> inet protocol tcp ct state related,established counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> tcp dport 25 ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> tcp sport 25 ct state established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth2"</span> oifname <span class="s2">"eth1"</span> tcp dport 3306 ct state new,established  counter accept
+nft add rule inet filter forward iifname <span class="s2">"eth1"</span> oifname <span class="s2">"eth2"</span> tcp sport 3306 ct state established  counter accept
+nft add rule inet filter prerouting iifname <span class="s2">"eth0"</span> tcp dport 2222 counter redirect to :22
+nft add rule inet filter prerouting iifname <span class="s2">"eth0"</span> tcp dport 22 counter dnat to 127.0.0.1:22
+nft add rule inet filter prerouting iifname <span class="s2">"eth0"</span> tcp dport 21 counter dnat to 192.168.200.10:21
+nft add rule inet filter prerouting iifname <span class="s2">"eth0"</span> tcp dport 20 counter dnat to 192.168.200.10:21
+nft add rule inet filter postrouting oifname <span class="s2">"eth0"</span> inet saddr 192.168.100.0/24 counter masquerade 
+nft add rule inet filter postrouting oifname <span class="s2">"eth0"</span> inet saddr 192.168.200.0/24 counter masquerade 
+nft add rule inet filter postrouting oifname <span class="s2">"eth2"</span> inet daddr 192.168.200.10 tcp dport 21 counter snat to 192.168.200.2
+nft add rule inet filter postrouting oifname <span class="s2">"eth2"</span> inet daddr 192.168.200.10 tcp dport 20 counter snat to 192.168.200.2</code></pre></figure>
+
+<p>Podríamos modificar el <em>script</em> para que en vez de guardar las relgas en un fichero, limpiase las de <em>iptables</em> y ejecutase las de <em>nftables</em>. Esto sería un poco absurdo, ya que aunque introduzcamos las reglas con <em>comandos</em> y <em>sintaxis</em> de <em>iptables</em>, en realidad, se están ejecutando a bajo nivel reglas de <em>nftables</em></p>
+
+            </article>
+
+            <section class="share">
+    <h3>Compartir</h3>
+    <a aria-label="Share on Twitter" href="https://twitter.com/intent/tweet?text=&quot;&quot;%20https://blog.luisvazquezalejo.es/Practica-Cortafuegos-perimetral-con-DMZ/%20via%20&#64;&hashtags=iptables,nftables,"
+    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" title="Compartir en Twitter">
+        <svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>
+    </a>
+    <a aria-label="Share on Facebook"href="https://www.facebook.com/sharer/sharer.php?u=https://blog.luisvazquezalejo.es/Practica-Cortafuegos-perimetral-con-DMZ/"
+    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" title="Compartir en Facebook">
+        <svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>
+    </a>
+</section>
+
+            <section class="author" itemprop="author">
+    <div class="details" itemscope itemtype="http://schema.org/Person">
+        <img itemprop="image" class="img-rounded" src="/assets/img/blog-author.jpg" alt="">
+        <p class="def">Autor</p>
+        <p class="desc">Administrador de Sistemas Informáticos en Red</p>
+        <a itemprop="email" class="email" href="mailto:mail@luisvazquezalejo.es">mail@luisvazquezalejo.es</a>
+    </div>
+</section>
+
+            <footer>
+    <p>Plantilla hecha con <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> y <span class="love">❤</span> por <a href="https://willianjusten.com.br">Willian Justen</a></p>
+</footer>
+<script src="/assets/js/main.js"></script>
+
+        </section>
+    </body>
+</html>

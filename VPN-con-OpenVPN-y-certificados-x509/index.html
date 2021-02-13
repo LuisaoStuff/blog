@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>VPN con OpenVPN y certificados x509</title>
+    <meta name="description" content="Administrador de Sistemas Informáticos en Red">
+
+    <!-- Google Authorship Markup -->
+    <link rel="author" href="https://plus.google.com/?rel=author">
+
+    <!-- Social: Twitter -->
+    <meta name="twitter:card" content="summary_large_image"> 
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:title" content="VPN con OpenVPN y certificados x509">
+    <meta name="twitter:description" content="Administrador de Sistemas Informáticos en Red">
+    
+    <meta property="twitter:image:src" content="/assets/img/blog-image.png">
+    
+    <!-- Social: Facebook / Open Graph -->
+    <meta property="og:url" content="/VPN-con-OpenVPN-y-certificados-x509/">
+    <meta property="og:title" content="VPN con OpenVPN y certificados x509">
+    
+    <meta property="og:image" content="/assets/img/blog-image.png">
+    
+    <meta property="og:description" content="Administrador de Sistemas Informáticos en Red">
+    <meta property="og:site_name" content="Luis Vázquez Alejo">
+    <!-- Social: Google+ / Schema.org  -->
+    <meta itemprop="name" content="VPN con OpenVPN y certificados x509"/>
+    <meta itemprop="description" content="Administrador de Sistemas Informáticos en Red">
+    <meta itemprop="image" content="/assets/img/blog-image.png"/>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/img/icons/favicon.ico" type="image/x-icon" />
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/assets/img/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/icons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/icons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/icons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/img/icons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/img/icons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/img/icons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/icons/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/img/icons/apple-touch-icon-152x152.png" />
+    <!-- Windows 8 Tile Icons -->
+    <meta name="application-name" content="Luis Vázquez Alejo Blog">
+    <meta name="msapplication-TileColor" content="#0562DC">
+    <meta name="msapplication-square70x70logo" content="smalltile.png" />
+    <meta name="msapplication-square150x150logo" content="mediumtile.png" />
+    <meta name="msapplication-wide310x150logo" content="widetile.png" />
+    <meta name="msapplication-square310x310logo" content="largetile.png" />
+    <!-- Android Lolipop Theme Color -->
+    <meta name="theme-color" content="#0562DC">
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="/VPN-con-OpenVPN-y-certificados-x509/">
+    <link rel="alternate" type="application/rss+xml" title="Luis Vázquez Alejo" href="/feed.xml" />
+</head>
+
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" display="none" version="1.1"><defs><symbol id="icon-menu" viewBox="0 0 1024 1024"><path class="path1" d="M128 213.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 725.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5zM128 469.333h768q17.667 0 30.167 12.5t12.5 30.167-12.5 30.167-30.167 12.5h-768q-17.667 0-30.167-12.5t-12.5-30.167 12.5-30.167 30.167-12.5z"/></symbol><symbol id="icon-search" viewBox="0 0 951 1024"><path class="path1" d="M658.286 475.429q0-105.714-75.143-180.857t-180.857-75.143-180.857 75.143-75.143 180.857 75.143 180.857 180.857 75.143 180.857-75.143 75.143-180.857zM950.857 950.857q0 29.714-21.714 51.429t-51.429 21.714q-30.857 0-51.429-21.714l-196-195.429q-102.286 70.857-228 70.857-81.714 0-156.286-31.714t-128.571-85.714-85.714-128.571-31.714-156.286 31.714-156.286 85.714-128.571 128.571-85.714 156.286-31.714 156.286 31.714 128.571 85.714 85.714 128.571 31.714 156.286q0 125.714-70.857 228l196 196q21.143 21.143 21.143 51.429z"/></symbol><symbol id="icon-email" viewBox="0 0 1024 1024"><path class="path1" d="M950.857 859.429v-438.857q-18.286 20.571-39.429 37.714-153.143 117.714-243.429 193.143-29.143 24.571-47.429 38.286t-49.429 27.714-58.571 14h-1.143q-27.429 0-58.571-14t-49.429-27.714-47.429-38.286q-90.286-75.429-243.429-193.143-21.143-17.143-39.429-37.714v438.857q0 7.429 5.429 12.857t12.857 5.429h841.143q7.429 0 12.857-5.429t5.429-12.857zM950.857 258.857v-14t-0.286-7.429-1.714-7.143-3.143-5.143-5.143-4.286-8-1.429h-841.143q-7.429 0-12.857 5.429t-5.429 12.857q0 96 84 162.286 110.286 86.857 229.143 181.143 3.429 2.857 20 16.857t26.286 21.429 25.429 18 28.857 15.714 24.571 5.143h1.143q11.429 0 24.571-5.143t28.857-15.714 25.429-18 26.286-21.429 20-16.857q118.857-94.286 229.143-181.143 30.857-24.571 57.429-66t26.571-75.143zM1024 237.714v621.714q0 37.714-26.857 64.571t-64.571 26.857h-841.143q-37.714 0-64.571-26.857t-26.857-64.571v-621.714q0-37.714 26.857-64.571t64.571-26.857h841.143q37.714 0 64.571 26.857t26.857 64.571z"/></symbol><symbol id="icon-close" viewBox="0 0 805 1024"><path class="path1" d="M741.714 755.429q0 22.857-16 38.857l-77.714 77.714q-16 16-38.857 16t-38.857-16l-168-168-168 168q-16 16-38.857 16t-38.857-16l-77.714-77.714q-16-16-16-38.857t16-38.857l168-168-168-168q-16-16-16-38.857t16-38.857l77.714-77.714q16-16 38.857-16t38.857 16l168 168 168-168q16-16 38.857-16t38.857 16l77.714 77.714q16 16 16 38.857t-16 38.857l-168 168 168 168q16 16 16 38.857z"/></symbol><symbol id="icon-twitter" viewBox="0 0 951 1024"><path class="path1" d="M925.714 233.143q-38.286 56-92.571 95.429 0.571 8 0.571 24 0 74.286-21.714 148.286t-66 142-105.429 120.286-147.429 83.429-184.571 31.143q-154.857 0-283.429-82.857 20 2.286 44.571 2.286 128.571 0 229.143-78.857-60-1.143-107.429-36.857t-65.143-91.143q18.857 2.857 34.857 2.857 24.571 0 48.571-6.286-64-13.143-106-63.714t-42-117.429v-2.286q38.857 21.714 83.429 23.429-37.714-25.143-60-65.714t-22.286-88q0-50.286 25.143-93.143 69.143 85.143 168.286 136.286t212.286 56.857q-4.571-21.714-4.571-42.286 0-76.571 54-130.571t130.571-54q80 0 134.857 58.286 62.286-12 117.143-44.571-21.143 65.714-81.143 101.714 53.143-5.714 106.286-28.571z"/></symbol><symbol id="icon-facebook" viewBox="0 0 585 1024"><path class="path1" d="M548 6.857v150.857h-89.714q-49.143 0-66.286 20.571t-17.143 61.714v108h167.429l-22.286 169.143h-145.143v433.714h-174.857v-433.714h-145.714v-169.143h145.714v-124.571q0-106.286 59.429-164.857t158.286-58.571q84 0 130.286 6.857z"/></symbol><symbol id="icon-rss" viewBox="0 0 805 1024"><path class="path1" d="M219.429 768q0 45.714-32 77.714t-77.714 32-77.714-32-32-77.714 32-77.714 77.714-32 77.714 32 32 77.714zM512 838.286q1.143 16-9.714 27.429-10.286 12-26.857 12h-77.143q-14.286 0-24.571-9.429t-11.429-23.714q-12.571-130.857-105.429-223.714t-223.714-105.429q-14.286-1.143-23.714-11.429t-9.429-24.571v-77.143q0-16.571 12-26.857 9.714-9.714 24.571-9.714h2.857q91.429 7.429 174.857 46t148 103.714q65.143 64.571 103.714 148t46 174.857zM804.571 839.429q1.143 15.429-10.286 26.857-10.286 11.429-26.286 11.429h-81.714q-14.857 0-25.429-10t-11.143-24.286q-6.857-122.857-57.714-233.429t-132.286-192-192-132.286-233.429-58.286q-14.286-0.571-24.286-11.143t-10-24.857v-81.714q0-16 11.429-26.286 10.286-10.286 25.143-10.286h1.714q149.714 7.429 286.571 68.571t243.143 168q106.857 106.286 168 243.143t68.571 286.571z"/></symbol><symbol id="icon-google-plus" viewBox="0 0 951 1024"><path class="path1" d="M420 454.857q0 20.571 18.286 40.286t44.286 38.857 51.714 42 44 59.429 18.286 81.143q0 51.429-27.429 98.857-41.143 69.714-120.571 102.571t-170.286 32.857q-75.429 0-140.857-23.714t-98-78.571q-21.143-34.286-21.143-74.857 0-46.286 25.429-85.714t67.714-65.714q74.857-46.857 230.857-57.143-18.286-24-27.143-42.286t-8.857-41.714q0-20.571 12-48.571-26.286 2.286-38.857 2.286-84.571 0-142.571-55.143t-58-139.714q0-46.857 20.571-90.857t56.571-74.857q44-37.714 104.286-56t124.286-18.286h238.857l-78.857 50.286h-74.857q42.286 36 64 76t21.714 91.429q0 41.143-14 74t-33.714 53.143-39.714 37.143-34 35.143-14 37.714zM336.571 400q21.714 0 44.571-9.429t37.714-24.857q30.286-32.571 30.286-90.857 0-33.143-9.714-71.429t-27.714-74-48.286-59.143-66.857-23.429q-24 0-47.143 11.143t-37.429 30q-26.857 33.714-26.857 91.429 0 26.286 5.714 55.714t18 58.857 29.714 52.857 42.857 38.286 55.143 14.857zM337.714 898.857q33.143 0 63.714-7.429t56.571-22.286 41.714-41.714 15.714-62.286q0-14.286-4-28t-8.286-24-15.429-23.714-16.857-20-22-19.714-20.857-16.571-23.714-17.143-20.857-14.857q-9.143-1.143-27.429-1.143-30.286 0-60 4t-61.429 14.286-55.429 26.286-39.143 42.571-15.429 60.286q0 40 20 70.571t52.286 47.429 68 25.143 72.857 8.286zM800.571 398.286h121.714v61.714h-121.714v125.143h-60v-125.143h-121.143v-61.714h121.143v-124h60v124z"/></symbol><symbol id="icon-angle-down" viewBox="0 0 658 1024"><path class="path1" d="M614.286 420.571q0 7.429-5.714 13.143l-266.286 266.286q-5.714 5.714-13.143 5.714t-13.143-5.714l-266.286-266.286q-5.714-5.714-5.714-13.143t5.714-13.143l28.571-28.571q5.714-5.714 13.143-5.714t13.143 5.714l224.571 224.571 224.571-224.571q5.714-5.714 13.143-5.714t13.143 5.714l28.571 28.571q5.714 5.714 5.714 13.143z"/></symbol><symbol id="icon-github-alt" viewBox="0 0 951 1024"><path class="path1" d="M365.714 694.857q0 22.857-7.143 46.857t-24.571 43.429-41.429 19.429-41.429-19.429-24.571-43.429-7.143-46.857 7.143-46.857 24.571-43.429 41.429-19.429 41.429 19.429 24.571 43.429 7.143 46.857zM731.429 694.857q0 22.857-7.143 46.857t-24.571 43.429-41.429 19.429-41.429-19.429-24.571-43.429-7.143-46.857 7.143-46.857 24.571-43.429 41.429-19.429 41.429 19.429 24.571 43.429 7.143 46.857zM822.857 694.857q0-68.571-39.429-116.571t-106.857-48q-23.429 0-111.429 12-40.571 6.286-89.714 6.286t-89.714-6.286q-86.857-12-111.429-12-67.429 0-106.857 48t-39.429 116.571q0 50.286 18.286 87.714t46.286 58.857 69.714 34.286 80 16.857 85.143 4h96q46.857 0 85.143-4t80-16.857 69.714-34.286 46.286-58.857 18.286-87.714zM950.857 594.286q0 118.286-34.857 189.143-21.714 44-60.286 76t-80.571 49.143-97.143 27.143-98 12.571-95.429 2.571q-44.571 0-81.143-1.714t-84.286-7.143-87.143-17.143-78.286-29.429-69.143-46.286-49.143-65.714q-35.429-70.286-35.429-189.143 0-135.429 77.714-226.286-15.429-46.857-15.429-97.143 0-66.286 29.143-124.571 61.714 0 108.571 22.571t108 70.571q84-20 176.571-20 84.571 0 160 18.286 60-46.857 106.857-69.143t108-22.286q29.143 58.286 29.143 124.571 0 49.714-15.429 96 77.714 91.429 77.714 227.429z"/></symbol></defs></svg>
+
+        <header class="header-post" role="banner">
+    <div class="content">
+        
+            <time itemprop="datePublished" datetime="2020-01-27 12:19:00 +0000" class="date">27 Jan 2020</time>
+        
+        <h1 class="post-title" itemprop="name">VPN con OpenVPN y certificados x509</h1>
+        <p itemprop="description" class="subtitle"></p>
+    </div>
+     <a class="down" data-scroll href="#scroll"><svg class="icon icon-angle-down"><use xlink:href="#icon-angle-down"></use></svg></a>
+     <div class="search-wrapper">
+    <div class="search-form">
+        <input type="text" class="search-field" placeholder="Buscar...">
+        <svg class="icon-remove-sign"><use xlink:href="#icon-close"></use></svg>
+        <ul class="search-results search-list"></ul>
+    </div>
+</div>
+
+<div id="fade" class="overlay"></div>
+<a id="slide" class="slideButton fade">
+    <svg id="open" class="icon-menu"><use xlink:href="#icon-menu"></use></svg>
+    <svg id="close" class="icon-menu"><use xlink:href="#icon-close"></use></svg>
+</a>
+<aside id="sidebar">
+<nav id="navigation">
+  <h2>MENU</h2>
+  <ul>
+    
+    
+      <li><a href="/">Inicio</a></li>
+    
+    
+    
+      <li><a href="/categorias">Categorías</a></li>
+    
+    
+    
+      <li><a href="/tags">Tags</a></li>
+    
+    
+    
+      <li><a href="/sobre-mi">Sobre mí</a></li>
+    
+    
+  </ul>
+</nav>
+</aside>
+<a id="search" class="dosearch">
+    <svg class="icon-menu icon-search"><use xlink:href="#icon-search"></use></svg>
+</a>
+
+</header>
+
+        <section class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+            <article role="article" id="scroll" class="post-content" itemprop="articleBody">
+                <h2 id="introducción">Introducción</h2>
+
+<p><strong>OpenVPN</strong> es un paquete que ofrece un servicio de Redes Privadas Virtuales (VPN). Estas redes sirven para interconectar dos redes distintas de manera que puedan tener conectividad como si estuviesen dentro de la misma red local.
+Además de esta funcionalidad, aporta un sistema de cifrado de la conexión y una gran flexibilidad a la hora de configurar el tipo de conexión que deseemos (tcp, udp, mayor o menor cifrado, etc).
+En el siguiente supuesto práctico vamos a interconectar dos máquinas que están en redes separadas, y para ello vamos a crear una <em>VPN</em> con el rango <strong>10.99.99.0/32</strong>. Dividiremos la configuración en dos partes; la configuración del lado del servidor, que también se comportará como autoridad certificadora, y la configuración del lado del cliente.</p>
+
+<h3 id="configuración-del-servidor-y-ca">Configuración del servidor y CA</h3>
+
+<ul>
+  <li><strong>Atención</strong>: Esta configuración está hecha sobre una máquina <em>Vagrant</em> con el sistema <em>Debian Buster</em> y con el script <strong>easyrsa3</strong>. Si queréis replicar el ejercicio os dejo por aquí el fichero vagrant del <a href="/docs/EscenarioVPN/Vagrantfile">servidor</a> y el del <a href="/docs/EscenarioVPNclient/Vagrantfile">cliente</a>.</li>
+</ul>
+
+<p>Para hacer esto vamos a hacer uso del repositorio que nos da <em>OpenVPN</em> y que contiene los <em>scripts</em> necesarios para generar todas las claves, tanto la clave autofirmada, como las claves del cliente y del servidor. Por norma general necesitaremos las siguientes credenciales <em>como mínimo</em>.</p>
+<ul>
+  <li>Autoridad certificadora (CA)
+    <ul>
+      <li>Certificado - <strong>.crt</strong></li>
+      <li>Clave privada - <strong>.key</strong></li>
+    </ul>
+  </li>
+  <li>Servidor
+    <ul>
+      <li>Certificado - <strong>.crt</strong></li>
+      <li>Clave privada - <strong>.key</strong></li>
+    </ul>
+  </li>
+  <li>Clave <a href="https://es.wikipedia.org/wiki/Diffie-Hellman">Diffie Hellman</a> - <strong>.pem</strong></li>
+</ul>
+
+<h4 id="preparación-del-entorno">Preparación del entorno</h4>
+
+<p>Vamos a necesitar el paquete <strong>git</strong> por lo que lo instalamos con <strong>apt</strong> y acto seguido clonamos el <a href="https://github.com/OpenVPN/easy-rsa">repositorio</a>. Por supuesto también necesitaremos instalar el paquete <strong>openvpn</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">apt <span class="nb">install </span>git
+apt <span class="nb">install </span>openvpn
+git clone https://github.com/OpenVPN/easy-rsa</code></pre></figure>
+
+<p>Entramos en el directorio generado y vamos a empezar por declarar las variables que utilizaremos para generar los certificados. Para ello copiamos el fichero <strong>./easyrsa3/vars.example</strong> en <strong>./easyrsa3/vars</strong> y modificamos las siguientes lineas.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Organizational fields (used with 'org' mode and ignored in 'cn_only' mode.)</span>
+<span class="c"># These are the default values for fields which will be placed in the</span>
+<span class="c"># certificate.  Don't leave any of these fields blank, although interactively</span>
+<span class="c"># you may omit any specific field by typing the "." symbol (not valid for</span>
+<span class="c"># email.)</span>
+
+set_var EASYRSA_REQ_COUNTRY     <span class="s2">"ES"</span>
+set_var EASYRSA_REQ_PROVINCE    <span class="s2">"Sevilla"</span>
+set_var EASYRSA_REQ_CITY        <span class="s2">"Dos Hermanas"</span>
+set_var EASYRSA_REQ_ORG         <span class="s2">"iesgn.org"</span>
+set_var EASYRSA_REQ_EMAIL       <span class="s2">"luis@iesgn.org"</span>
+set_var EASYRSA_REQ_OU          <span class="s2">"iesgn.org"</span></code></pre></figure>
+
+<p><em>Estas variables tendrás que cambiarlas según tus necesidades</em>
+A partir de ahora vamos a utilizar el <em>script</em> <strong>./easyrsa3/easyrsa</strong>. Primero vamos a generar el directorio <strong>./pki/</strong> donde se almacenarán todas las claves y certificados.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/home/vagrant/easy-rsa/easyrsa3# <span class="nb">chmod </span>700 ./easyrsa
+root@servidor:/home/vagrant/easy-rsa/easyrsa3# ./easyrsa init-pki
+
+Note: using Easy-RSA configuration from: /home/vagrant/easy-rsa/easyrsa3/vars
+
+init-pki <span class="nb">complete</span><span class="p">;</span> you may now create a CA or requests.
+Your newly created PKI <span class="nb">dir </span>is: /home/vagrant/easy-rsa/easyrsa3/pki</code></pre></figure>
+
+<h4 id="credenciales-ca">Credenciales CA</h4>
+
+<p>Una vez hecho esto procedemos a generar todas las claves. Empezaremos creando las credenciales de la <em>CA</em> y lo haremos utilizando el parámetro <strong>build-ca</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/home/vagrant/easy-rsa/easyrsa3# ./easyrsa build-ca
+
+Note: using Easy-RSA configuration from: /home/vagrant/easy-rsa/easyrsa3/vars
+Using SSL: openssl OpenSSL 1.1.1d  10 Sep 2019
+
+Enter New CA Key Passphrase: 
+Re-Enter New CA Key Passphrase: 
+Generating RSA private key, 2048 bit long modulus <span class="o">(</span>2 primes<span class="o">)</span>
+.............+++++
+...............................................................+++++
+e is 65537 <span class="o">(</span>0x010001<span class="o">)</span>
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter <span class="s1">'.'</span>, the field will be left blank.
+<span class="nt">-----</span>
+Common Name <span class="o">(</span>eg: your user, host, or server name<span class="o">)</span> <span class="o">[</span>Easy-RSA CA]:iesgn.org
+
+CA creation <span class="nb">complete </span>and you may now import and sign cert requests.
+Your new CA certificate file <span class="k">for </span>publishing is at:
+/home/vagrant/easy-rsa/easyrsa3/pki/ca.crt</code></pre></figure>
+
+<p>Durante este proceso nos pedirá una clave, que será la frase de paso de la clave privada de la CA. Clave que nos pedirá en el siguiente paso para generar las credenciales del servidor.</p>
+
+<h4 id="credenciales-servidor">Credenciales Servidor</h4>
+
+<p>El próximo parámetro que utilizaremos con el <em>script</em> será <strong>build-server-full</strong> seguido del nombre que queramos que tengan los ficheros. Primero nos pedirá una frase de paso para proteger la clave privada del servidor, y luego nos pedirá la frase de paso de la <em>CA</em> para que pueda firmar dicha clave.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/home/vagrant/easy-rsa/easyrsa3# ./easyrsa build-server-full servidor
+
+Note: using Easy-RSA configuration from: /home/vagrant/easy-rsa/easyrsa3/vars
+Using SSL: openssl OpenSSL 1.1.1d  10 Sep 2019
+Generating a RSA private key
+...........................................................................................................+++++
+..................+++++
+writing new private key to <span class="s1">'/home/vagrant/easy-rsa/easyrsa3/pki/easy-rsa-3372.AelZRV/tmp.J3IpE5'</span>
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
+<span class="nt">-----</span>
+Using configuration from /home/vagrant/easy-rsa/easyrsa3/pki/easy-rsa-3372.AelZRV/tmp.3XTNjT
+Enter pass phrase <span class="k">for</span> /home/vagrant/easy-rsa/easyrsa3/pki/private/ca.key:
+Check that the request matches the signature
+Signature ok
+The Subject<span class="s1">'s Distinguished Name is as follows
+commonName            :ASN.1 12:'</span>servidor<span class="s1">'
+Certificate is to be certified until May  2 12:25:09 2022 GMT (825 days)
+
+Write out database with 1 new entries
+Data Base Updated</span></code></pre></figure>
+
+<h4 id="credenciales-cliente">Credenciales Cliente</h4>
+
+<p>En mi caso, voy a llamar al cliente “Fernando”, y el parámetro a utilizar es muy similar al que hemos usado con el servidor. Generaremos las claves ejecutando <code class="language-plaintext highlighter-rouge">easyrsa build-client-full Fernando</code> y de la misma forma nos pedirá las dos claves, tal y como pasó antes.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/home/vagrant/easy-rsa/easyrsa3# ./easyrsa build-client-full Fernando
+
+Note: using Easy-RSA configuration from: /home/vagrant/easy-rsa/easyrsa3/vars
+Using SSL: openssl OpenSSL 1.1.1d  10 Sep 2019
+Generating a RSA private key
+.+++++
+........+++++
+writing new private key to <span class="s1">'/home/vagrant/easy-rsa/easyrsa3/pki/easy-rsa-3486.GLtIgl/tmp.Cs3XMF'</span>
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
+<span class="nt">-----</span>
+Using configuration from /home/vagrant/easy-rsa/easyrsa3/pki/easy-rsa-3486.GLtIgl/tmp.bqpjRz
+Enter pass phrase <span class="k">for</span> /home/vagrant/easy-rsa/easyrsa3/pki/private/ca.key:
+Check that the request matches the signature
+Signature ok
+The Subject<span class="s1">'s Distinguished Name is as follows
+commonName            :ASN.1 12:'</span>Fernando<span class="s1">'
+Certificate is to be certified until May  2 12:30:04 2022 GMT (825 days)
+
+Write out database with 1 new entries
+Data Base Updated</span></code></pre></figure>
+
+<h4 id="clave-diffie-hellman">Clave Diffie Hellman</h4>
+
+<p>Por último solo nos queda generar esta clave, para la que <strong>no</strong> se nos pedirá ninguna frase de paso, ya que no requiere de la confianza de la <em>CA</em> y que consiste en un algoritmo criptográfico, cuyo fin es muy similar a los usados en otros protocolos como <em>HTTPS</em>, es decir, cifrar de forma asimétrica la conexión. Dicho esto procedemos a generar la clave utilizando el parámetro <strong>gen-dh</strong>.
+Aunque parezca que tarda demasiado, no os preocupéis, <em>Diffie-Hellman</em> es un algoritmo de encriptación <em>duro</em>, y como nos indica la propia salida del comando <em>OpenSSL</em>, tarda un rato.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/home/vagrant/easy-rsa/easyrsa3# ./easyrsa gen-dh
+
+Note: using Easy-RSA configuration from: /home/vagrant/easy-rsa/easyrsa3/vars
+Using SSL: openssl OpenSSL 1.1.1d  10 Sep 2019
+Generating DH parameters, 2048 bit long safe prime, generator 2
+This is going to take a long <span class="nb">time</span>
+........+.................+................................................+...............................+............................................................................................................+.................+...............................................................................+.....................................+...............................................................
+
+<span class="nb">.</span>
+<span class="nb">.</span>
+<span class="nb">.</span>
+
++..............................................................................................................+...........+.........................................................+......................................................+.................++<span class="k">*</span>++<span class="k">*</span>++<span class="k">*</span>++<span class="k">*</span>
+
+DH parameters of size 2048 created at /home/vagrant/easy-rsa/easyrsa3/pki/dh.pem</code></pre></figure>
+
+<h4 id="configurando-fichero-openvpn">Configurando fichero OpenVPN</h4>
+
+<p>Antes de configurar el fichero en si mismo, vamos a organizar un poco los ficheros con las credenciales. Básicamente vamos a mover los ficheros con las claves pertinentes (ubicados, en mi caso, anteriormente en <strong>/home/vagrant/easy-rsa/easyrsa3/pki/</strong>) al directorio de configuración de <em>openvpn</em>, es decir a <strong>/etc/openvpn/</strong>. El arbol de directorios que he creado es el siguiente:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/etc/openvpn# tree pki
+pki
+├── ca
+│   ├── ca.crt
+│   └── ca.key
+├── dh.pem
+└── server
+    ├── server.crt
+    └── server.key
+
+2 directories, 5 files</code></pre></figure>
+
+<p>Después generamos un fichero <strong>.conf</strong> que contendrá la configuración del servidor. Debería quedar algo así:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#Dispositivo de túnel</span>
+dev tun
+
+<span class="c">#Protocolo de red</span>
+proto tcp
+
+<span class="c">#Direcciones IP virtuales</span>
+server 10.99.99.0 255.255.255.0 
+
+<span class="c">#subred local</span>
+push <span class="s2">"route 192.168.100.0 255.255.255.0"</span>
+
+<span class="c">#Rol de servidor</span>
+tls-server
+
+<span class="c">#Parámetros Diffie-Hellman</span>
+dh /etc/openvpn/pki/dh.pem
+
+<span class="c">#Certificado de la CA</span>
+ca /etc/openvpn/pki/ca/ca.crt
+
+<span class="c">#Certificado local</span>
+cert /etc/openvpn/pki/server/server.crt
+
+<span class="c">#Clave privada local</span>
+key /etc/openvpn/pki/server/server.key
+
+<span class="c">#Activar la compresión LZO</span>
+comp-lzo
+
+<span class="c">#Detectar caídas de la conexión</span>
+keepalive 10 60
+
+<span class="c">#Nivel de información</span>
+verb 3
+
+<span class="c"># Contraseña del certificado del servidor</span>
+askpass contraseña.txt</code></pre></figure>
+
+<p>Como indico al final en el fichero de configuración, tendremos que crear un fichero con la frase de paso de las credenciales del servidor, para que al iniciar demonio de <em>openvpn</em> no tengamos problemas. Para terminar la configuración del servidor, reiniciamos el servicio de <em>openvpn</em> y comprobamos que está “escuchando” por el <strong>puerto 1194</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@servidor:/etc/openvpn#  lsof <span class="nt">-i</span> <span class="nt">-P</span> <span class="nt">-n</span> | <span class="nb">grep </span>openvpn
+openvpn  3680    root    6u  IPv4  28772      0t0  TCP <span class="k">*</span>:1194 <span class="o">(</span>LISTEN<span class="o">)</span></code></pre></figure>
+
+<h3 id="configuración-del-cliente">Configuración del cliente</h3>
+
+<p>Primero necesitaremos las credenciales que generamos en el lado del servidor. Puedes transferirlas con <strong>scp</strong> por ejemplo. En resumen el cliente necesitará:</p>
+<ul>
+  <li>Credenciales “Fernando”
+    <ul>
+      <li>Certificado - <strong>.crt</strong></li>
+      <li>Clave privada - <strong>.key</strong></li>
+    </ul>
+  </li>
+  <li>Certificado CA - <strong>.crt</strong></li>
+</ul>
+
+<p>Tal y como hicimos en el servidor, instalamos el paquete <strong>openvpn</strong> con <strong>apt</strong>. Después nos dirigimos al directorio <strong>/etc/openvpn</strong> y generamos un fichero de configuración que llamaremos <strong>cliente.conf</strong> y que tendrá el siguiente contenido.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#Dispositivo de túnel</span>
+dev tun
+
+<span class="c">#IP del servidor</span>
+remote 172.22.6.87 
+
+<span class="c">#Direcciones IP virtuales</span>
+ifconfig 10.99.99.0 255.255.255.0
+pull
+
+<span class="c">#Protocolo</span>
+proto tcp-client <span class="c"># Protocolo tcp</span>
+
+<span class="c">#Rol de cliente</span>
+tls-client
+
+<span class="c">#Certificado de la CA</span>
+ca /etc/openvpn/pki/CA/ca.crt
+
+<span class="c">#Certificado cliente</span>
+cert /etc/openvpn/pki/client/fernando.crt
+
+<span class="c">#Clave privada cliente</span>
+key /etc/openvpn/pki/client/fernando.key
+
+<span class="c">#Activar la compresión LZO</span>
+comp-lzo
+
+<span class="c">#Detectar caídas de la conexión</span>
+keepalive 10 60
+
+<span class="c">#Nivel de la información</span>
+verb 3
+
+<span class="c"># Contraseña del certificado del cliente</span>
+askpass contraseña.txt</code></pre></figure>
+
+<p>Antes de hacer que funcione con el demonio de <em>OpenVPN</em>, vamos a probar ejecutandolo directamente con el comando, seguido del fichero de configuración, y comprobamos la conectividad con la máquina de la red local.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">root@cliente:/etc/openvpn# openvpn <span class="nt">--config</span> cliente.conf &amp;
+<span class="o">[</span>1] 999
+root@cliente:/etc/openvpn# Tue Jan 28 13:33:32 2020 WARNING: file <span class="s1">'contraseña.txt'</span> is group or others accessible
+Tue Jan 28 13:33:32 2020 OpenVPN 2.4.7 x86_64-pc-linux-gnu <span class="o">[</span>SSL <span class="o">(</span>OpenSSL<span class="o">)]</span> <span class="o">[</span>LZO] <span class="o">[</span>LZ4] <span class="o">[</span>EPOLL] <span class="o">[</span>PKCS11] <span class="o">[</span>MH/PKTINFO] <span class="o">[</span>AEAD] built on Feb 20 2019
+Tue Jan 28 13:33:32 2020 library versions: OpenSSL 1.1.1c  28 May 2019, LZO 2.10
+Tue Jan 28 13:33:32 2020 WARNING: using <span class="nt">--pull</span>/--client and <span class="nt">--ifconfig</span> together is probably not what you want
+Tue Jan 28 13:33:32 2020 WARNING: No server certificate verification method has been enabled.  See http://openvpn.net/howto.html#mitm <span class="k">for </span>more info.
+Tue Jan 28 13:33:32 2020 WARNING: this configuration may cache passwords <span class="k">in </span>memory <span class="nt">--</span> use the auth-nocache option to prevent this
+Tue Jan 28 13:33:32 2020 TCP/UDP: Preserving recently used remote address: <span class="o">[</span>AF_INET]172.22.6.87:1194
+Tue Jan 28 13:33:32 2020 Socket Buffers: <span class="nv">R</span><span class="o">=[</span>87380-&gt;87380] <span class="nv">S</span><span class="o">=[</span>16384-&gt;16384]
+Tue Jan 28 13:33:32 2020 Attempting to establish TCP connection with <span class="o">[</span>AF_INET]172.22.6.87:1194 <span class="o">[</span>nonblock]
+Tue Jan 28 13:33:33 2020 TCP connection established with <span class="o">[</span>AF_INET]172.22.6.87:1194
+Tue Jan 28 13:33:33 2020 TCP_CLIENT <span class="nb">link local</span>: <span class="o">(</span>not bound<span class="o">)</span>
+Tue Jan 28 13:33:33 2020 TCP_CLIENT <span class="nb">link </span>remote: <span class="o">[</span>AF_INET]172.22.6.87:1194
+Tue Jan 28 13:33:33 2020 TLS: Initial packet from <span class="o">[</span>AF_INET]172.22.6.87:1194, <span class="nv">sid</span><span class="o">=</span>75408fc6 10698460
+Tue Jan 28 13:33:34 2020 VERIFY OK: <span class="nv">depth</span><span class="o">=</span>1, <span class="nv">CN</span><span class="o">=</span>iesgn.org
+Tue Jan 28 13:33:34 2020 VERIFY OK: <span class="nv">depth</span><span class="o">=</span>0, <span class="nv">CN</span><span class="o">=</span>server
+Tue Jan 28 13:33:34 2020 Control Channel: TLSv1.3, cipher TLSv1.3 TLS_AES_256_GCM_SHA384, 2048 bit RSA
+Tue Jan 28 13:33:34 2020 <span class="o">[</span>server] Peer Connection Initiated with <span class="o">[</span>AF_INET]172.22.6.87:1194
+Tue Jan 28 13:33:35 2020 SENT CONTROL <span class="o">[</span>server]: <span class="s1">'PUSH_REQUEST'</span> <span class="o">(</span><span class="nv">status</span><span class="o">=</span>1<span class="o">)</span>
+Tue Jan 28 13:33:35 2020 PUSH: Received control message: <span class="s1">'PUSH_REPLY,route 192.168.100.0 255.255.255.0,route 10.99.99.1,topology net30,ping 10,ping-restart 60,ifconfig 10.99.99.6 10.99.99.5,peer-id 0,cipher AES-256-GCM'</span>
+Tue Jan 28 13:33:35 2020 OPTIONS IMPORT: timers and/or timeouts modified
+Tue Jan 28 13:33:35 2020 OPTIONS IMPORT: <span class="nt">--ifconfig</span>/up options modified
+Tue Jan 28 13:33:35 2020 OPTIONS IMPORT: route options modified
+Tue Jan 28 13:33:35 2020 OPTIONS IMPORT: peer-id <span class="nb">set
+</span>Tue Jan 28 13:33:35 2020 OPTIONS IMPORT: adjusting link_mtu to 1627
+Tue Jan 28 13:33:35 2020 OPTIONS IMPORT: data channel crypto options modified
+Tue Jan 28 13:33:35 2020 Data Channel: using negotiated cipher <span class="s1">'AES-256-GCM'</span>
+Tue Jan 28 13:33:35 2020 Outgoing Data Channel: Cipher <span class="s1">'AES-256-GCM'</span> initialized with 256 bit key
+Tue Jan 28 13:33:35 2020 Incoming Data Channel: Cipher <span class="s1">'AES-256-GCM'</span> initialized with 256 bit key
+Tue Jan 28 13:33:35 2020 ROUTE_GATEWAY 172.22.0.1/255.255.0.0 <span class="nv">IFACE</span><span class="o">=</span>eth1 <span class="nv">HWADDR</span><span class="o">=</span>08:00:27:9b:bf:06
+Tue Jan 28 13:33:35 2020 TUN/TAP device tun0 opened
+Tue Jan 28 13:33:35 2020 TUN/TAP TX queue length <span class="nb">set </span>to 100
+Tue Jan 28 13:33:35 2020 /sbin/ip <span class="nb">link set </span>dev tun0 up mtu 1500
+Tue Jan 28 13:33:35 2020 /sbin/ip addr add dev tun0 <span class="nb">local </span>10.99.99.6 peer 10.99.99.5
+Tue Jan 28 13:33:35 2020 /sbin/ip route add 192.168.100.0/24 via 10.99.99.5
+Tue Jan 28 13:33:35 2020 /sbin/ip route add 10.99.99.1/32 via 10.99.99.5
+Tue Jan 28 13:33:35 2020 Initialization Sequence Completed
+
+root@cliente:/etc/openvpn# ping <span class="nt">-c</span> 1 192.168.100.20
+PING 192.168.100.20 <span class="o">(</span>192.168.100.20<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 192.168.100.20: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>63 <span class="nb">time</span><span class="o">=</span>2.64 ms
+
+<span class="nt">---</span> 192.168.100.20 ping statistics <span class="nt">---</span>
+1 packets transmitted, 1 received, 0% packet loss, <span class="nb">time </span>0ms
+rtt min/avg/max/mdev <span class="o">=</span> 2.643/2.643/2.643/0.000 ms</code></pre></figure>
+
+<p>Si queremos que funcione como <em>demonio</em> del sistema, nos dirigimos al fichero <strong>/etc/default/openvpn</strong> y modificamos la siguiente linea.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">AUTOSTART</span><span class="o">=</span><span class="s2">"cliente"</span></code></pre></figure>
+
+<p>Deberás especificar la o las configuraciones vpn que quieras iniciar con el demonio. El nombre de estas es igual que el de los ficheros de configuración sin la extensión <strong>.conf</strong>. Como en mi caso he creado el fichero de configuración <strong>cliente.conf</strong> la <em>VPN</em> se llama <strong>cliente</strong>. También podríamos levantarlas todas a la vez especificando <strong>ALL</strong>.</p>
+
+<h2 id="configuración-vpn-sitio-a-sitio">Configuración VPN sitio a sitio</h2>
+
+<p>A diferencia del escenario anterior, una <strong>VPN sitio a sitio</strong> se basa en un concepto algo distinto. Mientras que en el primer caso, hemos conectado <em>una máquina</em> a <em>una red remota</em>, en este caso vamos a conectar <strong>dos redes remotas</strong>, por lo que técnicamente, estaremos fusionando las dos redes a <em>nivel de aplicación</em>.
+En este nuevo escenario, tendremos dos máquinas en redes locales diferentes; por un lado la <strong>192.168.100.0/24</strong> y por otro lado la <strong>192.168.200.0/24</strong>. A su vez, cada una de estas máquinas estará compartiendo la red con un servidor que serán los que gestionen la conexión de la <strong>VPN</strong>, que tendrán una red común, la <strong>172.22.0.0/16</strong>. Por lo tanto el exquema de la red es el siguiente:</p>
+
+<p><img src="/images/vpn-site-to-site.png" alt="" /></p>
+
+<p>Si ya os habéis peleado con la configuración de la <strong>VPN cliente-servidor</strong>, esta os resultará bastante familiar. Los ficheros de configuración son muy similares, y la única diferencia reside en el encaminamiento o <em>enrutamiento</em> que definimos. Aunque en una primera instancia podamos pensar que en este escenario va a haber dos servidores. La conexión funcionara prácticamente igual que en el caso anterior, donde habrá un <em>servidor</em> y un <em>cliente</em>, salvo que este último funcionará también como el <em>servidor</em> de su <em>red local</em>. Vamos a ver el fichero de configuración del servidor (en el esquema sería <strong>R2</strong>):</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Dispositivo de túnel</span>
+dev tun
+<span class="c"># Encaminamiento</span>
+ifconfig 10.99.99.1 10.99.99.2
+route 192.168.200.0 255.255.255.0
+<span class="c"># Rol de cliente</span>
+tls-server
+
+<span class="c"># Certificado Diffie-Hellman</span>
+dh /etc/openvpn/pki/dh.pem
+<span class="c"># Certificado de la CA</span>
+ca /etc/openvpn/pki/ca.crt
+<span class="c"># Certificado local</span>
+cert /etc/openvpn/pki/issued/servidor.crt
+<span class="c"># Clave privada local</span>
+key /etc/openvpn/pki/private/servidor.key
+
+<span class="c"># Activar la compresión LZO</span>
+comp-lzo
+
+<span class="c"># Detectar caídas de la conexión</span>
+keepalive 10 60
+
+<span class="c"># Nivel de información</span>
+verb 3
+
+askpass contra.txt</code></pre></figure>
+
+<p>Como podemos observar, si comparamos con el fichero de configuración de la <strong>VPN cliente-servidor</strong>, lo único que cambia son estas lineas</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># CLIENTE-SERVIDOR</span>
+<span class="c">#Direcciones IP virtuales</span>
+server 10.99.99.0 255.255.255.0 
+
+<span class="c">#subred local</span>
+push <span class="s2">"route 192.168.100.0 255.255.255.0"</span>
+
+<span class="c"># SITE-TO-SITE</span>
+<span class="c"># Encaminamiento</span>
+ifconfig 10.99.99.1 10.99.99.2
+route 192.168.200.0 255.255.255.0</code></pre></figure>
+
+<p>Tenemos dos campos distintos.</p>
+<ul>
+  <li><strong>ifconfig</strong>: definirá la <em>ip virtual origen</em> del servidor en primer lugar, y en segundo lugar la <em>ip virtual del “cliente” remoto</em>.</li>
+  <li><strong>route</strong>: define la <em>red física remota</em> a la que queremos conectarnos.</li>
+</ul>
+
+<p>En el lado del cliente nos encontramos con la siguiente configuración:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Dispositivo de túnel</span>
+dev tun
+<span class="c"># Encaminamiento</span>
+ifconfig 10.99.99.2 10.99.99.1
+<span class="c"># Direcciones IP virtuales</span>
+remote 172.22.6.24 
+<span class="c"># Subred remota</span>
+route 192.168.100.0 255.255.255.0
+<span class="c"># Rol de cliente</span>
+tls-client
+
+<span class="c"># Certificado de la CA</span>
+ca /etc/openvpn/pki/ca-client/ca.crt
+
+<span class="c">#Certificado local</span>
+cert /etc/openvpn/pki/server-client/Luis.crt
+
+<span class="c">#Clave privada local</span>
+key /etc/openvpn/pki/server-client/Luis.key
+
+<span class="c">#Activar la compresión LZO</span>
+comp-lzo
+
+<span class="c">#Detectar caídas de la conexión</span>
+keepalive 10 60
+
+<span class="c">#Nivel de información</span>
+verb 3
+
+askpass password.txt</code></pre></figure>
+
+<p>En este caso podemos detectar tres campos clave que han cambiado, y son:</p>
+<ul>
+  <li><strong>ifconfig</strong>: Tal y como hemos explicado antes, define la <em>ip virtual origen</em> del servidor en primer lugar, y la <em>ip virtual del “cliente” remoto</em>.</li>
+  <li><strong>remote</strong>: Aquí tenemos que especificar la dirección IP, del servidor <strong>VPN</strong>. Si ambos servidores no contasen con una red local común y simplemente estuviesen conectados a internet, aquí tendríamos que colocar la <em>IP pública</em> o el respectivo <em>DNS</em> de la máquina.</li>
+  <li><strong>route</strong>: De la misma forma que en el servidor, indicamos la <em>red física remota</em> a la que nos conectaremos.</li>
+</ul>
+
+<p>Una vez definidos, modificamos el fichero <strong>/etc/default/openvpn</strong> si hemos creado nuevos ficheros <strong>.conf</strong> para definir esta nueva conexión, y posteriormente reiniciamos los servicios. Primero el servicio del servidor, y luego el del cliente.
+Debemos recordar activar el <strong>bit de forward</strong> en ambas máquinas, para que puedan “pasar” el tráfico sus respectivas <em>redes locales</em>. Una vez hecho esto probamos que funciona. Primero probamos un <strong>ping</strong> desde el <em>PC1</em> al <em>PC2</em>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant@cliente:~<span class="nv">$ </span>ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    <span class="nb">link</span>/ether 08:00:27:8d:c0:4d brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 85522sec preferred_lft 85522sec
+    inet6 fe80::a00:27ff:fe8d:c04d/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+3: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    <span class="nb">link</span>/ether 08:00:27:ae:6e:e7 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.200.40/24 brd 192.168.200.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:feae:6ee7/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+vagrant@cliente:~<span class="nv">$ </span>ping <span class="nt">-c</span> 3 192.168.100.50
+PING 192.168.100.50 <span class="o">(</span>192.168.100.50<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 192.168.100.50: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>3.49 ms
+64 bytes from 192.168.100.50: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>3.15 ms
+64 bytes from 192.168.100.50: <span class="nv">icmp_seq</span><span class="o">=</span>3 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>3.83 ms
+
+<span class="nt">---</span> 192.168.100.50 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 received, 0% packet loss, <span class="nb">time </span>5ms
+rtt min/avg/max/mdev <span class="o">=</span> 3.150/3.487/3.826/0.280 ms</code></pre></figure>
+
+<p>Luego probamos desde el <em>PC2</em> al <em>PC1</em>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant@openvpnprivada:~<span class="nv">$ </span>ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    <span class="nb">link</span>/ether 08:00:27:8d:c0:4d brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 85777sec preferred_lft 85777sec
+    inet6 fe80::a00:27ff:fe8d:c04d/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+3: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    <span class="nb">link</span>/ether 08:00:27:48:99:9a brd ff:ff:ff:ff:ff:ff
+    inet 192.168.100.50/24 brd 192.168.100.255 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fe48:999a/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+vagrant@openvpnprivada:~<span class="nv">$ </span>ping <span class="nt">-c</span> 3 192.168.200.40
+PING 192.168.200.40 <span class="o">(</span>192.168.200.40<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+64 bytes from 192.168.200.40: <span class="nv">icmp_seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>3.77 ms
+64 bytes from 192.168.200.40: <span class="nv">icmp_seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>2.94 ms
+64 bytes from 192.168.200.40: <span class="nv">icmp_seq</span><span class="o">=</span>3 <span class="nv">ttl</span><span class="o">=</span>62 <span class="nb">time</span><span class="o">=</span>3.47 ms
+
+<span class="nt">---</span> 192.168.200.40 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 received, 0% packet loss, <span class="nb">time </span>4ms
+rtt min/avg/max/mdev <span class="o">=</span> 2.944/3.395/3.773/0.345 ms</code></pre></figure>
+
+<ul>
+  <li><strong>Referencias</strong>: <a href="https://openvpn.net/community-resources/how-to/">Documentación oficial OpenVPN</a></li>
+</ul>
+
+            </article>
+
+            <section class="share">
+    <h3>Compartir</h3>
+    <a aria-label="Share on Twitter" href="https://twitter.com/intent/tweet?text=&quot;&quot;%20https://blog.luisvazquezalejo.es/VPN-con-OpenVPN-y-certificados-x509/%20via%20&#64;&hashtags="
+    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" title="Compartir en Twitter">
+        <svg class="icon icon-twitter"><use xlink:href="#icon-twitter"></use></svg>
+    </a>
+    <a aria-label="Share on Facebook"href="https://www.facebook.com/sharer/sharer.php?u=https://blog.luisvazquezalejo.es/VPN-con-OpenVPN-y-certificados-x509/"
+    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" title="Compartir en Facebook">
+        <svg class="icon icon-facebook"><use xlink:href="#icon-facebook"></use></svg>
+    </a>
+</section>
+
+            <section class="author" itemprop="author">
+    <div class="details" itemscope itemtype="http://schema.org/Person">
+        <img itemprop="image" class="img-rounded" src="/assets/img/blog-author.jpg" alt="">
+        <p class="def">Autor</p>
+        <p class="desc">Administrador de Sistemas Informáticos en Red</p>
+        <a itemprop="email" class="email" href="mailto:mail@luisvazquezalejo.es">mail@luisvazquezalejo.es</a>
+    </div>
+</section>
+
+            <footer>
+    <p>Plantilla hecha con <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> y <span class="love">❤</span> por <a href="https://willianjusten.com.br">Willian Justen</a></p>
+</footer>
+<script src="/assets/js/main.js"></script>
+
+        </section>
+    </body>
+</html>

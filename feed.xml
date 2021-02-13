@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Luis Vázquez Alejo</title>
+    <description>Administrador de Sistemas Informáticos en Red</description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 13 Feb 2021 18:19:42 +0000</pubDate>
+    <lastBuildDate>Sat, 13 Feb 2021 18:19:42 +0000</lastBuildDate>
+    <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Instalación de Jitsi</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;En estos momentos de confinamiento y teletrabajo, la comunicación es un factor crucial y las videoconferencias están a la orden del día. En los últimos meses han surgido distintos casos en los que se &lt;strong&gt;vulneraba la privacidad&lt;/strong&gt; de los usuarios en distintas plataformas como &lt;a href=&quot;https://hipertextual.com/2020/04/zoom-expone-llamadas-internet&quot;&gt;Zoom&lt;/a&gt;. Es más que probable que nos encontremos a día de hoy en la situación de que nuestra empresa necesite un servicio de estas carácterísticas, y por supuesto deberá ser seguro. En esta ocasión nos hemos decantado por &lt;a href=&quot;https://jitsi.org/the-mossos-confusion/&quot;&gt;Jitsi&lt;/a&gt; ya que se trata de un programa de código abierto y cuya instalación...</description>
+        <pubDate>Fri, 15 May 2020 14:00:00 +0000</pubDate>
+        <link>/Instalaci%C3%B3n-de-Jitsi/</link>
+        <guid isPermaLink="true">/Instalaci%C3%B3n-de-Jitsi/</guid>
+        
+        
+        <category>Contenedores</category>
+        
+        <category>Docker</category>
+        
+        <category>Java</category>
+        
+      </item>
+    
+      <item>
+        <title>Despliegue de una aplicación Python con Docker</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;En esta entrada aprenderemos tanto a crear una &lt;strong&gt;imagen docker&lt;/strong&gt; para desplegar la aplicación &lt;strong&gt;pyhton&lt;/strong&gt; como a usar la imagen oficial de los repositorios. También haremos uso de &lt;strong&gt;docker compose&lt;/strong&gt; para el despliegue de varios contenedores en el caso de que queramos implantar una aplicación, como un cms, que requiera de múltiples nodos. Ya sea para utilizar una &lt;strong&gt;base de datos&lt;/strong&gt;, un servidor de aplicaciones (como &lt;strong&gt;gunicorn&lt;/strong&gt;), etc.&lt;/p&gt; &lt;h2 id=&quot;imagen-docker-a-mano&quot;&gt;Imagen docker “a mano”&lt;/h2&gt; &lt;p&gt;Antes de nada, primero tendremos que instalar el paquete &lt;strong&gt;docker.io&lt;/strong&gt; con el gestor de paquetes &lt;strong&gt;apt&lt;/strong&gt;. Dicho esto, la aplicación que queremos implantar es una...</description>
+        <pubDate>Sat, 25 Apr 2020 14:00:00 +0000</pubDate>
+        <link>/Despliegue-de-una-aplicaci%C3%B3n-Python-con-Docker/</link>
+        <guid isPermaLink="true">/Despliegue-de-una-aplicaci%C3%B3n-Python-con-Docker/</guid>
+        
+        
+        <category>Contenedores</category>
+        
+        <category>Docker</category>
+        
+        <category>Python</category>
+        
+      </item>
+    
+      <item>
+        <title>Introducción a Openshift con Minishift</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;OpenShift es un producto que ofrece &lt;strong&gt;plataforma como servicio&lt;/strong&gt; (o &lt;strong&gt;PaaS&lt;/strong&gt;, en inglés &lt;em&gt;platform as a service&lt;/em&gt;). Desarrollado por &lt;a href=&quot;https://www.redhat.com/es&quot;&gt;Redhat&lt;/a&gt; sobre &lt;strong&gt;Kubernetes&lt;/strong&gt;, nos proporciona un sistema donde desplegar nuestras aplicaciones web, añadiendo funcionalidades adicionales a las que tenemos cuando utilizamos el “software base” de &lt;em&gt;Kubernetes&lt;/em&gt;. Entre algunas de ellas tenemos &lt;a href=&quot;https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/builds_and_image_streams.html#source-build&quot;&gt;source2image&lt;/a&gt; que se encargará de automatizar la creación de imágenes &lt;em&gt;docker&lt;/em&gt; basándose en el repositorio &lt;strong&gt;github&lt;/strong&gt; donde tendremos nuestra aplicación.&lt;/p&gt; &lt;p&gt;Sin más preámbulo, empezaremos con la instalación de &lt;strong&gt;Minishift&lt;/strong&gt;.&lt;/p&gt; &lt;h2 id=&quot;preparatorios&quot;&gt;Preparatorios&lt;/h2&gt; &lt;p&gt;En esta ocasión usaremos la herramienta antes mencionada que nos proporcionará una instalación (de un...</description>
+        <pubDate>Tue, 21 Apr 2020 14:00:00 +0000</pubDate>
+        <link>/Introducci%C3%B3n-a-OpenShift-con-minishift/</link>
+        <guid isPermaLink="true">/Introducci%C3%B3n-a-OpenShift-con-minishift/</guid>
+        
+        
+        <category>Contenedores</category>
+        
+        <category>Docker</category>
+        
+        <category>Kubernetes</category>
+        
+        <category>OpenShift</category>
+        
+      </item>
+    
+      <item>
+        <title>Introducción a Openshift con Minishift</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;OpenShift es un producto que ofrece &lt;strong&gt;plataforma como servicio&lt;/strong&gt; (o &lt;strong&gt;PaaS&lt;/strong&gt;, en inglés &lt;em&gt;platform as a service&lt;/em&gt;). Desarrollado por &lt;a href=&quot;https://www.redhat.com/es&quot;&gt;Redhat&lt;/a&gt; sobre &lt;strong&gt;Kubernetes&lt;/strong&gt;, nos proporciona un sistema donde desplegar nuestras aplicaciones web, añadiendo funcionalidades adicionales a las que tenemos cuando utilizamos el “software base” de &lt;em&gt;Kubernetes&lt;/em&gt;. Entre algunas de ellas tenemos &lt;a href=&quot;https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/builds_and_image_streams.html#source-build&quot;&gt;source2image&lt;/a&gt; que se encargará de automatizar la creación de imágenes &lt;em&gt;docker&lt;/em&gt; basándose en el repositorio &lt;strong&gt;github&lt;/strong&gt; donde tendremos nuestra aplicación.&lt;/p&gt; &lt;p&gt;Sin más preámbulo, empezaremos con la instalación de &lt;strong&gt;Minishift&lt;/strong&gt;.&lt;/p&gt; &lt;h2 id=&quot;preparatorios&quot;&gt;Preparatorios&lt;/h2&gt; &lt;p&gt;En esta ocasión usaremos la herramienta antes mencionada que nos proporcionará una instalación (de un...</description>
+        <pubDate>Mon, 20 Apr 2020 14:00:00 +0000</pubDate>
+        <link>/Introducci%C3%B3n-a-OpenShift-con-minishift/</link>
+        <guid isPermaLink="true">/Introducci%C3%B3n-a-OpenShift-con-minishift/</guid>
+        
+        
+        <category>Contenedores</category>
+        
+        <category>Docker</category>
+        
+        <category>Kubernetes</category>
+        
+        <category>OpenShift</category>
+        
+      </item>
+    
+      <item>
+        <title>Despliegue de aplicación web en Kubernetes</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt;
+
+</description>
+        <pubDate>Sat, 07 Mar 2020 14:25:00 +0000</pubDate>
+        <link>/Introducci%C3%B3n-a-Postfix/</link>
+        <guid isPermaLink="true">/Introducci%C3%B3n-a-Postfix/</guid>
+        
+        
+        <category>Kubernetes</category>
+        
+        <category>Sistemas</category>
+        
+        <category>Implantacion Web</category>
+        
+      </item>
+    
+      <item>
+        <title>Servidor proxy: Squid</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;Un &lt;em&gt;proxy&lt;/em&gt; es un servidor que ofrece, a &lt;strong&gt;nivel de aplicación&lt;/strong&gt;, la posibilidad de conectar dos redes. Habitualmente se utiliza para hacer de intermediario entre una red local y el propio internet. Como conseguimos que &lt;strong&gt;todo el tráfico&lt;/strong&gt; de nuestra red pase por &lt;strong&gt;un solo nodo&lt;/strong&gt;, podemos aprovechar para aplicar &lt;strong&gt;filtros&lt;/strong&gt;, situar una &lt;strong&gt;caché&lt;/strong&gt; en esta máquina, etc. Durante bastante tiempo los &lt;em&gt;proxys&lt;/em&gt; han generado bastante controversia, ya que coarta (en función del nivel de los filtros de búsquedas que apliquemos) la libertad de los usuarios, asmilándose al &lt;a href=&quot;https://es.wikipedia.org/wiki/Alegoría_de_la_caverna&quot;&gt;mito de la caverna&lt;/a&gt; de &lt;em&gt;Platón&lt;/em&gt;. No obstante en...</description>
+        <pubDate>Sun, 23 Feb 2020 12:00:00 +0000</pubDate>
+        <link>/Servidor-proxy-Squid/</link>
+        <guid isPermaLink="true">/Servidor-proxy-Squid/</guid>
+        
+        
+        <category>Servicios</category>
+        
+        <category>Proxy</category>
+        
+      </item>
+    
+      <item>
+        <title>Introducción a SELinux</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;&lt;strong&gt;SELinux&lt;/strong&gt;, para quien no lo conozca es un sistema de seguridad basado en el otorgamiento de permisos a usuarios y demonios sobre ficheros, directorios, protocolos, etc. Bajo esta premisa se establecen una serie de reglas por defecto que prohíben a cualquier proceso, acceder o utilizar según que protocolo que esté fuera de su configuración estandar o por defecto. Es por esto que la &lt;strong&gt;filosofía&lt;/strong&gt; que debería seguir todo administrador encargado de gestionar un sistema con &lt;strong&gt;SELinux&lt;/strong&gt; (en el modo &lt;em&gt;enforcing&lt;/em&gt;) debería ser, &lt;strong&gt;utilizar&lt;/strong&gt; en la medidida de lo posible únicamente los &lt;strong&gt;directorios de trabajo por defecto&lt;/strong&gt; en cada...</description>
+        <pubDate>Mon, 17 Feb 2020 14:25:00 +0000</pubDate>
+        <link>/Introducci%C3%B3n-a-SELinux/</link>
+        <guid isPermaLink="true">/Introducci%C3%B3n-a-SELinux/</guid>
+        
+        
+        <category>Sistemas</category>
+        
+        <category>Seguridad</category>
+        
+      </item>
+    
+      <item>
+        <title>Introducción a ISCSI</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;&lt;strong&gt;ISCSI&lt;/strong&gt; es un estandar del protocolo &lt;strong&gt;SCSI&lt;/strong&gt; que permite la distribución de dispositivos de bloques a través de &lt;strong&gt;TCP/IP&lt;/strong&gt;. Dicho protocolo se utiliza por norma general en escenarios donde se ve involucrada una &lt;a href=&quot;https://es.wikipedia.org/wiki/Red_de_%C3%A1rea_de_almacenamiento&quot;&gt;SAN&lt;/a&gt; o al menos una &lt;a href=&quot;https://es.wikipedia.org/wiki/Almacenamiento_conectado_en_red&quot;&gt;NAS&lt;/a&gt;, que se encargan de proveer almacenamiento en la red. Gracias a este estandar podemos tener centralizado el almacenamiento de múltiples máquinas y hasta podríamos hacer que estas arrancasen con un dispositivo de bloques proporcionado por &lt;strong&gt;ISCSI&lt;/strong&gt;. Para ver su funcionamiento, vamos a plantear un escenario donde tendremos un servidor (&lt;em&gt;debian&lt;/em&gt;) y dos clientes (&lt;em&gt;debian&lt;/em&gt; y &lt;em&gt;windows&lt;/em&gt;). Si...</description>
+        <pubDate>Mon, 03 Feb 2020 10:59:00 +0000</pubDate>
+        <link>/Introducci%C3%B3n-a-ISCSI/</link>
+        <guid isPermaLink="true">/Introducci%C3%B3n-a-ISCSI/</guid>
+        
+        <category>ISCSI</category>
+        
+        <category>filesystem</category>
+        
+        
+        <category>Sistemas</category>
+        
+      </item>
+    
+      <item>
+        <title>VPN con OpenVPN y certificados x509</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;&lt;strong&gt;OpenVPN&lt;/strong&gt; es un paquete que ofrece un servicio de Redes Privadas Virtuales (VPN). Estas redes sirven para interconectar dos redes distintas de manera que puedan tener conectividad como si estuviesen dentro de la misma red local. Además de esta funcionalidad, aporta un sistema de cifrado de la conexión y una gran flexibilidad a la hora de configurar el tipo de conexión que deseemos (tcp, udp, mayor o menor cifrado, etc). En el siguiente supuesto práctico vamos a interconectar dos máquinas que están en redes separadas, y para ello vamos a crear una &lt;em&gt;VPN&lt;/em&gt; con el rango &lt;strong&gt;10.99.99.0/32&lt;/strong&gt;. Dividiremos...</description>
+        <pubDate>Mon, 27 Jan 2020 12:19:00 +0000</pubDate>
+        <link>/VPN-con-OpenVPN-y-certificados-x509/</link>
+        <guid isPermaLink="true">/VPN-con-OpenVPN-y-certificados-x509/</guid>
+        
+        
+        <category>VPN</category>
+        
+        <category>SSL</category>
+        
+      </item>
+    
+      <item>
+        <title>Sistema de ficheros ZFS</title>
+        <description>&lt;h2 id=&quot;introducción&quot;&gt;Introducción&lt;/h2&gt; &lt;p&gt;&lt;strong&gt;ZFS&lt;/strong&gt; es un sistema de ficheros que cuenta con una serie de características avanzadas, tales como &lt;em&gt;auto-reparación&lt;/em&gt; o &lt;em&gt;copy-on-write&lt;/em&gt;. No obstante, aún siendo extremádamente útil en el entorno de servidores, &lt;strong&gt;ZFS&lt;/strong&gt; no está tan extendido como cabría esperar. Su licencia &lt;strong&gt;CDDL&lt;/strong&gt; (incompatible con la licencia &lt;strong&gt;GPL&lt;/strong&gt; de Linux) y diversos acontecimientos durante su desarrollo pusieron bastantes trabas en la implementación de este sistema de ficheros en el &lt;em&gt;Kernel Linux&lt;/em&gt;. Dicho esto vamos a simular un escenario con &lt;em&gt;Vagrant&lt;/em&gt; donde tendremos una máquina a la que le agregaremos varios discos, para posteriormente, instalar &lt;strong&gt;ZFS&lt;/strong&gt; y “jugar” un poco con...</description>
+        <pubDate>Sat, 25 Jan 2020 10:59:00 +0000</pubDate>
+        <link>/Sistema-de-ficheros-ZFS/</link>
+        <guid isPermaLink="true">/Sistema-de-ficheros-ZFS/</guid>
+        
+        <category>zfs</category>
+        
+        <category>filesystem</category>
+        
+        
+        <category>Sistemas</category>
+        
+      </item>
+    
+  </channel>
+</rss>

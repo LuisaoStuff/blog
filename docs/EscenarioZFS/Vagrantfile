@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |zfsMachine|
+  zfsMachine.vm.box = "debian/buster64"
+  zfsMachine.vm.hostname = "zfsMachine"
+  zfsMachine.vm.provider "virtualbox" do |vb|
+    Drives = [1,2,3,4,5]
+    Drives.each do |hd|
+      puts "harddrive #{hd}"
+      unless File.exist?("./Disco#{hd}.vdi")
+        vb.customize ['createhd', '--filename', "./Disco#{hd}.vdi",'--variant', 'Fixed', '--size', 400]
+      end
+      vb.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', hd+1, '--type', 'hdd', '--medium', "./Disco#{hd}.vdi"]
+    end
+  end
+  zfsMachine.vm.provision "shell", inline: <<-SHELL
+     echo '''deb http://deb.debian.org/debian buster-backports main contrib
+             deb-src http://deb.debian.org/debian buster-backports main contrib''' >> /etc/apt/sources.list
+     apt update
+  SHELL
+end
